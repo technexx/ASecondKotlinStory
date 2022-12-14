@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">A Second Kotlin Story</string>
+
+    <string name="time_since_spawn">Time since spawn: </string>
+</resources>
