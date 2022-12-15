@@ -64,9 +64,9 @@ class MainActivity : AppCompatActivity() {
             job = GlobalScope.launch(Dispatchers.Main) {
                 if (routineIsActive) {
                     while (totalSpawnTimeInMilliseconds <= randomMillisValueForEvent) {
-                        Log.i("testRoutine", "checking!")
                         spawnTimeIteration()
                     }
+                    //Post-while code.
                 }
             }
         } else {
@@ -80,16 +80,10 @@ class MainActivity : AppCompatActivity() {
 
         var timeToAdd = System.currentTimeMillis() - startTime
         totalSpawnTimeInMilliseconds += timeToAdd
-        existenceTimerTextView.setText((totalSpawnTimeInMilliseconds).toString())
-
-        triggerEvent(timeToAdd)
+        existenceTimerTextView.text = (totalSpawnTimeInMilliseconds).toString()
     }
 
     private fun triggerEvent(timeIterated: Long) {
-        if (timeIterated >= randomMillisValueForEvent) {
-            routineIsActive = false;
-            randomMillisValueForEvent = 0;
-            startTimeIterationCoRoutine()
-        }
+
     }
 }
