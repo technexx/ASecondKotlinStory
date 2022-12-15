@@ -19,19 +19,22 @@ import org.w3c.dom.Text
 @OptIn(DelicateCoroutinesApi::class)
 class MainActivity : AppCompatActivity() {
 
+    lateinit var existenceTimerTextView : TextView
+    lateinit var startStopButton : TextView
+
+    var job: Job = Job()
+
+    private var totalSpawnTimeInMilliseconds : Long = 0
+    private var randomMillisValueForEvent : Long = 0
+    private var routineIsActive: Boolean = false
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var job: Job = Job()
-        var routineIsActive : Boolean = false
-
-        var existenceTimerTextView: TextView = findViewById(R.id.existence_timer_textView)
-        val startStopButton: Button = findViewById(R.id.start_stop_button)
-
-        var totalSpawnTimeInMilliseconds: Long = 0
-        var totalSpawnTimeInSeconds: Long = 0
+        existenceTimerTextView = findViewById(R.id.existence_timer_textView)
+        startStopButton = findViewById(R.id.start_stop_button)
 
         fun toggleStartStopButton(enabled: Boolean) {
             if (enabled) {
@@ -43,41 +46,50 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        suspend fun testIteration() {
-            val startTime = System.currentTimeMillis()
-
-            delay(50)
-
-            var timeToAdd = System.currentTimeMillis() - startTime
-            totalSpawnTimeInMilliseconds += timeToAdd
-
-            existenceTimerTextView.setText((totalSpawnTimeInMilliseconds).toString())
-
-//            Log.i("testRoutine", "value is " + totalSpawnTimeInMilliseconds)
-        }
-
-        fun startTimeIterationCoRoutine() {
-            if (routineIsActive) {
-                job = GlobalScope.launch(Dispatchers.Main) {
-                    Log.i("testRoutine", "boolan in coroutine is " + routineIsActive)
-
-                    if (routineIsActive) {
-                        while (isActive)
-                            testIteration()
-                    }
-                }
-            } else {
-                job.cancel()
-                Log.i("testRoutine", "job cancelling!")
-            }
-        }
-
-            startStopButton.setOnClickListener {
-                routineIsActive = !routineIsActive
-
-                Log.i("testRoutine", "boolan in button click is " + routineIsActive)
-
-                startTimeIterationCoRoutine()
-            }
+        startStopButton.setOnClickListener {
+            routineIsActive = true
+            setRandomMillisValueForEventTrigger()
+            startTimeIterationCoRoutine()
         }
     }
+
+    private fun setRandomMillisValueForEventTrigger() {
+        val randomStop = (5000..8000).random()
+        randomMillisValueForEvent = randomStop.toLong()
+    }
+
+    //Only executes once so changing boolean doesn't stop it.
+    private fun startTimeIterationCoRoutine() {
+        if (routineIsActive) {
+            job = GlobalScope.launch(Dispatchers.Main) {
+                if (routineIsActive) {
+                    while (totalSpawnTimeInMilliseconds <= randomMillisValueForEvent) {
+                        Log.i("testRoutine", "checking!")
+                        spawnTimeIteration()
+                    }
+                }
+            }
+        } else {
+            job.cancel()
+        }
+    }
+
+    private suspend fun spawnTimeIteration() {
+        val startTime = System.currentTimeMillis()
+        delay(50)
+
+        var timeToAdd = System.currentTimeMillis() - startTime
+        totalSpawnTimeInMilliseconds += timeToAdd
+        existenceTimerTextView.setText((totalSpawnTimeInMilliseconds).toString())
+
+        triggerEvent(timeToAdd)
+    }
+
+    private fun triggerEvent(timeIterated: Long) {
+        if (timeIterated >= randomMillisValueForEvent) {
+            routineIsActive = false;
+            randomMillisValueForEvent = 0;
+            startTimeIterationCoRoutine()
+        }
+    }
+}
