@@ -10,7 +10,7 @@
         android:id="@+id/stats_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         app:layout_constraintGuide_percent=".25">
     </androidx.constraintlayout.widget.Guideline>
 
@@ -19,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/stats_guideline">
+        app:layout_constraintBottom_toTopOf="@id/stats_guideline"
+        style="@style/StatsTheme">
 
         <TextView
             android:id="@+id/stat_one_header_textView"
@@ -27,7 +28,7 @@
             android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/stat_one_header_textView"
+            app:layout_constraintBottom_toTopOf="@id/stat_two_header_textView"
             android:layout_marginStart="4dp">
         </TextView>
 
@@ -101,6 +102,14 @@
             android:layout_marginStart="6dp">
         </TextView>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/stats_constraint_layout"
+        android:backgroundTint="@color/black">
+    </View>
 
     <TextView
         android:id="@+id/existence_timer_textView_header"

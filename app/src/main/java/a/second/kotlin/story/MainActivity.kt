@@ -19,10 +19,19 @@ import org.w3c.dom.Text
 @OptIn(DelicateCoroutinesApi::class)
 class MainActivity : AppCompatActivity() {
 
+    var job: Job = Job()
+
+    lateinit var statOneHeader : TextView
+    lateinit var statOneTextView : TextView
+    lateinit var statTwoHeader : TextView
+    lateinit var statTwoTextView : TextView
+    lateinit var statThreeHeader : TextView
+    lateinit var statThreeTextView : TextView
+    lateinit var statFourHeader : TextView
+    lateinit var statFourTextView : TextView
+
     lateinit var existenceTimerTextView : TextView
     lateinit var startStopButton : TextView
-
-    var job: Job = Job()
 
     private var totalSpawnTimeInMilliseconds : Long = 0
     private var randomMillisValueForEvent : Long = 0
@@ -32,6 +41,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        statOneHeader = findViewById(R.id.stat_one_header_textView)
+        statTwoHeader = findViewById(R.id.stat_two_header_textView)
+        statThreeHeader = findViewById(R.id.stat_three_header_textView)
+        statFourHeader = findViewById(R.id.stat_four_header_textView)
+
+        statOneTextView = findViewById(R.id.stat_one_textView)
+        statTwoTextView = findViewById(R.id.stat_two_textView)
+        statThreeTextView = findViewById(R.id.stat_three_textView)
+        statFourTextView = findViewById(R.id.stat_four_textView)
+
+        setDefaultStatHeadersOnTextViews(getString(R.string.stat_one), getString(R.string.stat_two), getString(R.string.stat_three), getString(R.string.stat_four))
+        setDefaultStatValuesOnTextViews(0)
 
         existenceTimerTextView = findViewById(R.id.existence_timer_textView)
         startStopButton = findViewById(R.id.start_stop_button)
@@ -81,6 +103,20 @@ class MainActivity : AppCompatActivity() {
         var timeToAdd = System.currentTimeMillis() - startTime
         totalSpawnTimeInMilliseconds += timeToAdd
         existenceTimerTextView.text = (totalSpawnTimeInMilliseconds).toString()
+    }
+
+    private fun setDefaultStatHeadersOnTextViews(nameOne: String, nameTwo: String, nameThree: String, nameFour: String) {
+        statOneHeader.text = nameOne
+        statTwoHeader.text = nameTwo
+        statOneHeader.text = nameThree
+        statOneHeader.text = nameFour
+    }
+
+    private fun setDefaultStatValuesOnTextViews(value: Int) {
+        statOneTextView.text = value.toString()
+        statTwoTextView.text = value.toString()
+        statThreeTextView.text = value.toString()
+        statFourTextView.text = value.toString()
     }
 
     private fun triggerEvent(timeIterated: Long) {

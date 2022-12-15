@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">A Second Kotlin Story</string>
 
+    <string name="stat_one">Job:</string>
+    <string name="stat_four">Finances:</string>
+    <string name="stat_two">Marriage:</string>
+    <string name="stat_three">Kids:</string>
+
     <string name="time_since_spawn">Time since spawn: </string>
 </resources>
