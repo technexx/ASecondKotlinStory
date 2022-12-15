@@ -108,8 +108,8 @@ class MainActivity : AppCompatActivity() {
     private fun setDefaultStatHeadersOnTextViews(nameOne: String, nameTwo: String, nameThree: String, nameFour: String) {
         statOneHeader.text = nameOne
         statTwoHeader.text = nameTwo
-        statOneHeader.text = nameThree
-        statOneHeader.text = nameFour
+        statThreeHeader.text = nameThree
+        statFourHeader.text = nameFour
     }
 
     private fun setDefaultStatValuesOnTextViews(value: Int) {
