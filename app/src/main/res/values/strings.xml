@@ -7,4 +7,32 @@
     <string name="stat_four">Kids:</string>
 
     <string name="time_since_spawn">Time since spawn: </string>
+
+    <array name="job_events_bad">
+        <item>Your boss hates you and lets you know it. Loudly.</item>
+        <item>Todd from Accounting pees in your coffee again.</item>
+        <item>The office receptionist forgets your name. You\'ve both been there for 32 years.</item>
+        <item>One of your clients is unhappy. He\'s a wolf, and you\'re the fattest one there.</item>
+        <item>Your paycheck is missing a few zeros, and it only had a few to begin with.</item>
+        <item>Your socks have dissolved and you have to put on spares that aren\'t as comfortable.</item>
+        <item>Today\'s lunch break has been replaced with nothing.</item>
+        <item>Your last cigarette tasted like a camel. The animal, not the brand,</item>
+        <item>The cute one in Accounts Billable wrote you another letter proclaiming her disdain</item>
+        <item>You slip on the floor and take a bite of the floor.</item>
+        <item>One of your shoes leaves.</item>
+        <item>The ducks in your office building\'s courtyard reject your bread</item>
+        <item>Your favorite song is on the radio and you don't have a radio.</item>
+        <item>Your laptop is on fire.</item>
+        <item>Your desk is on fire.</item>
+        <item>Your hair is on fire.</item>
+        <item>You\'ve been demoted. You find out from a Snapple bottle cap.</item>
+        <item>The whole office got together and build a life-sized effigy of you to laugh at when you\'re not around.</item>
+        <item>Your salary has been inversely tied to inflation.</item>
+        <item>You are assigned the role of foot-stool at the next office party.</item>
+        <item>Your last zoom meeting ended in vomiting.</item>
+        <item>Your latest client has decided that they are not your client.</item>
+        <item>The water cooler refuses to dispense to you</item>
+        <item>Lunch consisted of sadness with a side of nothing.</item>
+        <item>Your boss needs to you stay after the office closes and catch ghouls.</item>
+    </array>
 </resources>

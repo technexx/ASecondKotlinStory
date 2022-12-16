@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         statThreeTextView = findViewById(R.id.stat_three_textView)
         statFourTextView = findViewById(R.id.stat_four_textView)
 
-        setDefaultStatHeadersOnTextViews(getString(R.string.stat_one), getString(R.string.stat_two), getString(R.string.stat_three), getString(R.string.stat_four))
+        setDefaultStatHeadersOnTextViews()
         setDefaultStatValuesOnTextViews(0)
 
         existenceTimerTextView = findViewById(R.id.existence_timer_textView)
@@ -103,9 +103,10 @@ class MainActivity : AppCompatActivity() {
         var timeToAdd = System.currentTimeMillis() - startTime
         totalSpawnTimeInMilliseconds += timeToAdd
         existenceTimerTextView.text = (totalSpawnTimeInMilliseconds).toString()
+
     }
 
-    private fun setDefaultStatHeadersOnTextViews(nameOne: String, nameTwo: String, nameThree: String, nameFour: String) {
+    private fun setDefaultStatHeadersOnTextViews(nameOne: String = getString(R.string.stat_one), nameTwo: String = getString(R.string.stat_two), nameThree: String = getString(R.string.stat_three), nameFour: String = getString(R.string.stat_four)) {
         statOneHeader.text = nameOne
         statTwoHeader.text = nameTwo
         statThreeHeader.text = nameThree
