@@ -14,12 +14,12 @@
         <item>The office receptionist forgets your name. You\'ve both been there for 32 years.</item>
         <item>One of your clients is unhappy. He\'s a wolf, and you\'re the fattest one there.</item>
         <item>Your paycheck is missing a few zeros, and it only had a few to begin with.</item>
-        <item>Your socks have dissolved and you have to put on spares that aren\'t as comfortable.</item>
+        <item>Your work socks have dissolved and you have to put on spares that aren\'t as comfortable.</item>
         <item>Today\'s lunch break has been replaced with nothing.</item>
         <item>Your last cigarette tasted like a camel. The animal, not the brand,</item>
-        <item>The cute one in Accounts Billable wrote you another letter proclaiming her disdain</item>
+        <item>The cute one in Accounts Billable wrote you another letter proclaiming their disdain</item>
         <item>You slip on the floor and take a bite of the floor.</item>
-        <item>One of your shoes leaves.</item>
+        <item>One of your shoes leaves the office.</item>
         <item>The ducks in your office building\'s courtyard reject your bread</item>
         <item>Your favorite song is on the radio and you don't have a radio.</item>
         <item>Your laptop is on fire.</item>
@@ -34,5 +34,63 @@
         <item>The water cooler refuses to dispense to you</item>
         <item>Lunch consisted of sadness with a side of nothing.</item>
         <item>Your boss needs to you stay after the office closes and catch ghouls.</item>
+    </array>
+
+    <array name="job_events_good">
+        <item>You\'ve been promoted! One step forward, five steps back, as they say.</item>
+        <item>Your boss didn\'t spit in your face this morning.</item>
+        <item>No one at the office has asked you to be their slap toy today.</item>
+        <item>You find two pennies in the office courtyard fountain.</item>
+        <item>You find an old shoe in the office bathroom. It kind of fits.</item>
+        <item>Your office laptop has taken a break from flashing you with strobe lights.</item>
+        <item>Friday\'s death match against Sven the Destroyer from IT has been cancelled.</item>
+        <item>This week\'s Casual Friday will not begin with a dressing down of you, per HR\'s latest memo.</item>
+        <item>Janice from Public Relations is out of town and will not be hunting you for sport this week.</item>
+        <item>You caught two ghouls last night and your boss has rewarded you with a lettuce bounty.</item>
+    </array>
+
+    <array name="finance_events_bad">
+        <item>You\'ve fallen for another deposed prince scam.</item>
+        <item>The IRS has attached a funnel to your money bag.</item>
+        <item>Tuition for your kids has increased because the school hates you. Not your kids, but you.</item>
+        <item>Your significant other\'s dollar snacking habit has accelerated</item>
+        <item>Money grows on trees and you\'re in Qatar (they have no trees).</item>
+        <item>Your dog needs a new head.</item>
+        <item>Your dog needs a new butt.</item>
+        <item>Your dog needs a new tail.</item>
+        <item>Your eldest child has accelerated his training for Nathan\'s Hot Dog Eating Contest, and insists you buy only the choicest cuts of beef</item>
+        <item>Your health insurer has added an ugly duckling surcharge on a sliding scale and you have broken the scale</item>
+        <item>You win a sunken boat on The Price is Right and have to pay taxes on it.</item>
+        <item>You win the California State Reverse Lottery and owe the jackpot.</item>
+        <item>Your dog has given birth to duodecaplets and they all have expensive diseases.</item>
+        <item>The neighborhood cat is blackmailing you.</item>
+        <item>You catch your neighbor cheating on his wife and he\'s somehow blackmailing you.</item>
+        <item>The Hamburglar is upset at your lack of hams, and takes money instead.</item>
+        <item>Subway is no longer honoring free sandwich cards.</item>
+        <item>The local recycling center now requires items to be doofus-free.</item>
+        <item>Your dollar-bill phobia is starting to catch up to you.</item>
+        <item>Your custom medical-grade deodorant has doubled in price.</item>
+        <item>You get a speeding ticket while sitting on your porch.</item>
+        <item>Walmart decides to sue you again.</item>
+        <item>The police are demanding more bribes to protect you from yourself.</item>
+        <item>Your collection of newspaper hats has declined in value.</item>
+        <item>China has decided it will no longer prop you up economically.</item>
+    </array>
+
+    <array name="finance_events_good">
+        <item>You bet against yourself in a beauty contest and win.</item>
+        <item>One of your deposed prince scammers feels guilty and return a bit of the money.</item>
+        <item>You are mistaken by aid workers for a charity case.</item>
+        <item>You find a quarter in your youngest child\'s ear. Are there more?</item>
+        <item>Your Roth IRA has synergized the actuated backward overflow of depreciated commercial assets.</item>
+        <item>The bank teller is about to quit and commit Harikari, and decides to give you extra money.</item>
+        <item>Your significant other decides to put the whole family on an oxygen-only cleanse, which is pretty cheap.</item>
+        <item>The ringing in your ears turns out to be just a bunch of silver dollars.</item>
+        <item>Someone lands on Boardwalk and you don\'t have it mortgaged.</item>
+        <item>Your car returns home and forgives you.</item>
+    </array>
+
+    <array name="family_events_good">
+        <item>You find the birthday card you bought for yourself when your family forgot. It still smells like whiskey.</item>
     </array>
 </resources>
