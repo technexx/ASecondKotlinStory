@@ -3,8 +3,8 @@
 
     <string name="stat_one">Job:</string>
     <string name="stat_two">Finances:</string>
-    <string name="stat_three">Marriage:</string>
-    <string name="stat_four">Kids:</string>
+    <string name="stat_three">Family:</string>
+    <string name="stat_four">Social Life:</string>
 
     <string name="time_since_spawn">Time since spawn: </string>
 
@@ -75,6 +75,7 @@
         <item>The police are demanding more bribes to protect you from yourself.</item>
         <item>Your collection of newspaper hats has declined in value.</item>
         <item>China has decided it will no longer prop you up economically.</item>
+        <item>You are required by a court to pay alimony. You are still married.</item>
     </array>
 
     <array name="finance_events_good">
@@ -90,7 +91,86 @@
         <item>Your car returns home and forgives you.</item>
     </array>
 
+    <array name="family_events_bad">
+        <item>Your significant other hates you. That\'s it. That\'s the whole thing.</item>
+        <item>Your significant other reminds you that this is a green card arrangement.</item>
+        <item>Your significant other leaves you poisoned hot dogs for dinner.</item>
+        <item>Your youngest child deflates your car tires in front of you. You are helpless to stop it.</item>
+        <item>Your eldest child introduces you to their date as \"that creepy old neighbor\".</item>
+        <item>Your children declare they are on strike until you are less ugly.</item>
+        <item>The mail now includes love letters that are not for you.</item>
+        <item>Your new couples therapist has declared you an albatross.</item>
+        <item>The family dog has declared for your significant other.</item>
+        <item>The neighborhood cat has declared for your significant other.</item>
+        <item>The neighborhood shrew has declared for your significant other.</item>
+        <item>Your significant other has ordered \"The Marriage Defuser\" from QVC.</item>
+        <item>A baby has arrived at your doorstep. It declares you a bad parent and leaves.</item>
+        <item>Your mother-in-law has declared you an enemy of the state.</item>
+        <item>Your father-in-law has declared you an enemy of the state.</item>
+        <item>Your brother-in-law has declared you an enemy of the state.</item>
+        <item>Everyone was invited to the family reunion except you. Literally everyone. In the world.</item>
+        <item>Your fifth cousin is no longer the kissing cousin.</item>
+        <item>Your parents tell you that adoption records are a cruel joke.</item>
+        <item>Your parents replace you in their family photos with Macaulay Culkin</item>
+        <item>You receive a Google alert about another life insurance policy opened in your name.</item>
+        <item>Your significant other has decided to get your name tattooed on the leg she uses for life mistakes.</item>
+        <item>You arrive home to discover the same state of dismal, quiet desperation as when you left.</item>
+        <item>Your middle child takes a picture of Ted Lasso to \"Take Your Father to Work Day\"</item>
+        <item>Your family has decided there is no room in the house for you tonight.</item>
+        <item>Your birth parents have decided to let you visit home, provided you wear a mask.</item>
+    </array>
+
     <array name="family_events_good">
         <item>You find the birthday card you bought for yourself when your family forgot. It still smells like whiskey.</item>
+        <item>Your family has decided to suspend the daily \"Two Minutes of Hate\" directed at you.</item>
+        <item>Your youngest child had stopped asking you to hide in the closet when her friends come over.</item>
+        <item>Your couples therapist no longer feels you\'re 105 percent to blame.</item>
+        <item>The family dog has decided to let you make eye contact again.</item>
+        <item>The neighborhood cat has stopped using you as a scratching post. For now.</item>
+        <item>Your significant other has stopped comparing you unfavorably to their side bae.</item>
+        <item>Another state has deemed you human and now recognizes your marriage.</item>
+        <item>Your mother-in-law has stopped sending you hourly hate mail. For now.</item>
+        <item>Your father-in-law has stopped burning effigies of you on Facebook Live. For now.</item>
+    </array>
+
+    <array name="social_life_bad">
+        <item>Still no friend requests on Facebook. Do people still use Facebook?</item>
+        <item>One of your last twitter followers has unfollowed, citing irreconcilable differences.</item>
+        <item>Your old MySpace page has been sold to a Russian circus.</item>
+        <item>Instagram no longer allows you to post selfies, citing public health concerns.</item>
+        <item>TikTok has reduced the length of your videos to 0 seconds.</item>
+        <item>Your high school reunion has sent you a "Not Invited" invitation.</item>
+        <item>Your grade school crush still hates you. Still.</item>
+        <item>Your old college bae has been arrested for being a goat.</item>
+        <item>Your best invisible friend has decided that things are not working out.</item>
+        <item>The stranger whom you donated a kidney to is trying to give it back.</item>
+        <item>The love letter you sent into space has been returned. On fire.</item>
+        <item>Your best non-invisible friend turns out to be invisible.</item>
+        <item>The city has decided you need to be quarantined for a month. Just because.</item>
+        <item>The local pet shelter is trying to hire you to show the animals that \'things could be worse\."</item>
+        <item>You are known as \"Moses\" at the local watering hole because people just part for you.</item>
+        <item>Your local Wednesday night Bingo club informs you that your personality needs an overhaul.</item>
+        <item>Strippers have begun throwing dollars at you. Silver dollars. At your head.</item>
+        <item>Your significant other\'s side bae no longer wants to be friends.</item>
+        <item>Your local church has started replacing \"Hell\" with \"Locked in a room with you\."</item>
+        <item>The talent at a weekly comedy show decides to abandon their sets and just heckle you for 2 hours.</item>
+        <item>Goodwill rejects your clothes, citing crimes against humanity.</item>
+        <item>The \"Big Sibling\" program has decided to close down and euthanize its clients after meeting you.</item>
+        <item>The Starbucks barista writes \"God Has Forsaken Me\" on your drink.</item>
+        <item>You have no friends. That\'s it.</item>
+        <item>Parking Enforcement has ticketed your car as being \"abandoned\" with you in it.</item>
+    </array>
+
+    <array name="social_life_good">
+        <item>Your grade school dog has come back to life, "\Pet Semetary\" style, and you have a pleasant evening cannibalising with them. </item>
+        <item>The Starbucks barista allows you to make eye contact.</item>
+        <item>You are accepted by a cult of cult addicts, and it\'s not terrible.</item>
+        <item>Your eldest child\'s friends decide to stop bullying you for a day, and let you sniff glue with them.</item>
+        <item>You go fishing with colleagues and they do not force you to be the bait.</item>
+        <item>You have been unbanned from social media outlets, citing the new federal policy against animal cruelty</item>
+        <item>You rack up a high score on Skee-Ball at the local bar and for a moment, everyone doesn\'t hate you.</item>
+        <item>Your knee-jerk plan at faking a deadly illness for sympathy works.</item>
+        <item>You get mail addressed to \"Local Resident,"\, and you know you are loved.</item>
+        <item>The local church allows you to attend services again, if only to make up for latest molestation scandal.</item>
     </array>
 </resources>
