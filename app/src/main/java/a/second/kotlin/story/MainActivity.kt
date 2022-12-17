@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
         statFourTextView.text = value.toString()
     }
 
-    private fun triggerEvent(timeIterated: Long) {
-
+    private fun triggerEvent() {
+        var events = Events()
     }
 }
