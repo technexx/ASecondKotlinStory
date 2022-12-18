@@ -35,7 +35,10 @@ class MainActivity : AppCompatActivity() {
 
     private var totalSpawnTimeInMilliseconds : Long = 0
     private var randomMillisValueForEvent : Long = 0
-    private var routineIsActive: Boolean = false
+
+    private var events = Events()
+    private var eventString : String = ""
+    private var eventValue : Int = 0
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,41 +61,35 @@ class MainActivity : AppCompatActivity() {
         existenceTimerTextView = findViewById(R.id.existence_timer_textView)
         startStopButton = findViewById(R.id.start_stop_button)
 
-        fun toggleStartStopButton(enabled: Boolean) {
-            if (enabled) {
-                startStopButton.isEnabled = true;
-                startStopButton.isClickable = true;
-            } else {
-                startStopButton.isEnabled = false;
-                startStopButton.isClickable = false;
-            }
-        }
-
         startStopButton.setOnClickListener {
-            routineIsActive = true
             setRandomMillisValueForEventTrigger()
             startTimeIterationCoRoutine()
         }
     }
 
-    private fun setRandomMillisValueForEventTrigger() {
-        val randomStop = (5000..8000).random()
-        randomMillisValueForEvent = randomStop.toLong()
+    fun toggleStartStopButton(enabled: Boolean) {
+        if (enabled) {
+            startStopButton.isEnabled = true
+            startStopButton.isClickable = true
+        } else {
+            startStopButton.isEnabled = false
+            startStopButton.isClickable = false
+        }
     }
 
     //Only executes once so changing boolean doesn't stop it.
     private fun startTimeIterationCoRoutine() {
-        if (routineIsActive) {
-            job = GlobalScope.launch(Dispatchers.Main) {
-                if (routineIsActive) {
-                    while (totalSpawnTimeInMilliseconds <= randomMillisValueForEvent) {
-                        spawnTimeIteration()
-                    }
-                    //Post-while code.
-                }
+        toggleStartStopButton(false)
+
+        job = GlobalScope.launch(Dispatchers.Main) {
+            while (totalSpawnTimeInMilliseconds <= randomMillisValueForEvent) {
+                spawnTimeIteration()
             }
-        } else {
-            job.cancel()
+            //Post-while code.
+            rollEvent()
+            resetEventTimer()
+            resetButtonClickability()
+            Log.i("testEvent", "event is $eventString")
         }
     }
 
@@ -103,7 +100,23 @@ class MainActivity : AppCompatActivity() {
         var timeToAdd = System.currentTimeMillis() - startTime
         totalSpawnTimeInMilliseconds += timeToAdd
         existenceTimerTextView.text = (totalSpawnTimeInMilliseconds).toString()
+    }
 
+    private fun setRandomMillisValueForEventTrigger() {
+        val randomStop = (5000..8000).random()
+        randomMillisValueForEvent = randomStop.toLong()
+    }
+
+    private fun resetEventTimer() {
+        randomMillisValueForEvent = 0
+    }
+
+    private fun resetButtonClickability() {
+        toggleStartStopButton(true)
+    }
+
+    private fun rollEvent() {
+        events.aggregatedRoll()
     }
 
     private fun setDefaultStatHeadersOnTextViews(nameOne: String = getString(R.string.stat_one), nameTwo: String = getString(R.string.stat_two), nameThree: String = getString(R.string.stat_three), nameFour: String = getString(R.string.stat_four)) {
@@ -118,9 +131,5 @@ class MainActivity : AppCompatActivity() {
         statTwoTextView.text = value.toString()
         statThreeTextView.text = value.toString()
         statFourTextView.text = value.toString()
-    }
-
-    private fun triggerEvent() {
-        var events = Events()
     }
 }

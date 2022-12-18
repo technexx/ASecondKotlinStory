@@ -19,32 +19,63 @@ class Events {
     var BAD_ROLL = 0
     var GOOD_ROLL = 1
 
+    var rolledEvent = 0;
+    var rolledBadOrGood = 0
+
+    var eventString = ""
+    var eventValue = 0
+
+    fun aggregatedRoll() {
+        rollEventCategory()
+        rollEventBadOrGood()
+        setRandomEventString()
+        setRandomEventValue()
+    }
+
+    fun rollEventCategory() {
+        rolledEvent = categoryOfEvent()
+    }
+
+    fun rollEventBadOrGood() {
+        rolledBadOrGood = goodOrBadModifier()
+    }
+
+    fun setRandomEventString() {
+        if (rolledEvent == JOB_EVENT) {
+            if (rolledBadOrGood == BAD_ROLL) eventString = randomBadJobEvent() else eventString = randomGoodJobEvent()
+
+        }
+        if (rolledEvent== FINANCES_EVENT) {
+            if (rolledBadOrGood == BAD_ROLL) eventString = randomBadFinancesEvent() else eventString = randomGoodFinancesEvent()
+        }
+
+        if (rolledEvent == FAMILY_EVENT) {
+            if (rolledBadOrGood == BAD_ROLL) eventString = randomBadFamilyEvent() else eventString = randomGoodFamilyEvent()
+        }
+
+        if (rolledEvent == SOCIAL_EVENT) {
+            if (rolledBadOrGood == BAD_ROLL) eventString = randomBadSocialEvent() else eventString = randomGoodSocialEvent()
+        }
+    }
+
+    fun setRandomEventValue() {
+        if (rolledBadOrGood == BAD_ROLL) eventValue = randomValueForBadEvents() else eventValue = randomValueForGoodEvents()
+    }
+
     fun getRandomEventString() : String {
-        if (categoryOfEvent() == JOB_EVENT) {
-            if (goodOrBadModifier() == BAD_ROLL) return randomBadJobEvent() else return randomGoodJobEvent()
+        return eventString
+    }
 
-        }
-        if (categoryOfEvent() == FINANCES_EVENT) {
-            if (goodOrBadModifier() == BAD_ROLL) return randomBadFinancesEvent() else return randomGoodFinancesEvent()
-        }
-
-        if (categoryOfEvent() == FAMILY_EVENT) {
-            if (goodOrBadModifier() == BAD_ROLL) return randomBadFamilyEvent() else return randomGoodFamilyEvent()
-        }
-
-        if (categoryOfEvent() == SOCIAL_EVENT) {
-            if (goodOrBadModifier() == BAD_ROLL) return randomBadSocialEvent() else return randomGoodSocialEvent()
-        }
-
-        return ""
+    fun getRandomEventValue(): Int {
+        return eventValue
     }
 
     fun categoryOfEvent() : Int {
-        return (0 until 5).random()
+        return (0..3).random()
     }
 
     fun goodOrBadModifier() : Int {
-        return (0 until 2).random()
+        return (0..1).random()
     }
 
     fun randomValueForBadEvents() : Int {
