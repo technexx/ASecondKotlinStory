@@ -1,15 +1,17 @@
 package a.second.kotlin.story
 
-class Events {
+import android.content.Context
 
-    var jobEventsBadArrayList = ArrayList<String>(R.array.job_events_bad)
-    var jobEventsGoodArrayList = ArrayList<String>(R.array.job_events_good)
-    var financesEventsBadArrayList = ArrayList<String>(R.array.finance_events_bad)
-    var financesEventsGoodArrayList = ArrayList<String>(R.array.finance_events_good)
-    var familyEventsBadArrayList = ArrayList<String>(R.array.family_events_bad)
-    var familyEventsGoodArrayList = ArrayList<String>(R.array.family_events_good)
-    var socialEventsBadArrayList = ArrayList<String>(R.array.social_life_bad)
-    var socialEventsGoodArrayList = ArrayList<String>(R.array.social_life_good)
+class Events(context: Context) {
+
+    var jobEventsBadArrayList = context.resources.getStringArray(R.array.job_events_bad)
+    var jobEventsGoodArrayList = context.resources.getStringArray(R.array.job_events_good)
+    var financesEventsBadArrayList = context.resources.getStringArray(R.array.finance_events_bad)
+    var financesEventsGoodArrayList = context.resources.getStringArray(R.array.finance_events_good)
+    var familyEventsBadArrayList = context.resources.getStringArray(R.array.family_events_bad)
+    var familyEventsGoodArrayList = context.resources.getStringArray(R.array.family_events_good)
+    var socialEventsBadArrayList = context.resources.getStringArray(R.array.social_life_bad)
+    var socialEventsGoodArrayList = context.resources.getStringArray(R.array.social_life_good)
 
     var JOB_EVENT = 0
     var FINANCES_EVENT = 1

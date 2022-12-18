@@ -5,12 +5,9 @@ import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent.DispatcherState
-import android.widget.Button
 import android.widget.TextView
 import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 
 
 //Todo: Use ViewModel and Coroutines.
@@ -36,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     private var totalSpawnTimeInMilliseconds : Long = 0
     private var randomMillisValueForEvent : Long = 0
 
-    private var events = Events()
+    lateinit var events : Events
     private var eventString : String = ""
     private var eventValue : Int = 0
 
@@ -44,6 +41,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        events = Events(applicationContext)
 
         statOneHeader = findViewById(R.id.stat_one_header_textView)
         statTwoHeader = findViewById(R.id.stat_two_header_textView)
@@ -65,6 +64,11 @@ class MainActivity : AppCompatActivity() {
             setRandomMillisValueForEventTrigger()
             startTimeIterationCoRoutine()
         }
+    }
+
+    private fun setRandomMillisValueForEventTrigger() {
+        val randomStop = (5000..8000).random()
+        randomMillisValueForEvent = randomStop.toLong()
     }
 
     fun toggleStartStopButton(enabled: Boolean) {
@@ -102,9 +106,8 @@ class MainActivity : AppCompatActivity() {
         existenceTimerTextView.text = (totalSpawnTimeInMilliseconds).toString()
     }
 
-    private fun setRandomMillisValueForEventTrigger() {
-        val randomStop = (5000..8000).random()
-        randomMillisValueForEvent = randomStop.toLong()
+    private fun rollEvent() {
+        events.aggregatedRoll()
     }
 
     private fun resetEventTimer() {
@@ -113,10 +116,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun resetButtonClickability() {
         toggleStartStopButton(true)
-    }
-
-    private fun rollEvent() {
-        events.aggregatedRoll()
     }
 
     private fun setDefaultStatHeadersOnTextViews(nameOne: String = getString(R.string.stat_one), nameTwo: String = getString(R.string.stat_two), nameThree: String = getString(R.string.stat_three), nameFour: String = getString(R.string.stat_four)) {

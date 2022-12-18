@@ -8,7 +8,7 @@
 
     <string name="time_since_spawn">Time since spawn: </string>
 
-    <array name="job_events_bad">
+    <string-array name="job_events_bad">
         <item>Your boss hates you and lets you know it. Loudly.</item>
         <item>Todd from Accounting pees in your coffee again.</item>
         <item>The office receptionist forgets your name. You\'ve both been there for 32 years.</item>
@@ -21,7 +21,7 @@
         <item>You slip on the floor and take a bite of the floor.</item>
         <item>One of your shoes leaves the office.</item>
         <item>The ducks in your office building\'s courtyard reject your bread</item>
-        <item>Your favorite song is on the radio and you don't have a radio.</item>
+        <item>Your favorite song is on the radio and you don\'t have a radio.</item>
         <item>Your laptop is on fire.</item>
         <item>Your desk is on fire.</item>
         <item>Your hair is on fire.</item>
@@ -34,9 +34,9 @@
         <item>The water cooler refuses to dispense to you</item>
         <item>Lunch consisted of sadness with a side of nothing.</item>
         <item>Your boss needs to you stay after the office closes and catch ghouls.</item>
-    </array>
+    </string-array>
 
-    <array name="job_events_good">
+    <string-array name="job_events_good">
         <item>You\'ve been promoted! One step forward, five steps back, as they say.</item>
         <item>Your boss didn\'t spit in your face this morning.</item>
         <item>No one at the office has asked you to be their slap toy today.</item>
@@ -47,9 +47,9 @@
         <item>This week\'s Casual Friday will not begin with a dressing down of you, per HR\'s latest memo.</item>
         <item>Janice from Public Relations is out of town and will not be hunting you for sport this week.</item>
         <item>You caught two ghouls last night and your boss has rewarded you with a lettuce bounty.</item>
-    </array>
+    </string-array>
 
-    <array name="finance_events_bad">
+    <string-array name="finance_events_bad">
         <item>You\'ve fallen for another deposed prince scam.</item>
         <item>The IRS has attached a funnel to your money bag.</item>
         <item>Tuition for your kids has increased because the school hates you. Not your kids, but you.</item>
@@ -76,9 +76,9 @@
         <item>Your collection of newspaper hats has declined in value.</item>
         <item>China has decided it will no longer prop you up economically.</item>
         <item>You are required by a court to pay alimony. You are still married.</item>
-    </array>
+    </string-array>
 
-    <array name="finance_events_good">
+    <string-array name="finance_events_good">
         <item>You bet against yourself in a beauty contest and win.</item>
         <item>One of your deposed prince scammers feels guilty and return a bit of the money.</item>
         <item>You are mistaken by aid workers for a charity case.</item>
@@ -89,9 +89,9 @@
         <item>The ringing in your ears turns out to be just a bunch of silver dollars.</item>
         <item>Someone lands on Boardwalk and you don\'t have it mortgaged.</item>
         <item>Your car returns home and forgives you.</item>
-    </array>
+    </string-array>
 
-    <array name="family_events_bad">
+    <string-array name="family_events_bad">
         <item>Your significant other hates you. That\'s it. That\'s the whole thing.</item>
         <item>Your significant other reminds you that this is a green card arrangement.</item>
         <item>Your significant other leaves you poisoned hot dogs for dinner.</item>
@@ -118,9 +118,9 @@
         <item>Your middle child takes a picture of Ted Lasso to \"Take Your Father to Work Day\"</item>
         <item>Your family has decided there is no room in the house for you tonight.</item>
         <item>Your birth parents have decided to let you visit home, provided you wear a mask.</item>
-    </array>
+    </string-array>
 
-    <array name="family_events_good">
+    <string-array name="family_events_good">
         <item>You find the birthday card you bought for yourself when your family forgot. It still smells like whiskey.</item>
         <item>Your family has decided to suspend the daily \"Two Minutes of Hate\" directed at you.</item>
         <item>Your youngest child had stopped asking you to hide in the closet when her friends come over.</item>
@@ -131,9 +131,9 @@
         <item>Another state has deemed you human and now recognizes your marriage.</item>
         <item>Your mother-in-law has stopped sending you hourly hate mail. For now.</item>
         <item>Your father-in-law has stopped burning effigies of you on Facebook Live. For now.</item>
-    </array>
+    </string-array>
 
-    <array name="social_life_bad">
+    <string-array name="social_life_bad">
         <item>Still no friend requests on Facebook. Do people still use Facebook?</item>
         <item>One of your last twitter followers has unfollowed, citing irreconcilable differences.</item>
         <item>Your old MySpace page has been sold to a Russian circus.</item>
@@ -159,9 +159,9 @@
         <item>The Starbucks barista writes \"God Has Forsaken Me\" on your drink.</item>
         <item>You have no friends. That\'s it.</item>
         <item>Parking Enforcement has ticketed your car as being \"abandoned\" with you in it.</item>
-    </array>
+    </string-array>
 
-    <array name="social_life_good">
+    <string-array name="social_life_good">
         <item>Your grade school dog has come back to life, "\Pet Semetary\" style, and you have a pleasant evening cannibalising with them. </item>
         <item>The Starbucks barista allows you to make eye contact.</item>
         <item>You are accepted by a cult of cult addicts, and it\'s not terrible.</item>
@@ -172,5 +172,5 @@
         <item>Your knee-jerk plan at faking a deadly illness for sympathy works.</item>
         <item>You get mail addressed to \"Local Resident,"\, and you know you are loved.</item>
         <item>The local church allows you to attend services again, if only to make up for latest molestation scandal.</item>
-    </array>
+    </string-array>
 </resources>
