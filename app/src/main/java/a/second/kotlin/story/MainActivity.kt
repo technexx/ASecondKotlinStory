@@ -10,7 +10,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
 
 
-//Todo: Use ViewModel and Coroutines.
+//Todo: Use VIEWMODEL.
 //Todo: Remember to SUSPEND and not BLOCK if using UI thread. runBlocking is a default CoroutineScope.
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var existenceTimerTextView : TextView
     lateinit var startStopButton : TextView
+    lateinit var eventTextView : TextView
 
     private var totalSpawnTimeInMilliseconds : Long = 0
     private var randomMillisValueForEvent : Long = 0
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         existenceTimerTextView = findViewById(R.id.existence_timer_textView)
         startStopButton = findViewById(R.id.start_stop_button)
+        eventTextView = findViewById(R.id.event_textView)
 
         startStopButton.setOnClickListener {
             setRandomMillisValueForEventTrigger()
@@ -108,6 +110,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun rollEvent() {
         events.aggregatedRoll()
+        getAndAssignEventString()
+        getAndAssignEventValue()
+        setEventStringToTextView()
+    }
+
+    private fun getAndAssignEventString() {
+        eventString = events.getRandomEventString()
+    }
+
+    private fun getAndAssignEventValue() {
+        eventValue = events.getRandomEventValue()
+    }
+
+    private fun setEventStringToTextView() {
+        eventTextView.text = eventString
     }
 
     private fun resetEventTimer() {
