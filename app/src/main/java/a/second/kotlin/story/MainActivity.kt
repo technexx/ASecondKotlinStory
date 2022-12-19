@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var eventTextView : TextView
 
     private var totalSpawnTimeInMilliseconds : Long = 0
+    private var temporaryEventTime : Long = 0
     private var randomMillisValueForEvent : Long = 0
 
     lateinit var events : Events
@@ -88,12 +89,13 @@ class MainActivity : AppCompatActivity() {
         toggleStartStopButton(false)
 
         job = GlobalScope.launch(Dispatchers.Main) {
-            while (totalSpawnTimeInMilliseconds <= randomMillisValueForEvent) {
+            while (temporaryEventTime <= randomMillisValueForEvent) {
                 spawnTimeIteration()
             }
             //Post-while code.
             rollEvent()
-            resetEventTimer()
+            resetTemporaryEventTime()
+            resetRandomMillisValueForEventTime()
             resetButtonClickability()
             Log.i("testEvent", "event is $eventString")
         }
@@ -104,6 +106,8 @@ class MainActivity : AppCompatActivity() {
         delay(50)
 
         var timeToAdd = System.currentTimeMillis() - startTime
+
+        temporaryEventTime += timeToAdd
         totalSpawnTimeInMilliseconds += timeToAdd
         existenceTimerTextView.text = (totalSpawnTimeInMilliseconds).toString()
     }
@@ -127,8 +131,12 @@ class MainActivity : AppCompatActivity() {
         eventTextView.text = eventString
     }
 
-    private fun resetEventTimer() {
+    private fun resetRandomMillisValueForEventTime() {
         randomMillisValueForEvent = 0
+    }
+
+    private fun resetTemporaryEventTime() {
+        temporaryEventTime = 0
     }
 
     private fun resetButtonClickability() {
