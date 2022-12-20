@@ -36,10 +36,10 @@
             android:id="@+id/stat_one_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/stat_one_header_textView"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/stat_two_header_textView"
-            android:layout_marginStart="6dp">
+            android:layout_marginStart="120dp">
         </TextView>
 
         <TextView
@@ -56,10 +56,10 @@
             android:id="@+id/stat_two_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/stat_two_header_textView"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/stat_one_header_textView"
             app:layout_constraintBottom_toTopOf="@id/stat_three_header_textView"
-            android:layout_marginStart="6dp">
+            android:layout_marginStart="120dp">
         </TextView>
 
         <TextView
@@ -76,10 +76,10 @@
             android:id="@+id/stat_three_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/stat_three_header_textView"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/stat_two_header_textView"
             app:layout_constraintBottom_toTopOf="@id/stat_four_header_textView"
-            android:layout_marginStart="6dp">
+            android:layout_marginStart="120dp">
         </TextView>
 
         <TextView
@@ -96,10 +96,10 @@
             android:id="@+id/stat_four_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/stat_four_header_textView"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/stat_three_header_textView"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="6dp">
+            android:layout_marginStart="120dp">
         </TextView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -116,9 +116,11 @@
         android:text="@string/time_since_spawn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/start_stop_button"
+        app:layout_constraintEnd_toEndOf="@id/start_stop_button"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="20dp"
         android:textSize="22sp">
     </TextView>
 
@@ -130,7 +132,7 @@
         app:layout_constraintStart_toEndOf="@id/existence_timer_textView_header"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginStart="6dp"
+        android:layout_marginStart="4dp"
         android:textSize="22sp">
     </TextView>
 
@@ -156,7 +158,7 @@
         app:layout_constraintTop_toBottomOf="@id/start_stop_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="center_vertical"
+        android:gravity="center_horizontal"
         android:layout_marginTop="40dp">
     </TextView>
 

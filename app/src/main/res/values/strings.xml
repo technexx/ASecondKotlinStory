@@ -4,7 +4,8 @@
     <string name="stat_one">Job:</string>
     <string name="stat_two">Finances:</string>
     <string name="stat_three">Family:</string>
-    <string name="stat_four">Social Life:</string>
+    <string name="stat_four">Social:</string>
+    <string name="stats_with_change">%1$s %2$s</string>
 
     <string name="time_since_spawn">Time since spawn: </string>
 

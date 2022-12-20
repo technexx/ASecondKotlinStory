@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setRandomMillisValueForEventTrigger() {
-        val randomStop = (5000..8000).random()
+        val randomStop = (3000..5000).random()
         randomMillisValueForEvent = randomStop.toLong()
     }
 
@@ -146,6 +146,7 @@ class MainActivity : AppCompatActivity() {
         getAndAssignEventValue()
         setValuesToStatsVariables()
         setValuesToStatsTextViews()
+        setValuesToStatsTextViewsWithAppend()
     }
 
     private fun getAndAssignEventString() {
@@ -172,6 +173,18 @@ class MainActivity : AppCompatActivity() {
         statTwoTextView.text = Stats.statTwoValue.toString()
         statThreeTextView.text = Stats.statThreeValue.toString()
         statFourTextView.text = Stats.statFourValue.toString()
+    }
+
+    private fun setValuesToStatsTextViewsWithAppend() {
+        var valueString = ""
+        if (eventValue > 0) valueString = "(+$eventValue)" else valueString = "(-$eventValue)"
+
+        when (Events.rolledEvent) {
+            JOB_EVENT -> statOneTextView.text = getString(R.string.stats_with_change, Stats.statOneValue.toString(), valueString)
+            FINANCES_EVENT -> statTwoTextView.text =getString(R.string.stats_with_change, Stats.statTwoValue.toString(), valueString)
+            FAMILY_EVENT -> statThreeTextView.text = getString(R.string.stats_with_change, Stats.statThreeValue.toString(), valueString)
+            SOCIAL_EVENT -> statFourTextView.text = getString(R.string.stats_with_change, Stats.statFourValue.toString(), valueString)
+        }
     }
 
     private fun setDefaultStatHeadersOnTextViews(nameOne: String = getString(R.string.stat_one), nameTwo: String = getString(R.string.stat_two), nameThree: String = getString(R.string.stat_three), nameFour: String = getString(R.string.stat_four)) {
