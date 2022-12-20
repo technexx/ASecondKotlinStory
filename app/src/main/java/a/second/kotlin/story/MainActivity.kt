@@ -35,7 +35,8 @@ class MainActivity : AppCompatActivity() {
     private var temporaryEventTime : Long = 0
     private var randomMillisValueForEvent : Long = 0
 
-    lateinit var events : Events
+    lateinit var Events : Events
+    lateinit var Stats : Stats
     private var eventString : String = ""
     private var eventValue : Int = 0
 
@@ -44,7 +45,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        events = Events(applicationContext)
+        Stats = Stats()
+        Stats.setInitialRandomValuesForStats()
+        Stats.iterateThroughStatsToAddOrSubtractRemainder()
 
         statOneHeader = findViewById(R.id.stat_one_header_textView)
         statTwoHeader = findViewById(R.id.stat_two_header_textView)
@@ -113,18 +116,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun rollEvent() {
-        events.aggregatedRoll()
+        Events.aggregatedRoll()
         getAndAssignEventString()
         getAndAssignEventValue()
         setEventStringToTextView()
     }
 
     private fun getAndAssignEventString() {
-        eventString = events.getRandomEventString()
+        eventString = Events.getRandomEventString()
     }
 
     private fun getAndAssignEventValue() {
-        eventValue = events.getRandomEventValue()
+        eventValue = Events.getRandomEventValue()
     }
 
     private fun setEventStringToTextView() {
