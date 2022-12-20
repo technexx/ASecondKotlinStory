@@ -8,6 +8,7 @@
     <string name="stats_with_change">%1$s %2$s</string>
 
     <string name="time_since_spawn">Time since spawn: </string>
+    <string name="zeroed_spawn_time">0:00:00</string>
 
     <string-array name="job_events_bad">
         <item>Your boss hates you and lets you know it. Loudly.</item>

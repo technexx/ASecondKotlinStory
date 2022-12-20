@@ -30,19 +30,13 @@ class Events(context: Context) {
 
     fun aggregatedRoll() {
         rollEventCategory()
-        rollEventBadOrGood()
+        setGoodOrBadModifier()
         setRandomEventString()
         setRandomEventValue()
-        Log.i("testEvent", "good or bad is $rolledBadOrGood")
-        Log.i("testEvent", "rolledEvent is $rolledEvent")
     }
 
     fun rollEventCategory() {
         rolledEvent = categoryOfEvent()
-    }
-
-    fun rollEventBadOrGood() {
-        rolledBadOrGood = goodOrBadModifier()
     }
 
     fun setRandomEventString() {
@@ -71,8 +65,11 @@ class Events(context: Context) {
         return (0..3).random()
     }
 
-    fun goodOrBadModifier() : Int {
-        return (0..1).random()
+    fun setGoodOrBadModifier() {
+        val roll = (0..4).random()
+        rolledBadOrGood = if (roll < 4) BAD_ROLL else GOOD_ROLL
+        Log.i("testRoll", "roll number is $roll")
+        Log.i("testRoll", "roll alignment as $rolledBadOrGood")
     }
 
     fun randomValueForBadEvents() : Int {
