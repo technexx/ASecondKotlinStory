@@ -67,14 +67,6 @@ class Events(context: Context) {
         if (rolledBadOrGood == BAD_ROLL) eventValue = randomValueForBadEvents() else eventValue = randomValueForGoodEvents()
     }
 
-    fun getRandomEventString() : String {
-        return eventString
-    }
-
-    fun getRandomEventValue(): Int {
-        return eventValue
-    }
-
     fun categoryOfEvent() : Int {
         return (0..3).random()
     }

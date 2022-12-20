@@ -40,14 +40,21 @@ class MainActivity : AppCompatActivity() {
     private var eventString : String = ""
     private var eventValue : Int = 0
 
+    private var JOB_EVENT = 0
+    private var FINANCES_EVENT = 1
+    private var FAMILY_EVENT = 2
+    private var SOCIAL_EVENT = 3
+
+    private var BAD_ROLL = 0
+    private var GOOD_ROLL = 1
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        Events = Events(applicationContext)
         Stats = Stats()
-        Stats.setInitialRandomValuesForStats()
-        Stats.iterateThroughStatsToAddOrSubtractRemainder()
 
         statOneHeader = findViewById(R.id.stat_one_header_textView)
         statTwoHeader = findViewById(R.id.stat_two_header_textView)
@@ -59,12 +66,15 @@ class MainActivity : AppCompatActivity() {
         statThreeTextView = findViewById(R.id.stat_three_textView)
         statFourTextView = findViewById(R.id.stat_four_textView)
 
-        setDefaultStatHeadersOnTextViews()
-        setDefaultStatValuesOnTextViews(0)
-
         existenceTimerTextView = findViewById(R.id.existence_timer_textView)
         startStopButton = findViewById(R.id.start_stop_button)
         eventTextView = findViewById(R.id.event_textView)
+
+        Stats.setInitialRandomValuesForStats()
+        Stats.iterateThroughStatsToAddOrSubtractRemainder()
+
+        setDefaultStatHeadersOnTextViews()
+        setValuesToStatsTextViews()
 
         startStopButton.setOnClickListener {
             setRandomMillisValueForEventTrigger()
@@ -115,25 +125,6 @@ class MainActivity : AppCompatActivity() {
         existenceTimerTextView.text = (totalSpawnTimeInMilliseconds).toString()
     }
 
-    private fun rollEvent() {
-        Events.aggregatedRoll()
-        getAndAssignEventString()
-        getAndAssignEventValue()
-        setEventStringToTextView()
-    }
-
-    private fun getAndAssignEventString() {
-        eventString = Events.getRandomEventString()
-    }
-
-    private fun getAndAssignEventValue() {
-        eventValue = Events.getRandomEventValue()
-    }
-
-    private fun setEventStringToTextView() {
-        eventTextView.text = eventString
-    }
-
     private fun resetRandomMillisValueForEventTime() {
         randomMillisValueForEvent = 0
     }
@@ -146,6 +137,43 @@ class MainActivity : AppCompatActivity() {
         toggleStartStopButton(true)
     }
 
+    private fun rollEvent() {
+        Events.aggregatedRoll()
+
+        getAndAssignEventString()
+        setEventStringToTextView()
+
+        getAndAssignEventValue()
+        setValuesToStatsVariables()
+        setValuesToStatsTextViews()
+    }
+
+    private fun getAndAssignEventString() {
+        eventString = Events.eventString
+    }
+
+    private fun setEventStringToTextView() {
+        eventTextView.text = eventString
+    }
+
+    private fun getAndAssignEventValue() {
+        if (Events.rolledBadOrGood == BAD_ROLL) eventValue = Events.eventValue else eventValue = -Events.eventValue
+    }
+
+    private fun setValuesToStatsVariables() {
+        if (Events.rolledEvent == JOB_EVENT) Stats.statOneValue += eventValue
+        if (Events.rolledEvent == FINANCES_EVENT) Stats.statTwoValue += eventValue
+        if (Events.rolledEvent == FAMILY_EVENT) Stats.statThreeValue += eventValue
+        if (Events.rolledEvent == SOCIAL_EVENT) Stats.statFourValue += eventValue
+    }
+
+    private fun setValuesToStatsTextViews() {
+        statOneTextView.text = Stats.statOneValue.toString()
+        statTwoTextView.text = Stats.statTwoValue.toString()
+        statThreeTextView.text = Stats.statThreeValue.toString()
+        statFourTextView.text = Stats.statFourValue.toString()
+    }
+
     private fun setDefaultStatHeadersOnTextViews(nameOne: String = getString(R.string.stat_one), nameTwo: String = getString(R.string.stat_two), nameThree: String = getString(R.string.stat_three), nameFour: String = getString(R.string.stat_four)) {
         statOneHeader.text = nameOne
         statTwoHeader.text = nameTwo
@@ -153,10 +181,4 @@ class MainActivity : AppCompatActivity() {
         statFourHeader.text = nameFour
     }
 
-    private fun setDefaultStatValuesOnTextViews(value: Int) {
-        statOneTextView.text = value.toString()
-        statTwoTextView.text = value.toString()
-        statThreeTextView.text = value.toString()
-        statFourTextView.text = value.toString()
-    }
 }

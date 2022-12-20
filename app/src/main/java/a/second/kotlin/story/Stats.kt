@@ -9,8 +9,6 @@ class Stats {
     var statThreeValue : Int = 0
     var statFourValue : Int = 0
 
-    var remainder : Int = 0
-    var statToAlter : Int = 1
     var statsAreInExcess : Boolean = false
 
     fun setInitialRandomValuesForStats() {
@@ -19,18 +17,11 @@ class Stats {
         statThreeValue = (30..70).random()
         statFourValue = (30..70).random()
 
-        var tempTotalValue = statOneValue + statTwoValue + statThreeValue + statFourValue
-
-        var statArray = ArrayList<Int>()
-        statArray.add(statOneValue)
-        statArray.add(statTwoValue)
-        statArray.add(statThreeValue)
-        statArray.add(statFourValue)
+        var tempTotalValue = totalValueOfStats()
 
         if (tempTotalValue > 200) {
-            remainder = tempTotalValue - 200
             statsAreInExcess = true
-        } else remainder = (200 - tempTotalValue)
+        }
 
         Log.i("testStat", "values before mod are $statOneValue $statTwoValue $statThreeValue $statFourValue")
     }
@@ -46,7 +37,6 @@ class Stats {
             }
         }
         Log.i("testStat", "values after mod are $statOneValue $statTwoValue $statThreeValue $statFourValue")
-
     }
 
     fun addRemainderToStats(stat: Int) {
