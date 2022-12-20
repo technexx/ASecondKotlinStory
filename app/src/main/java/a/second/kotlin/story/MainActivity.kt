@@ -17,6 +17,9 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     var job: Job = Job()
+    lateinit var Events : Events
+    lateinit var Stats : Stats
+    lateinit var DecimalToStringConversions: DecimalToStringConversions
 
     lateinit var statOneHeader : TextView
     lateinit var statOneTextView : TextView
@@ -35,8 +38,7 @@ class MainActivity : AppCompatActivity() {
     private var temporaryEventTime : Long = 0
     private var randomMillisValueForEvent : Long = 0
 
-    lateinit var Events : Events
-    lateinit var Stats : Stats
+
     private var eventString : String = ""
     private var eventValue : Int = 0
 
@@ -55,6 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         Events = Events(applicationContext)
         Stats = Stats()
+        DecimalToStringConversions = DecimalToStringConversions()
 
         statOneHeader = findViewById(R.id.stat_one_header_textView)
         statTwoHeader = findViewById(R.id.stat_two_header_textView)
@@ -122,7 +125,7 @@ class MainActivity : AppCompatActivity() {
 
         temporaryEventTime += timeToAdd
         totalSpawnTimeInMilliseconds += timeToAdd
-        existenceTimerTextView.text = (totalSpawnTimeInMilliseconds).toString()
+        existenceTimerTextView.text = DecimalToStringConversions.timeWithMillis(totalSpawnTimeInMilliseconds)
     }
 
     private fun resetRandomMillisValueForEventTime() {
@@ -158,7 +161,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getAndAssignEventValue() {
-        if (Events.rolledBadOrGood == BAD_ROLL) eventValue = Events.eventValue else eventValue = -Events.eventValue
+        if (Events.rolledBadOrGood == BAD_ROLL) eventValue = -Events.eventValue else eventValue = Events.eventValue
     }
 
     private fun setValuesToStatsVariables() {
@@ -193,5 +196,4 @@ class MainActivity : AppCompatActivity() {
         statThreeHeader.text = nameThree
         statFourHeader.text = nameFour
     }
-
 }
