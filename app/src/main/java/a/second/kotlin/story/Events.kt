@@ -73,7 +73,7 @@ class Events(context: Context) {
     }
 
     fun randomValueForBadEvents() : Int {
-        return (5..15).random()
+        return (40..50).random()
     }
 
     fun randomValueForGoodEvents() : Int {

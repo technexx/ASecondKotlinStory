@@ -2,6 +2,7 @@
 package a.second.kotlin.story
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -33,11 +34,11 @@ class MainActivity : AppCompatActivity() {
     lateinit var existenceTimerTextView : TextView
     lateinit var startStopButton : TextView
     lateinit var eventTextView : TextView
+    lateinit var statWarningTextView : TextView
 
     private var totalSpawnTimeInMilliseconds : Long = 0
     private var temporaryEventTime : Long = 0
     private var randomMillisValueForEvent : Long = 0
-
 
     private var eventString : String = ""
     private var eventValue : Int = 0
@@ -72,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         existenceTimerTextView = findViewById(R.id.existence_timer_textView)
         startStopButton = findViewById(R.id.start_stop_button)
         eventTextView = findViewById(R.id.event_textView)
+        statWarningTextView = findViewById(R.id.zero_stat_warning)
 
         Stats.setInitialRandomValuesForStats()
         Stats.iterateThroughStatsToAddOrSubtractRemainder()
@@ -149,7 +151,10 @@ class MainActivity : AppCompatActivity() {
         getAndAssignEventValue()
         setValuesToStatsVariables()
         setValuesToStatsTextViews()
+
+        if (statHasReachedZeroCheck()) statHasReachedZeroViewSet()
         setValuesToStatsTextViewsWithAppend()
+
     }
 
     private fun getAndAssignEventString() {
@@ -180,7 +185,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setValuesToStatsTextViewsWithAppend() {
         var valueString = ""
-        if (eventValue > 0) valueString = "(+$eventValue)" else valueString = "(-$eventValue)"
+        if (eventValue > 0) valueString = "(+$eventValue)" else valueString = "($eventValue)"
 
         when (Events.rolledEvent) {
             JOB_EVENT -> statOneTextView.text = getString(R.string.stats_with_change, Stats.statOneValue.toString(), valueString)
@@ -188,6 +193,37 @@ class MainActivity : AppCompatActivity() {
             FAMILY_EVENT -> statThreeTextView.text = getString(R.string.stats_with_change, Stats.statThreeValue.toString(), valueString)
             SOCIAL_EVENT -> statFourTextView.text = getString(R.string.stats_with_change, Stats.statFourValue.toString(), valueString)
         }
+    }
+
+    private fun statHasReachedZeroCheck() : Boolean{
+        return (Stats.statOneValue <= 0 || Stats.statTwoValue <= 0 || Stats.statThreeValue <= 0 || Stats.statFourValue <= 0)
+    }
+
+    private fun statHasReachedZeroViewSet() {
+        var zeroStatString = ""
+
+        if (Stats.statOneValue <= 0) {
+            Stats.statOneValue = 0
+            statOneHeader.setTextColor(Color.RED)
+            zeroStatString = getString(R.string.stat_one).removeSuffix(":")
+        }
+        if (Stats.statTwoValue <= 0) {
+            Stats.statTwoValue = 0
+            statTwoHeader.setTextColor(Color.RED)
+            zeroStatString = getString(R.string.stat_two).removeSuffix(":")
+        }
+        if (Stats.statThreeValue <= 0) {
+            Stats.statThreeValue = 0
+            statThreeHeader.setTextColor(Color.RED)
+            zeroStatString = getString(R.string.stat_three).removeSuffix(":")
+        }
+        if (Stats.statFourValue <= 0) {
+            Stats.statFourValue = 0
+            statFourHeader.setTextColor(Color.RED)
+            zeroStatString = getString(R.string.stat_four).removeSuffix(":")
+        }
+
+        statWarningTextView.setText(getString(R.string.zero_stat_warning, zeroStatString))
     }
 
     private fun setDefaultStatHeadersOnTextViews(nameOne: String = getString(R.string.stat_one), nameTwo: String = getString(R.string.stat_two), nameThree: String = getString(R.string.stat_three), nameFour: String = getString(R.string.stat_four)) {
