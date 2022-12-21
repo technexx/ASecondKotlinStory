@@ -3,6 +3,7 @@ package a.second.kotlin.story
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.media.metrics.Event
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     private var eventString : String = ""
     private var eventValue : Int = 0
+    private var endGameString : String = ""
 
     private var JOB_EVENT = 0
     private var FINANCES_EVENT = 1
@@ -147,8 +149,10 @@ class MainActivity : AppCompatActivity() {
         setValuesToStatsVariables()
         setValuesToStatsTextViews()
 
-        if (statHasReachedZeroCheck()) statIsBelowZeroLogic()
         setValuesToStatsTextViewsWithAppend()
+
+        setStatTextViewToRedIfAtZero()
+        checkAffectedStatAgainstZeroSum()
 
     }
 
@@ -190,60 +194,84 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun statHasReachedZeroCheck() : Boolean {
-        return (Stats.statOneValue <= 0 || Stats.statTwoValue <= 0 || Stats.statThreeValue <= 0 || Stats.statFourValue <= 0)
+    private fun setStatTextViewToRedIfAtZero() {
+        if (Stats.statOneValue <= 0) statOneHeader.setTextColor(Color.RED)
+        if (Stats.statTwoValue <= 0) statTwoHeader.setTextColor(Color.RED)
+        if (Stats.statThreeValue <= 0) statThreeHeader.setTextColor(Color.RED)
+        if (Stats.statFourValue <= 0) statFourHeader.setTextColor(Color.RED)
     }
 
-    private fun statIsBelowZeroLogic() {
-        var endGameString = getString(R.string.end_game_string, "$")
-        if (Stats.statOneValue <= 0) {
-            if (Stats.statOneCritical) {
+    private fun checkAffectedStatAgainstZeroSum() {
+        when (Events.rolledEvent) {
+            JOB_EVENT -> statOneZeroCheckAndLogic()
+            FINANCES_EVENT -> statTwoZeroCheckAndLogic()
+            FAMILY_EVENT -> statThreeZeroCheckAndLogic()
+            SOCIAL_EVENT -> statFourZeroCheckAndLogic()
+        }
+    }
+
+    private fun statOneZeroCheckAndLogic() {
+        if (Stats.statOneCritical) {
+            if (Stats.statOneValue <= 0) {
                 statWarningTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsOneString()), getString(R.string.end_game_append_one))
-            } else {
+            }  else {
+                Stats.statOneCritical = false
+            }
+        } else {
+            if (Stats.statOneValue <= 0) {
                 Stats.statOneValue = 0
                 Stats.statOneCritical = true
                 statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsOneString()))
             }
-
-            statOneHeader.setTextColor(Color.RED)
         }
-        if (Stats.statTwoValue <= 0) {
-            if (Stats.statTwoCritical) {
+    }
+
+    private fun statTwoZeroCheckAndLogic() {
+        if (Stats.statTwoCritical) {
+            if (Stats.statTwoValue <= 0) {
                 statWarningTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsTwoString()), getString(R.string.end_game_append_two))
-            } else {
+            }  else {
+                Stats.statTwoCritical = false
+            }
+        } else {
+            if (Stats.statTwoValue <= 0) {
                 Stats.statTwoValue = 0
                 Stats.statTwoCritical = true
                 statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsTwoString()))
             }
-
-            statTwoHeader.setTextColor(Color.RED)
         }
-        if (Stats.statThreeValue <= 0) {
-            if (Stats.statThreeCritical) {
+    }
+
+    private fun statThreeZeroCheckAndLogic() {
+        if (Stats.statThreeCritical) {
+            if (Stats.statTwoValue <= 0) {
                 statWarningTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsThreeString()), getString(R.string.end_game_append_three))
-            } else {
+            }  else {
+                Stats.statThreeCritical = false
+            }
+        } else {
+            if (Stats.statThreeValue <= 0) {
                 Stats.statThreeValue = 0
                 Stats.statThreeCritical = true
                 statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsThreeString()))
             }
-
-            statThreeHeader.setTextColor(Color.RED)
         }
-        if (Stats.statFourValue <= 0) {
-            if (Stats.statFourCritical) {
+    }
+
+    private fun statFourZeroCheckAndLogic() {
+        if (Stats.statFourCritical) {
+            if (Stats.statFourValue <= 0) {
                 statWarningTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsFourString()), getString(R.string.end_game_append_four))
-            } else {
+            }  else {
+                Stats.statFourCritical = false
+            }
+        } else {
+            if (Stats.statFourValue <= 0) {
                 Stats.statFourValue = 0
                 Stats.statFourCritical = true
                 statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsFourString()))
             }
-
-            statFourHeader.setTextColor(Color.RED)
         }
-    }
-
-    private fun zeroStatHasGainedBackValue() {
-
     }
 
     private fun setDefaultStatHeadersOnTextViews(nameOne: String = getString(R.string.stat_one), nameTwo: String = getString(R.string.stat_two), nameThree: String = getString(R.string.stat_three), nameFour: String = getString(R.string.stat_four)) {
