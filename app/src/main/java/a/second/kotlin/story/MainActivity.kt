@@ -7,6 +7,7 @@ import android.media.metrics.Event
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
@@ -112,7 +113,6 @@ class MainActivity : AppCompatActivity() {
             resetTemporaryEventTime()
             resetRandomMillisValueForEventTime()
             resetButtonClickability()
-            Log.i("testEvent", "event is $eventString")
         }
     }
 
@@ -154,6 +154,7 @@ class MainActivity : AppCompatActivity() {
         setStatTextViewToRedIfAtZero()
         checkAffectedStatAgainstZeroSum()
 
+        blankOutCriticalScoreTextView()
     }
 
     private fun getAndAssignEventString() {
@@ -169,10 +170,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setValuesToStatsVariables() {
-        if (Events.rolledEvent == JOB_EVENT) Stats.statOneValue += eventValue
-        if (Events.rolledEvent == FINANCES_EVENT) Stats.statTwoValue += eventValue
-        if (Events.rolledEvent == FAMILY_EVENT) Stats.statThreeValue += eventValue
-        if (Events.rolledEvent == SOCIAL_EVENT) Stats.statFourValue += eventValue
+        when (Events.rolledEvent) {
+            JOB_EVENT -> Stats.statOneValue += eventValue
+            FINANCES_EVENT -> Stats.statTwoValue += eventValue
+            FAMILY_EVENT -> Stats.statThreeValue += eventValue
+            SOCIAL_EVENT -> Stats.statFourValue += eventValue
+        }
     }
 
     private fun setValuesToStatsTextViews() {
@@ -180,6 +183,10 @@ class MainActivity : AppCompatActivity() {
         statTwoTextView.text = Stats.statTwoValue.toString()
         statThreeTextView.text = Stats.statThreeValue.toString()
         statFourTextView.text = Stats.statFourValue.toString()
+    }
+
+    private fun blankOutCriticalScoreTextView() {
+        statWarningTextView.text = ""
     }
 
     private fun setValuesToStatsTextViewsWithAppend() {
@@ -210,6 +217,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+//    private fun toggleCriticalStatsTextViewVisibility(visible : Boolean) {
+//        if (visible) statWarningTextView.visibility = View.VISIBLE else statWarningTextView.visibility = View.INVISIBLE
+//    }
+
     private fun statOneZeroCheckAndLogic() {
         if (Stats.statOneCritical) {
             if (Stats.statOneValue <= 0) {
@@ -221,6 +232,7 @@ class MainActivity : AppCompatActivity() {
             if (Stats.statOneValue <= 0) {
                 Stats.statOneValue = 0
                 Stats.statOneCritical = true
+                statOneTextView.text = "0"
                 statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsOneString()))
             }
         }
@@ -237,6 +249,7 @@ class MainActivity : AppCompatActivity() {
             if (Stats.statTwoValue <= 0) {
                 Stats.statTwoValue = 0
                 Stats.statTwoCritical = true
+                statTwoTextView.text = "0"
                 statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsTwoString()))
             }
         }
@@ -253,6 +266,7 @@ class MainActivity : AppCompatActivity() {
             if (Stats.statThreeValue <= 0) {
                 Stats.statThreeValue = 0
                 Stats.statThreeCritical = true
+                statThreeTextView.text = "0"
                 statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsThreeString()))
             }
         }
@@ -269,6 +283,7 @@ class MainActivity : AppCompatActivity() {
             if (Stats.statFourValue <= 0) {
                 Stats.statFourValue = 0
                 Stats.statFourCritical = true
+                statFourTextView.text = "0"
                 statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsFourString()))
             }
         }
