@@ -13,6 +13,7 @@
     <string name="end_game_append_two"> You fall deep into a loan shark\'s gullet, never to return!</string>
     <string name="end_game_append_three"> You are beaten to death by your in-laws!</string>
     <string name="end_game_append_four">You are exiled to hole in the ground, which is then covered with dirt!</string>
+    <string name="two_line_concat">%1$s \n %2$s </string>
 
     <string name="time_since_spawn">Time since spawn: </string>
     <string name="zeroed_spawn_time">0:00:00</string>
@@ -67,7 +68,7 @@
         <item>Your dog needs a new head.</item>
         <item>Your dog needs a new butt.</item>
         <item>Your dog needs a new tail.</item>
-        <item>Your eldest child has accelerated his training for Nathan\'s Hot Dog Eating Contest, and insists you buy only the choicest cuts of beef</item>
+        <item>Your eldest child has accelerated his training for Nathan\'s Hot Dog Eating Contest, and insists you buy only the choicest cuts of beef.</item>
         <item>Your health insurer has added an ugly duckling surcharge on a sliding scale and you have broken the scale</item>
         <item>You win a sunken boat on The Price is Right and have to pay taxes on it.</item>
         <item>You win the California State Reverse Lottery and owe the jackpot.</item>
@@ -178,7 +179,7 @@
         <item>You go fishing with colleagues and they do not force you to be the bait.</item>
         <item>You have been unbanned from social media outlets, citing the new federal policy against animal cruelty</item>
         <item>You rack up a high score on Skee-Ball at the local bar and for a moment, everyone doesn\'t hate you.</item>
-        <item>Your knee-jerk plan at faking a deadly illness for sympathy works.</item>
+        <item>Your knee-jerk plan at faking a deadly illness for sympathy is successful.</item>
         <item>You get mail addressed to \"Local Resident,"\, and you know you are loved.</item>
         <item>The local church allows you to attend services again, if only to make up for latest molestation scandal.</item>
     </string-array>

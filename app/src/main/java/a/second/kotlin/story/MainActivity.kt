@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
         setValuesToStatsVariables()
         setValuesToStatsTextViews()
 
-        if (statHasReachedZeroCheck()) statHasReachedZeroViewSet()
+        if (statHasReachedZeroCheck()) statIsBelowZeroLogic()
         setValuesToStatsTextViewsWithAppend()
 
     }
@@ -190,45 +190,55 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun statHasReachedZeroCheck() : Boolean{
+    private fun statHasReachedZeroCheck() : Boolean {
         return (Stats.statOneValue <= 0 || Stats.statTwoValue <= 0 || Stats.statThreeValue <= 0 || Stats.statFourValue <= 0)
     }
 
-    private fun statHasReachedZeroViewSet() {
-        var zeroStatString = ""
-
+    private fun statIsBelowZeroLogic() {
+        var endGameString = getString(R.string.end_game_string, "$")
         if (Stats.statOneValue <= 0) {
-            Stats.statOneValue = 0
-            Stats.statOneCritical = true
+            if (Stats.statOneCritical) {
+                statWarningTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsOneString()), getString(R.string.end_game_append_one))
+            } else {
+                Stats.statOneValue = 0
+                Stats.statOneCritical = true
+                statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsOneString()))
+            }
+
             statOneHeader.setTextColor(Color.RED)
-            zeroStatString = Stats.statsOneString()
         }
         if (Stats.statTwoValue <= 0) {
-            Stats.statTwoValue = 0
-            Stats.statTwoCritical = true
+            if (Stats.statTwoCritical) {
+                statWarningTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsTwoString()), getString(R.string.end_game_append_two))
+            } else {
+                Stats.statTwoValue = 0
+                Stats.statTwoCritical = true
+                statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsTwoString()))
+            }
+
             statTwoHeader.setTextColor(Color.RED)
-            zeroStatString = Stats.statsTwoString()
         }
         if (Stats.statThreeValue <= 0) {
-            Stats.statThreeValue = 0
-            Stats.statThreeCritical = true
+            if (Stats.statThreeCritical) {
+                statWarningTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsThreeString()), getString(R.string.end_game_append_three))
+            } else {
+                Stats.statThreeValue = 0
+                Stats.statThreeCritical = true
+                statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsThreeString()))
+            }
+
             statThreeHeader.setTextColor(Color.RED)
-            zeroStatString = Stats.statsThreeString()
         }
         if (Stats.statFourValue <= 0) {
-            Stats.statFourValue = 0
-            Stats.statFourCritical = true
+            if (Stats.statFourCritical) {
+                statWarningTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsFourString()), getString(R.string.end_game_append_four))
+            } else {
+                Stats.statFourValue = 0
+                Stats.statFourCritical = true
+                statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsFourString()))
+            }
+
             statFourHeader.setTextColor(Color.RED)
-            zeroStatString = Stats.statsFourString()
-        }
-
-        statWarningTextView.setText(getString(R.string.zero_stat_warning, zeroStatString))
-    }
-
-    private fun zeroStatHasSufferedALoss() {
-        var statLossString = ""
-        if (Stats.statOneCritical && Stats.statOneValue <0) {
-
         }
     }
 
