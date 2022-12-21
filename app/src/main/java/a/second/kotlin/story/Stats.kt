@@ -1,8 +1,10 @@
 package a.second.kotlin.story
 
+import android.content.Context
 import android.util.Log
 
-class Stats {
+class Stats (context : Context){
+    var mContext : Context = context
 
     var statOneValue : Int = 0
     var statTwoValue: Int = 0
@@ -10,6 +12,11 @@ class Stats {
     var statFourValue : Int = 0
 
     var statsAreInExcess : Boolean = false
+
+    var statOneCritical = false
+    var statTwoCritical = false
+    var statThreeCritical = false
+    var statFourCritical = false
 
     fun setInitialRandomValuesForStats() {
         statOneValue = (30..70).random()
@@ -22,8 +29,6 @@ class Stats {
         if (tempTotalValue > 200) {
             statsAreInExcess = true
         }
-
-        Log.i("testStat", "values before mod are $statOneValue $statTwoValue $statThreeValue $statFourValue")
     }
 
     fun iterateThroughStatsToAddOrSubtractRemainder() {
@@ -36,7 +41,6 @@ class Stats {
                 addRemainderToStats(i)
             }
         }
-        Log.i("testStat", "values after mod are $statOneValue $statTwoValue $statThreeValue $statFourValue")
     }
 
     fun addRemainderToStats(stat: Int) {
@@ -56,6 +60,23 @@ class Stats {
             if (stat == 4) if (statFourValue > 30) statFourValue--
         }
     }
+
+    fun statsOneString() : String {
+        return mContext.getString(R.string.stat_one).removeSuffix(":")
+    }
+
+    fun statsTwoString() : String {
+        return mContext.getString(R.string.stat_two).removeSuffix(":")
+    }
+
+    fun statsThreeString() : String {
+        return mContext.getString(R.string.stat_three).removeSuffix(":")
+    }
+
+    fun statsFourString() : String {
+        return mContext.getString(R.string.stat_four).removeSuffix(":")
+    }
+
 
     fun totalValueOfStats() : Int {
         return statOneValue + statTwoValue + statThreeValue + statFourValue

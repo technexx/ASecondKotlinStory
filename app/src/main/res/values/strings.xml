@@ -6,7 +6,13 @@
     <string name="stat_three">Family:</string>
     <string name="stat_four">Social:</string>
     <string name="stats_with_change">%1$s %2$s</string>
+
     <string name="zero_stat_warning">Warning! Your %1$s score has reached 0! Any further loss will mean DEATH BY PAIN.</string>
+    <string name="end_game_string">Your %1$s score has suffered a critical blow!</string>
+    <string name="end_game_append_one"> You jump out of your 330 story office tower and go SPLAT!</string>
+    <string name="end_game_append_two"> You fall deep into a loan shark\'s gullet, never to return!</string>
+    <string name="end_game_append_three"> You are beaten to death by your in-laws!</string>
+    <string name="end_game_append_four">You are exiled to hole in the ground, which is then covered with dirt!</string>
 
     <string name="time_since_spawn">Time since spawn: </string>
     <string name="zeroed_spawn_time">0:00:00</string>

@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         Events = Events(applicationContext)
-        Stats = Stats()
+        Stats = Stats(applicationContext)
         DecimalToStringConversions = DecimalToStringConversions()
 
         statOneHeader = findViewById(R.id.stat_one_header_textView)
@@ -84,6 +84,7 @@ class MainActivity : AppCompatActivity() {
         startStopButton.setOnClickListener {
             setRandomMillisValueForEventTrigger()
             startTimeIterationCoRoutine()
+            setValuesToStatsTextViews()
         }
     }
 
@@ -93,13 +94,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun toggleStartStopButton(enabled: Boolean) {
-        if (enabled) {
-            startStopButton.isEnabled = true
-            startStopButton.isClickable = true
-        } else {
-            startStopButton.isEnabled = false
-            startStopButton.isClickable = false
-        }
+        startStopButton.isClickable = enabled
     }
 
     //Only executes once so changing boolean doesn't stop it.
@@ -204,26 +199,41 @@ class MainActivity : AppCompatActivity() {
 
         if (Stats.statOneValue <= 0) {
             Stats.statOneValue = 0
+            Stats.statOneCritical = true
             statOneHeader.setTextColor(Color.RED)
-            zeroStatString = getString(R.string.stat_one).removeSuffix(":")
+            zeroStatString = Stats.statsOneString()
         }
         if (Stats.statTwoValue <= 0) {
             Stats.statTwoValue = 0
+            Stats.statTwoCritical = true
             statTwoHeader.setTextColor(Color.RED)
-            zeroStatString = getString(R.string.stat_two).removeSuffix(":")
+            zeroStatString = Stats.statsTwoString()
         }
         if (Stats.statThreeValue <= 0) {
             Stats.statThreeValue = 0
+            Stats.statThreeCritical = true
             statThreeHeader.setTextColor(Color.RED)
-            zeroStatString = getString(R.string.stat_three).removeSuffix(":")
+            zeroStatString = Stats.statsThreeString()
         }
         if (Stats.statFourValue <= 0) {
             Stats.statFourValue = 0
+            Stats.statFourCritical = true
             statFourHeader.setTextColor(Color.RED)
-            zeroStatString = getString(R.string.stat_four).removeSuffix(":")
+            zeroStatString = Stats.statsFourString()
         }
 
         statWarningTextView.setText(getString(R.string.zero_stat_warning, zeroStatString))
+    }
+
+    private fun zeroStatHasSufferedALoss() {
+        var statLossString = ""
+        if (Stats.statOneCritical && Stats.statOneValue <0) {
+
+        }
+    }
+
+    private fun zeroStatHasGainedBackValue() {
+
     }
 
     private fun setDefaultStatHeadersOnTextViews(nameOne: String = getString(R.string.stat_one), nameTwo: String = getString(R.string.stat_two), nameThree: String = getString(R.string.stat_three), nameFour: String = getString(R.string.stat_four)) {
