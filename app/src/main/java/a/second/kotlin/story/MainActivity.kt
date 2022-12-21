@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity() {
 
         setValuesToStatsTextViewsWithAppend()
 
-        setStatTextViewToRedIfAtZero()
+        setStatTextViewToRedIfAtZeroAndBlackIfNot()
         checkAffectedStatAgainstZeroSum()
 
         blankOutCriticalScoreTextView()
@@ -201,11 +201,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setStatTextViewToRedIfAtZero() {
-        if (Stats.statOneValue <= 0) statOneHeader.setTextColor(Color.RED)
-        if (Stats.statTwoValue <= 0) statTwoHeader.setTextColor(Color.RED)
-        if (Stats.statThreeValue <= 0) statThreeHeader.setTextColor(Color.RED)
-        if (Stats.statFourValue <= 0) statFourHeader.setTextColor(Color.RED)
+    private fun setStatTextViewToRedIfAtZeroAndBlackIfNot() {
+        if (Stats.statOneValue <= 0) statOneHeader.setTextColor(Color.RED) else statOneTextView.setTextColor(Color.BLACK)
+        if (Stats.statTwoValue <= 0) statTwoHeader.setTextColor(Color.RED) else statTwoTextView.setTextColor(Color.BLACK)
+        if (Stats.statThreeValue <= 0) statThreeHeader.setTextColor(Color.RED) else statThreeTextView.setTextColor(Color.BLACK)
+        if (Stats.statFourValue <= 0) statFourHeader.setTextColor(Color.RED) else statFourTextView.setTextColor(Color.BLACK)
     }
 
     private fun checkAffectedStatAgainstZeroSum() {
@@ -216,10 +216,6 @@ class MainActivity : AppCompatActivity() {
             SOCIAL_EVENT -> statFourZeroCheckAndLogic()
         }
     }
-
-//    private fun toggleCriticalStatsTextViewVisibility(visible : Boolean) {
-//        if (visible) statWarningTextView.visibility = View.VISIBLE else statWarningTextView.visibility = View.INVISIBLE
-//    }
 
     private fun statOneZeroCheckAndLogic() {
         if (Stats.statOneCritical) {
