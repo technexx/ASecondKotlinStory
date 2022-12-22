@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">A Second Kotlin Story</string>
 
-    <string name="stat_one">Job:</string>
-    <string name="stat_two">Finances:</string>
+    <string name="stat_one">Career:</string>
+    <string name="stat_two">Money:</string>
     <string name="stat_three">Family:</string>
     <string name="stat_four">Social:</string>
     <string name="stats_with_change">%1$s %2$s</string>
@@ -17,6 +17,9 @@
 
     <string name="time_since_spawn">Time since spawn: </string>
     <string name="zeroed_spawn_time">0:00:00</string>
+
+    <string name="correct_answer">You did good at %1$s and your %2$s gets better!</string>
+    <string name="wrong_answer">You did so very bad at %1$s and your %2$s gets worse!</string>
 
     <string-array name="job_events_bad">
         <item>Your boss hates you and lets you know it. Loudly.</item>

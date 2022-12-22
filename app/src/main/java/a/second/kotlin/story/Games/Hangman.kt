@@ -15,14 +15,14 @@ import org.w3c.dom.Text
 class Hangman {
 
     class LetterHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-        private val letterView : TextView = itemView.findViewById(R.id.hangman_letter)
+        val letterView : TextView = itemView.findViewById(R.id.hangman_letter)
     }
 
     class KeyboardRecyclerAdapter() : RecyclerView.Adapter<LetterHolder>() {
         val alphabetArray : Array<String> = alphabetStringArray()
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LetterHolder {
-            var letterItem = LayoutInflater.from(parent.context,).inflate(R.layout.hangman_keyboard_adapter_views, parent, false)
+            val letterItem = LayoutInflater.from(parent.context,).inflate(R.layout.hangman_keyboard_adapter_views, parent, false)
             return LetterHolder(letterItem)
         }
 
@@ -42,12 +42,6 @@ class Hangman {
     }
 
     class AlphabetConversions{
-        fun alphabetStringArray(): Array<String> {
-            val alphabet =
-                "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z"
-            return alphabet.split(", ").toTypedArray()
-        }
-
         fun convertPositionToLetter(position: Int): String {
             var letter = ""
             if (position == 0) letter = "A"
