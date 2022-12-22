@@ -61,6 +61,7 @@ class Stats (context : Context){
         }
     }
 
+
     fun statsOneString() : String {
         return mContext.getString(R.string.stat_one).removeSuffix(":")
     }

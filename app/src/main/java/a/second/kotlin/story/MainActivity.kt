@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
 
     private var eventString : String = ""
     private var eventValue : Int = 0
-    private var endGameString : String = ""
 
     private var JOB_EVENT = 0
     private var FINANCES_EVENT = 1
