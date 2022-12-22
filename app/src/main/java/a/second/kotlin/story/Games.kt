@@ -1,8 +1,10 @@
 package a.second.kotlin.story
 
+import android.util.Log
+
 open class Games {
 
-    class Math : Games() {
+    class MathProblems : Games() {
         var answer = (0..100).random()
 
         var inputOne : Int = 0
@@ -11,35 +13,44 @@ open class Games {
         fun assignAdditionInputs() {
             inputOne = (0..answer).random()
             inputTwo = answer - inputOne
+
+            Log.i("testAdd", "answer for addition is $answer")
+            Log.i("testAdd", "first input for addition is $inputOne")
+            Log.i("testAdd", "second input for addition is $inputTwo")
         }
 
         fun assignSubtractionInputs() {
             //inputOne - inputTwo = answer
             inputOne = (answer..100).random()
             inputTwo = inputOne - answer
+
+            Log.i("testSub", "answer for subtraction is $answer")
+            Log.i("testSub", "first input for subtraction is $inputOne")
+            Log.i("testSub", "second input for subtraction is $inputTwo")
         }
 
         fun assignMultiplicationInputs() {
-            answer = (2..500).random()
+            inputOne = (2..25).random()
+            inputTwo = (2..25).random()
+            answer = inputOne * inputTwo
 
-            while (inputOne < answer) inputOne = (2..25).random()
-
-            val maxSecondInput = answer/inputOne
-            inputTwo = (2..maxSecondInput).random()
+            Log.i("testMult", "answer for multiplication is $answer")
+            Log.i("testMult", "first input for multiplication is $inputOne")
+            Log.i("testMult", "second input for multiplication is $inputTwo")
         }
 
         fun assignDivisionInputs() {
-            //inputTwo / inputOne = answer
-            answer = (2..500).random()
+            val tempInputOne = (2..25).random()
 
-            while (inputOne < answer) inputOne = (2..25).random()
-            val numberArray = ArrayList<Int>()
+            inputTwo = (2..25).random()
+            answer = tempInputOne * inputTwo
+            inputTwo - (answer % tempInputOne)
 
-            for (i in 2..answer) {
-                if (i % inputOne == 0) numberArray.add(i)
-            }
+            inputOne = tempInputOne
 
-            inputTwo = numberArray.random()
+            Log.i("testDiv", "answer for division is $answer")
+            Log.i("testDiv", "first input for division is $inputOne")
+            Log.i("testDiv", "second input for division is $inputTwo")
         }
     }
 

@@ -84,9 +84,16 @@ class MainActivity : AppCompatActivity() {
         setValuesToStatsTextViews()
 
         startStopButton.setOnClickListener {
-            setRandomMillisValueForEventTrigger()
-            startTimeIterationCoRoutine()
-            setValuesToStatsTextViews()
+            val math = Games.MathProblems()
+
+            math.assignAdditionInputs()
+            math.assignSubtractionInputs()
+            math.assignMultiplicationInputs()
+            math.assignDivisionInputs()
+
+//            setRandomMillisValueForEventTrigger()
+//            startTimeIterationCoRoutine()
+//            setValuesToStatsTextViews()
         }
     }
 
