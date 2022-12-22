@@ -1,6 +1,7 @@
 
 package a.second.kotlin.story
 
+import a.second.kotlin.story.Games.Games
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.media.metrics.Event
@@ -84,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         setValuesToStatsTextViews()
 
         startStopButton.setOnClickListener {
-            val math = Games.MathProblems()
+            val math = Games().MathProblems
 
             math.assignAdditionInputs()
             math.assignSubtractionInputs()
