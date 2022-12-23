@@ -1,16 +1,11 @@
-package a.second.kotlin.story.Games
+package a.second.kotlin.story.games
 
 import a.second.kotlin.story.R
-import android.content.Context
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
-import org.w3c.dom.Text
 
 class Hangman {
 

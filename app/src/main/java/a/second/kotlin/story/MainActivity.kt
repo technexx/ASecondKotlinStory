@@ -1,14 +1,11 @@
 
 package a.second.kotlin.story
 
-import a.second.kotlin.story.Games.Games
+import a.second.kotlin.story.games.gameFragments.MathFragment
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.media.metrics.Event
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.TextView
 import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
@@ -23,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     var job: Job = Job()
     lateinit var Events : Events
     lateinit var Stats : Stats
+    lateinit var MathFragment: MathFragment
     lateinit var DecimalToStringConversions: DecimalToStringConversions
 
     lateinit var statOneHeader : TextView
@@ -61,7 +59,10 @@ class MainActivity : AppCompatActivity() {
 
         Events = Events(applicationContext)
         Stats = Stats(applicationContext)
+        MathFragment = MathFragment()
         DecimalToStringConversions = DecimalToStringConversions()
+
+        attachGameFragment()
 
         statOneHeader = findViewById(R.id.stat_one_header_textView)
         statTwoHeader = findViewById(R.id.stat_two_header_textView)
@@ -85,17 +86,16 @@ class MainActivity : AppCompatActivity() {
         setValuesToStatsTextViews()
 
         startStopButton.setOnClickListener {
-            val math = Games().MathProblems
-
-            math.assignAdditionInputs()
-            math.assignSubtractionInputs()
-            math.assignMultiplicationInputs()
-            math.assignDivisionInputs()
-
-//            setRandomMillisValueForEventTrigger()
-//            startTimeIterationCoRoutine()
-//            setValuesToStatsTextViews()
+            setRandomMillisValueForEventTrigger()
+            startTimeIterationCoRoutine()
+            setValuesToStatsTextViews()
         }
+    }
+
+    private fun attachGameFragment() {
+        supportFragmentManager.beginTransaction()
+            .add(R.id.game_frame_layout, MathFragment)
+            .commit()
     }
 
     private fun setRandomMillisValueForEventTrigger() {

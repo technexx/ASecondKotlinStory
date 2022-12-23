@@ -1,4 +1,4 @@
-package a.second.kotlin.story.Games
+package a.second.kotlin.story.games
 
 import android.util.Log
 

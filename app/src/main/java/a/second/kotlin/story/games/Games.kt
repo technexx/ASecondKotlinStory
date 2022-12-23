@@ -1,4 +1,4 @@
-package a.second.kotlin.story.Games
+package a.second.kotlin.story.games
 
 open class Games {
     val MathProblems = MathProblems()
