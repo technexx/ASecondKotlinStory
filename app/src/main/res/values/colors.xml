@@ -7,4 +7,79 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="purple">#8E24AA</color>
+    <color name="purple_2">#AB47BC</color>
+    <color name="teal">#00897B</color>
+    <color name="light_teal">#80DEEA</color>
+    <color name="dark_teal">#0097A7</color>
+    <color name="circular_progress_default_progress">#bada55</color>
+    <color name="circular_progress_default_background">#787878</color>
+    <color name="circular_progress_default_title">#bada55</color>
+    <color name="circular_progress_default_subtitle">#D1D1D1</color>
+    <color name="lighter_grey">#E0E0E0</color>
+    <color name="light_grey">#BDBDBD</color>
+    <color name="mid_grey">#757575</color>
+    <color name="dark_grey">#37474F</color>
+    <color name="darker_grey">#263238</color>
+    <color name="lighter_green">#AED581</color>
+    <color name="light_green">#4CAF50</color>
+    <color name="green">#00C853</color>
+    <color name="dark_green">#00a300</color>
+    <color name="very_dark_green">#254E0A</color>
+    <color name="light_red">#FF8A80</color>
+    <color name="red">#FF0000</color>
+    <color name="dark_red">#D50000</color>
+    <color name="blue">#1976D2</color>
+    <color name="blue_2">#2196F3</color>
+    <color name="blue_test">#0D47A1</color>
+    <color name="greyed_green">#004D40</color>
+    <color name="greyed_red">#B71C1C</color>
+    <color name="test_black">#212121</color>
+    <color name="off_white">#E0E0E0</color>
+    <color name="light_white">#FAFAFA</color>
+    <color name="test_highlight">#607D8B</color>
+    <color name="test_highlight_2">#546E7A</color>
+    <color name="blue_green">#009688</color>
+    <color name="test_blue">#29B6F6</color>
+    <color name="light_blue">#4FC3F7</color>
+    <color name="very_light_grey">#ECEFF1</color>
+    <color name="yellow_1">#FFFF00</color>
+    <color name="yellow_2">#F0F4C3</color>
+    <color name="yellow_3">#FFEE58</color>
+    <color name="darker_red">#C51162</color>
+    <color name="light_black">#2f2f2f</color>
+    <color name="grey_2">#424949</color>
+    <color name="darkest_gray"> #201d1d </color>
+
+    <color name="onyx">#353935</color>
+    <color name="matte_black">#28282B</color>
+    <color name="ebony">#282C35</color>
+    <color name="black_denim">#191C27</color>
+    <color name="cool_black">#151922</color>
+    <color name="iron_black">#343432</color>
+    <color name="alien_black">#1A2228</color>
+    <color name="retro_black">#1F201F</color>
+    <color name="night_shadow">#1C1C1C</color>
+
+    <color name="eerie_black">#1b1b1b </color>
+
+    <color name="orange">#F57C00</color>
+    <color name="orange_1">#FF8C00</color>
+    <color name="orange_2">#ff8001</color>
+    <color name="dark_orange">#F57C00</color>
+    <color name="light_orange">#FFCC80</color>
+
+    <color name="android_green">#ff00ff00</color>
+    <color name="android_red">#ffff0000</color>
+    <color name="android_blue">#ff0000ff</color>
+    <color name="android_yellow">#ffffff00</color>
+    <color name="android_magenta">#ffff00ff</color>
+    <color name="android_cyan">#ff00ffff</color>
+
+    <color name="test_grey">#455A64</color>
+    <color name="test_teal">#80DEEA</color>
 </resources>
