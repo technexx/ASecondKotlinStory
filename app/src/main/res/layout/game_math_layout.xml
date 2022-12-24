@@ -5,12 +5,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:text="MATH"
+        android:id="@+id/input_one"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@color/black">
+        app:layout_constraintEnd_toStartOf="@id/input_two"
+        android:layout_marginTop="80dp"
+        android:textColor="@color/black"
+        android:textSize="24sp">
     </TextView>
+
+    <TextView
+        android:id="@+id/input_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/input_one"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="80dp"
+        android:textSize="24sp">
+    </TextView>
+
+    <EditText
+        android:id="@+id/math_answer"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/input_one"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:inputType="number">
+    </EditText>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

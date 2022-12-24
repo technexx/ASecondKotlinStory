@@ -3,10 +3,19 @@ package a.second.kotlin.story.games
 import android.util.Log
 
 class MathProblems {
-    var answer = (0..100).random()
-
     var inputOne : Int = 0
     var inputTwo : Int = 0
+    var answer = (0..100).random()
+
+    var TYPE_OF_PROBLEM : Int = 0
+    var ADD_PROBLEM : Int = 0
+    var SUB_PROBLEM : Int = 1
+    var MULT_PROBLEM : Int = 2
+    var DIV_PROBLEM : Int = 3
+
+    fun selectTypeOfProblem() : Int{
+        return (0..3).random()
+    }
 
     fun assignAdditionInputs() {
         inputOne = (0..answer).random()
