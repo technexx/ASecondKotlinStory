@@ -1,5 +1,6 @@
 package a.second.kotlin.story.games.gameFragments
 
+import a.second.kotlin.story.ItemViewModel
 import a.second.kotlin.story.R
 import a.second.kotlin.story.games.MathProblems
 import android.content.Context
@@ -12,10 +13,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModel
 import org.w3c.dom.Text
 
 class MathFragment : Fragment() {
 
+    val viewModel : ItemViewModel by activityViewModels()
     var MathProblems : MathProblems = MathProblems()
 
     lateinit var rootView : View
@@ -35,6 +39,7 @@ class MathFragment : Fragment() {
                               savedInstanceState: Bundle?): View {
         rootView = inflater.inflate(R.layout.game_math_layout, container, false)
 
+//        val viewModel : ItemViewModel by activityViewModels()
         problemTextView = rootView.findViewById(R.id.problem_textView)
         answerEditText = rootView.findViewById(R.id.math_answer_editText)
         submitButton = rootView.findViewById(R.id.submit_math_button)
@@ -69,9 +74,11 @@ class MathFragment : Fragment() {
 
     private fun setSubmitButtonListener() {
         submitButton.setOnClickListener {
-            Log.i("testSubmit", "answer is " + MathProblems.answer)
-            Log.i("testSubmit", "editText is " + answerEditText.text)
-            Log.i("testSubmit", doesUserInputMatchAnswer().toString())
+            sendAnswerToViewModel()
         }
+    }
+
+    private fun sendAnswerToViewModel() {
+        viewModel.setSelectedString("Test String")
     }
 }

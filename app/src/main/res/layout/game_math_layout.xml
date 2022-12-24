@@ -25,7 +25,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="24dp"
         android:textSize="28sp"
-        android:inputType="number">
+        android:inputType="number"
+        android:background="@null"
+        android:textCursorDrawable="@drawable/edit_text_cursor"
+        android:singleLine="true"
+        android:maxLength="3">
     </EditText>
 
     <com.google.android.material.button.MaterialButton
