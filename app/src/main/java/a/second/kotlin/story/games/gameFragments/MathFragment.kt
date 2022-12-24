@@ -56,7 +56,7 @@ class MathFragment : Fragment() {
     }
 
     private fun problemRoll() : Int {
-        return (3..3).random()
+        return (0 ..3).random()
     }
 
     private fun setInputsToTextView() {
@@ -64,12 +64,13 @@ class MathFragment : Fragment() {
     }
 
     private fun doesUserInputMatchAnswer() : Boolean {
-        return answerEditText.text.equals(MathProblems.answer)
+        return answerEditText.text.toString() == MathProblems.answer.toString()
     }
 
     private fun setSubmitButtonListener() {
         submitButton.setOnClickListener {
             Log.i("testSubmit", "answer is " + MathProblems.answer)
+            Log.i("testSubmit", "editText is " + answerEditText.text)
             Log.i("testSubmit", doesUserInputMatchAnswer().toString())
         }
     }
