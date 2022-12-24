@@ -201,10 +201,10 @@ class MainActivity : AppCompatActivity() {
         if (eventValue > 0) valueString = "(+$eventValue)" else valueString = "($eventValue)"
 
         when (Events.rolledEvent) {
-            JOB_EVENT -> statOneTextView.text = getString(R.string.stats_with_change, Stats.statOneValue.toString(), valueString)
-            FINANCES_EVENT -> statTwoTextView.text =getString(R.string.stats_with_change, Stats.statTwoValue.toString(), valueString)
-            FAMILY_EVENT -> statThreeTextView.text = getString(R.string.stats_with_change, Stats.statThreeValue.toString(), valueString)
-            SOCIAL_EVENT -> statFourTextView.text = getString(R.string.stats_with_change, Stats.statFourValue.toString(), valueString)
+            JOB_EVENT -> statOneTextView.text = getString(R.string.two_item_concat, Stats.statOneValue.toString(), valueString)
+            FINANCES_EVENT -> statTwoTextView.text =getString(R.string.two_item_concat, Stats.statTwoValue.toString(), valueString)
+            FAMILY_EVENT -> statThreeTextView.text = getString(R.string.two_item_concat, Stats.statThreeValue.toString(), valueString)
+            SOCIAL_EVENT -> statFourTextView.text = getString(R.string.two_item_concat, Stats.statFourValue.toString(), valueString)
         }
     }
 

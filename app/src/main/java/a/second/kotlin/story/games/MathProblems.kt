@@ -6,20 +6,12 @@ class MathProblems {
     var inputOne : Int = 0
     var inputTwo : Int = 0
     var answer = (0..100).random()
-
-    var TYPE_OF_PROBLEM : Int = 0
-    var ADD_PROBLEM : Int = 0
-    var SUB_PROBLEM : Int = 1
-    var MULT_PROBLEM : Int = 2
-    var DIV_PROBLEM : Int = 3
-
-    fun selectTypeOfProblem() : Int{
-        return (0..3).random()
-    }
+    var sign = ""
 
     fun assignAdditionInputs() {
         inputOne = (0..answer).random()
         inputTwo = answer - inputOne
+        sign = "+"
 
         Log.i("testAdd", "answer for addition is $answer")
         Log.i("testAdd", "first input for addition is $inputOne")
@@ -30,6 +22,7 @@ class MathProblems {
         //inputOne - inputTwo = answer
         inputOne = (answer..100).random()
         inputTwo = inputOne - answer
+        sign = "-"
 
         Log.i("testSub", "answer for subtraction is $answer")
         Log.i("testSub", "first input for subtraction is $inputOne")
@@ -40,6 +33,7 @@ class MathProblems {
         inputOne = (2..25).random()
         inputTwo = (2..25).random()
         answer = inputOne * inputTwo
+        sign = "X"
 
         Log.i("testMult", "answer for multiplication is $answer")
         Log.i("testMult", "first input for multiplication is $inputOne")
@@ -54,9 +48,14 @@ class MathProblems {
         inputTwo - (answer % tempInputOne)
 
         inputOne = tempInputOne
+        sign = "/"
 
         Log.i("testDiv", "answer for division is $answer")
         Log.i("testDiv", "first input for division is $inputOne")
         Log.i("testDiv", "second input for division is $inputTwo")
+    }
+
+    fun createProblemString() : String{
+        return "$inputOne $sign $inputTwo"
     }
 }

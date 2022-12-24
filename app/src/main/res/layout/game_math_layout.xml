@@ -5,25 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/input_one"
+        android:id="@+id/problem_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/input_two"
-        android:layout_marginTop="80dp"
-        android:textColor="@color/black"
-        android:textSize="24sp">
-    </TextView>
-
-    <TextView
-        android:id="@+id/input_two"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/input_one"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="80dp"
+        android:textColor="@color/black"
         android:textSize="24sp">
     </TextView>
 
@@ -31,7 +20,7 @@
         android:id="@+id/math_answer"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/input_one"
+        app:layout_constraintTop_toBottomOf="@id/problem_textView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="32dp"

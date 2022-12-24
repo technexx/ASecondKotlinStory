@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import org.w3c.dom.Text
 
 class MathFragment : Fragment() {
 
@@ -16,8 +17,7 @@ class MathFragment : Fragment() {
 
     var MathProblems : MathProblems = MathProblems()
 
-    lateinit var inputOneTextView : TextView
-    lateinit var  inputTwoTextView : TextView
+    lateinit var problemTextView: TextView
 
     var inputOne : Int = 0
     var inputTwo : Int = 0
@@ -32,8 +32,7 @@ class MathFragment : Fragment() {
 
         rootView = inflater.inflate(R.layout.game_math_layout, container, false)
 
-        inputOneTextView = rootView.findViewById(R.id.input_one)
-        inputTwoTextView = rootView.findViewById(R.id.input_two)
+        problemTextView = rootView.findViewById(R.id.problem_textView)
 
         setTypeOfProblem()
         setInputsToTextView()
@@ -55,7 +54,6 @@ class MathFragment : Fragment() {
     }
 
     private fun setInputsToTextView() {
-        inputOneTextView.text = MathProblems.inputOne.toString()
-        inputTwoTextView.text = MathProblems.inputTwo.toString()
+        problemTextView.text = MathProblems.createProblemString()
     }
 }
