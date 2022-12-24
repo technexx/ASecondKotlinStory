@@ -41,18 +41,20 @@ class MathProblems {
     }
 
     fun assignDivisionInputs() {
-        val tempInputOne = (2..25).random()
+        inputOne = (2..500).random()
+        answer = (1..25).random()
+        if (inputOne < answer) inputOne = answer
 
-        inputTwo = (2..25).random()
-        answer = tempInputOne * inputTwo
-        inputTwo - (answer % tempInputOne)
+        val remainder = inputOne % answer
+        answer -= remainder
+        inputTwo = (inputOne / answer)
 
-        inputOne = tempInputOne
         sign = "/"
 
         Log.i("testDiv", "answer for division is $answer")
         Log.i("testDiv", "first input for division is $inputOne")
         Log.i("testDiv", "second input for division is $inputTwo")
+        Log.i("testDiv", "remainder for division is $remainder")
     }
 
     fun createProblemString() : String{

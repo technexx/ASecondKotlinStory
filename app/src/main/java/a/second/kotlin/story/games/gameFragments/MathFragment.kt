@@ -4,20 +4,24 @@ import a.second.kotlin.story.R
 import a.second.kotlin.story.games.MathProblems
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import org.w3c.dom.Text
 
 class MathFragment : Fragment() {
 
-    lateinit var rootView : View
-
     var MathProblems : MathProblems = MathProblems()
 
-    lateinit var problemTextView: TextView
+    lateinit var rootView : View
+    lateinit var problemTextView : TextView
+    lateinit var answerEditText : EditText
+    lateinit var submitButton : Button
 
     var inputOne : Int = 0
     var inputTwo : Int = 0
@@ -29,19 +33,17 @@ class MathFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-
         rootView = inflater.inflate(R.layout.game_math_layout, container, false)
 
         problemTextView = rootView.findViewById(R.id.problem_textView)
+        answerEditText = rootView.findViewById(R.id.math_answer_editText)
+        submitButton = rootView.findViewById(R.id.submit_math_button)
 
         setTypeOfProblem()
         setInputsToTextView()
+        setSubmitButtonListener()
 
         return rootView
-    }
-
-    private fun problemRoll() : Int {
-        return (0..3).random()
     }
 
     private fun setTypeOfProblem() {
@@ -53,7 +55,22 @@ class MathFragment : Fragment() {
         }
     }
 
+    private fun problemRoll() : Int {
+        return (3..3).random()
+    }
+
     private fun setInputsToTextView() {
         problemTextView.text = MathProblems.createProblemString()
+    }
+
+    private fun doesUserInputMatchAnswer() : Boolean {
+        return answerEditText.text.equals(MathProblems.answer)
+    }
+
+    private fun setSubmitButtonListener() {
+        submitButton.setOnClickListener {
+            Log.i("testSubmit", "answer is " + MathProblems.answer)
+            Log.i("testSubmit", doesUserInputMatchAnswer().toString())
+        }
     }
 }

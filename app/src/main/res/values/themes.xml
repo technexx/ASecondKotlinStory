@@ -20,6 +20,7 @@
     <style name="MaterialButtonStyle">
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:strokeColor">@color/black</item>
+        <item name="android:textColor">@color/black</item>
         <item name="rippleColor">#33AAAAAA</item>
         <item name="cornerRadius">10dp</item>
     </style>
