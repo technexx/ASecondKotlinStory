@@ -10,7 +10,11 @@ open class ItemViewModel : ViewModel() {
     val mutableSelectedItem = MutableLiveData<String>()
     val selectedItem : LiveData<String> get() = mutableSelectedItem
 
-    class MathViewModel() : ItemViewModel() {
+    class StatsViewModel : ItemViewModel() {
+
+    }
+
+    class GamesViewModel : ItemViewModel() {
         fun setMathAnswer (string: String) {
             mutableSelectedItem.value = string
         }

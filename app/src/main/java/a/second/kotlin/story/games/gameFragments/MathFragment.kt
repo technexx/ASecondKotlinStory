@@ -19,7 +19,7 @@ import org.w3c.dom.Text
 
 class MathFragment : Fragment() {
 
-    val mathViewModel : ItemViewModel.MathViewModel by activityViewModels()
+    val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
     val viewModel : ItemViewModel by activityViewModels()
     var MathProblems : MathProblems = MathProblems()
 
@@ -85,6 +85,6 @@ class MathFragment : Fragment() {
     }
 
     private fun sendAnswerToViewModel() {
-        mathViewModel.setMathAnswer(MathProblems.answer.toString())
+        gamesViewModel.setMathAnswer(MathProblems.answer.toString())
     }
 }

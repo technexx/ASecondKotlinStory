@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 @OptIn(DelicateCoroutinesApi::class)
 class MainActivity : AppCompatActivity() {
 
-    val viewModel : ItemViewModel by viewModels()
+    val gamesViewModel : ItemViewModel.GamesViewModel by viewModels()
 
     var job: Job = Job()
     lateinit var Events : Events
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setViewModelObserver() {
-        viewModel.selectedItem.observe(this, Observer {
+        gamesViewModel.selectedItem.observe(this, Observer {
             Stats.statOneValue -= 5
             setValuesToStatsTextViews()
         })
