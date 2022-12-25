@@ -46,7 +46,7 @@ class MathProblems {
         if (inputOne < answer) inputOne = answer
 
         val remainder = inputOne % answer
-        answer -= remainder
+        inputOne -= remainder
         inputTwo = (inputOne / answer)
 
         sign = "/"

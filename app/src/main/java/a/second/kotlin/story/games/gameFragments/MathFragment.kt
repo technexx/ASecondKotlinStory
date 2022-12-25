@@ -62,7 +62,7 @@ class MathFragment : Fragment() {
     }
 
     private fun problemRoll() : Int {
-        return (0 ..3).random()
+        return (0..3).random()
     }
 
     private fun setInputsToTextView() {

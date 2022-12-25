@@ -96,8 +96,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //Todo: Null viewModel objects on first submission. Observer is working before all values are passed in.
-    //Todo: Division problem w/ remainder.
     private fun setViewModelObserver() {
         gamesViewModel.mutableCorrectAnswerBoolean.observe(this, Observer {
 
