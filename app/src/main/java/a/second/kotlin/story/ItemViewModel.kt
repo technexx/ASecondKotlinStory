@@ -10,8 +10,10 @@ open class ItemViewModel : ViewModel() {
     val mutableCorrectAnswerBoolean = MutableLiveData<Boolean>()
     val isAnswerCorrect : LiveData<Boolean> get() = mutableCorrectAnswerBoolean
 
-    val mutableWhichGameIsBeingPlayed = MutableLiveData<String>()
-    val gameBeingPlayed : LiveData<String> get() = mutableWhichGameIsBeingPlayed
+    var gameBeingPlayed : String = ""
+
+//    val mutableWhichGameIsBeingPlayed = MutableLiveData<String>()
+//    val gameBeingPlayed : LiveData<String> get() = mutableWhichGameIsBeingPlayed
 
     class StatsViewModel : ItemViewModel() {
 
@@ -27,11 +29,11 @@ open class ItemViewModel : ViewModel() {
         }
 
         fun setWhichGameIsBeingPlayed(game: String) {
-            mutableWhichGameIsBeingPlayed .value = game
+            gameBeingPlayed = game
         }
 
-        fun getGameBeingPlayed() : String? {
-            return gameBeingPlayed.value
+        fun getWhichIsGameBeingPlayed() : String {
+            return gameBeingPlayed
         }
     }
 }

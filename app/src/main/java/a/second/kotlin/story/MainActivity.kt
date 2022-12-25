@@ -96,11 +96,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //Todo: Null viewModel objects on first submission. Observer is working before all values are passed in.
+    //Todo: Division problem w/ remainder.
     private fun setViewModelObserver() {
         gamesViewModel.mutableCorrectAnswerBoolean.observe(this, Observer {
 
             val answerState = gamesViewModel.getIsAnswerCorrect()
-            val gameBeingPlayed = gamesViewModel.getGameBeingPlayed()
+            val gameBeingPlayed = gamesViewModel.getWhichIsGameBeingPlayed()
             var statChangeValue = statChangeValueForGame()
 
             if (answerState != null) {

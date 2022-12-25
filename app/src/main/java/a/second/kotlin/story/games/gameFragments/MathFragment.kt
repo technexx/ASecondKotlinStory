@@ -71,9 +71,11 @@ class MathFragment : Fragment() {
 
     private fun setSubmitButtonListener() {
         submitButton.setOnClickListener {
+            sendGameBeingPlayedToViewModel()
+
+            //Observed data (i.e. State of Answer) must be called after all intended values to change are set.
             setStateOfAnswerTextView()
             sendAnswerStateToViewModel()
-            sendGameBeingPlayedToViewModel()
         }
     }
     private fun setStateOfAnswerTextView() {
