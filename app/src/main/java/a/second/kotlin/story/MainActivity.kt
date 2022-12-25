@@ -99,13 +99,35 @@ class MainActivity : AppCompatActivity() {
     private fun setViewModelObserver() {
         gamesViewModel.mutableCorrectAnswerBoolean.observe(this, Observer {
 
-            val mathAnswerState = gamesViewModel.getIsAnswerCorrect()
+            val answerState = gamesViewModel.getIsAnswerCorrect()
+            val gameBeingPlayed = gamesViewModel.getGameBeingPlayed()
+            var statChangeValue = statChangeValueForGame()
 
-            if (mathAnswerState != null) {
-                if (mathAnswerState) Stats.statTwoValue +=5 else Stats.statTwoValue -=5
+            if (answerState != null) {
+                if (!answerState) statChangeValue = -statChangeValue
             }
-            setValuesToStatsTextViews()
+
+            changeStatValueFromGame(gameBeingPlayed, statChangeValue)
+            changeStatTextViewFromGame(gameBeingPlayed, statChangeValue)
         })
+    }
+
+    private fun changeStatValueFromGame(game: String?, value: Int) {
+        if (game == "GameOne") Stats.statOneValue += value
+        if (game == "Math") Stats.statTwoValue += value
+        if (game == "GameThee") Stats.statThreeValue += value
+        if (game == "Word") Stats.statFourValue += value
+    }
+
+    private fun changeStatTextViewFromGame(game: String?, value: Int) {
+        if (game == "GameOne") statOneTextView.text = getString(R.string.two_item_concat, Stats.statOneValue.toString(), intToPlusOrMinusString(value))
+        if (game == "Math") statTwoTextView.text = getString(R.string.two_item_concat, Stats.statTwoValue.toString(), intToPlusOrMinusString(value))
+        if (game == "GameThree") statThreeTextView.text = getString(R.string.two_item_concat, Stats.statThreeValue.toString(), intToPlusOrMinusString(value))
+        if (game == "Word") statFourTextView.text = getString(R.string.two_item_concat, Stats.statFourValue.toString(), intToPlusOrMinusString(value))
+    }
+
+    private fun statChangeValueForGame() : Int {
+        return (3..6).random()
     }
 
     private fun attachGameFragment() {
@@ -119,7 +141,7 @@ class MainActivity : AppCompatActivity() {
         randomMillisValueForEvent = randomStop.toLong()
     }
 
-    fun toggleStartStopButton(enabled: Boolean) {
+    private fun toggleStartStopButton(enabled: Boolean) {
         startStopButton.isClickable = enabled
     }
 
@@ -172,7 +194,7 @@ class MainActivity : AppCompatActivity() {
         setValuesToStatsVariables()
         setValuesToStatsTextViews()
 
-        setValuesToStatsTextViewsWithAppend()
+        changeStatValueFromEvent()
 
         setStatTextViewToRedIfAtZeroAndBlackIfNot()
         checkAffectedStatAgainstZeroSum()
@@ -212,9 +234,9 @@ class MainActivity : AppCompatActivity() {
         statWarningTextView.text = ""
     }
 
-    private fun setValuesToStatsTextViewsWithAppend() {
-        var valueString = ""
-        if (eventValue > 0) valueString = "(+$eventValue)" else valueString = "($eventValue)"
+    private fun changeStatValueFromEvent() {
+        val valueModifier = Events.eventValue
+        val valueString = intToPlusOrMinusString(valueModifier)
 
         when (Events.rolledEvent) {
             JOB_EVENT -> statOneTextView.text = getString(R.string.two_item_concat, Stats.statOneValue.toString(), valueString)
@@ -222,6 +244,12 @@ class MainActivity : AppCompatActivity() {
             FAMILY_EVENT -> statThreeTextView.text = getString(R.string.two_item_concat, Stats.statThreeValue.toString(), valueString)
             SOCIAL_EVENT -> statFourTextView.text = getString(R.string.two_item_concat, Stats.statFourValue.toString(), valueString)
         }
+    }
+
+    private fun intToPlusOrMinusString(intValue: Int) : String {
+        var valueToReturn = "0"
+        if (intValue > 0) valueToReturn = "(+$intValue)" else valueToReturn = "($intValue)"
+        return valueToReturn
     }
 
     private fun setStatTextViewToRedIfAtZeroAndBlackIfNot() {

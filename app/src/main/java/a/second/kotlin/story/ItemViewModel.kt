@@ -7,32 +7,31 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 open class ItemViewModel : ViewModel() {
-    val mutableSelectedItem = MutableLiveData<String>()
-    val selectedItem : LiveData<String> get() = mutableSelectedItem
-
     val mutableCorrectAnswerBoolean = MutableLiveData<Boolean>()
     val isAnswerCorrect : LiveData<Boolean> get() = mutableCorrectAnswerBoolean
+
+    val mutableWhichGameIsBeingPlayed = MutableLiveData<String>()
+    val gameBeingPlayed : LiveData<String> get() = mutableWhichGameIsBeingPlayed
 
     class StatsViewModel : ItemViewModel() {
 
     }
 
     class GamesViewModel : ItemViewModel() {
-        fun setMathAnswer (string: String) {
-            mutableSelectedItem.value = string
-        }
-
-        fun getMathAnswer() : String? {
-            Log.i("testModel", "string set as ${mutableSelectedItem.value}")
-            return mutableSelectedItem.value
-        }
-
         fun setIsAnswerCorrect(isCorrect : Boolean) {
             mutableCorrectAnswerBoolean.value = isCorrect
         }
 
         fun getIsAnswerCorrect() : Boolean? {
-            return mutableCorrectAnswerBoolean.value
+            return isAnswerCorrect.value
+        }
+
+        fun setWhichGameIsBeingPlayed(game: String) {
+            mutableWhichGameIsBeingPlayed .value = game
+        }
+
+        fun getGameBeingPlayed() : String? {
+            return gameBeingPlayed.value
         }
     }
 }

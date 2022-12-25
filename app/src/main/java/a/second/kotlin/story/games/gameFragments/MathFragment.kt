@@ -73,6 +73,7 @@ class MathFragment : Fragment() {
         submitButton.setOnClickListener {
             setStateOfAnswerTextView()
             sendAnswerStateToViewModel()
+            sendGameBeingPlayedToViewModel()
         }
     }
     private fun setStateOfAnswerTextView() {
@@ -85,6 +86,9 @@ class MathFragment : Fragment() {
 
     private fun sendAnswerStateToViewModel() {
         gamesViewModel.setIsAnswerCorrect(doesUserInputMatchAnswer())
-//        gamesViewModel.setMathAnswer(MathProblems.answer.toString())
+    }
+
+    private fun sendGameBeingPlayedToViewModel() {
+        gamesViewModel.setWhichGameIsBeingPlayed("Math")
     }
 }
