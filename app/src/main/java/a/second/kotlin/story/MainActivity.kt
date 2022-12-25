@@ -23,7 +23,9 @@ class MainActivity : AppCompatActivity() {
     var job: Job = Job()
     lateinit var Events : Events
     lateinit var Stats : Stats
+
     lateinit var MathFragment: MathFragment
+
     lateinit var DecimalToStringConversions: DecimalToStringConversions
 
     lateinit var statOneHeader : TextView
@@ -110,6 +112,11 @@ class MainActivity : AppCompatActivity() {
             changeStatValueFromGame(gameBeingPlayed, statChangeValue)
             changeStatTextViewFromGame(gameBeingPlayed, statChangeValue)
         })
+    }
+
+    private fun switchFragmentForNextGame() {
+        supportFragmentManager.beginTransaction()
+
     }
 
     private fun changeStatValueFromGame(game: String?, value: Int) {

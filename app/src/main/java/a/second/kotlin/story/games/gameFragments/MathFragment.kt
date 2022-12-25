@@ -5,7 +5,6 @@ import a.second.kotlin.story.R
 import a.second.kotlin.story.games.MathProblems
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +13,6 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModel
-import org.w3c.dom.Text
 
 class MathFragment : Fragment() {
 
@@ -38,7 +35,7 @@ class MathFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        rootView = inflater.inflate(R.layout.game_math_layout, container, false)
+        rootView = inflater.inflate(R.layout.fragment_math_layout, container, false)
 
         problemTextView = rootView.findViewById(R.id.problem_textView)
         answerEditText = rootView.findViewById(R.id.math_answer_editText)
