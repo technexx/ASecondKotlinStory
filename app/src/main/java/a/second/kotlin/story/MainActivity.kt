@@ -7,6 +7,9 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
 
@@ -16,6 +19,8 @@ import kotlinx.coroutines.launch
 
 @OptIn(DelicateCoroutinesApi::class)
 class MainActivity : AppCompatActivity() {
+
+    val viewModel : ItemViewModel by viewModels()
 
     var job: Job = Job()
     lateinit var Events : Events
@@ -84,12 +89,20 @@ class MainActivity : AppCompatActivity() {
 
         setDefaultStatHeadersOnTextViews()
         setValuesToStatsTextViews()
+        setViewModelObserver()
 
         startStopButton.setOnClickListener {
             setRandomMillisValueForEventTrigger()
             startTimeIterationCoRoutine()
             setValuesToStatsTextViews()
         }
+    }
+
+    private fun setViewModelObserver() {
+        viewModel.selectedItem.observe(this, Observer {
+            Stats.statOneValue -= 5
+            setValuesToStatsTextViews()
+        })
     }
 
     private fun attachGameFragment() {

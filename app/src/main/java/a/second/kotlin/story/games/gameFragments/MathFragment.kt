@@ -19,6 +19,7 @@ import org.w3c.dom.Text
 
 class MathFragment : Fragment() {
 
+    val mathViewModel : ItemViewModel.MathViewModel by activityViewModels()
     val viewModel : ItemViewModel by activityViewModels()
     var MathProblems : MathProblems = MathProblems()
 
@@ -26,6 +27,7 @@ class MathFragment : Fragment() {
     lateinit var problemTextView : TextView
     lateinit var answerEditText : EditText
     lateinit var submitButton : Button
+    lateinit var answerStateTextView : TextView
 
     var inputOne : Int = 0
     var inputTwo : Int = 0
@@ -39,10 +41,10 @@ class MathFragment : Fragment() {
                               savedInstanceState: Bundle?): View {
         rootView = inflater.inflate(R.layout.game_math_layout, container, false)
 
-//        val viewModel : ItemViewModel by activityViewModels()
         problemTextView = rootView.findViewById(R.id.problem_textView)
         answerEditText = rootView.findViewById(R.id.math_answer_editText)
         submitButton = rootView.findViewById(R.id.submit_math_button)
+        answerStateTextView = rootView.findViewById(R.id.state_of_answer_textView)
 
         setTypeOfProblem()
         setInputsToTextView()
@@ -68,17 +70,23 @@ class MathFragment : Fragment() {
         problemTextView.text = MathProblems.createProblemString()
     }
 
+    private fun setStateOfAnswerTextView() {
+
+    }
+
     private fun doesUserInputMatchAnswer() : Boolean {
         return answerEditText.text.toString() == MathProblems.answer.toString()
     }
 
     private fun setSubmitButtonListener() {
         submitButton.setOnClickListener {
-            sendAnswerToViewModel()
+            sendAnswerToViewModel();
+
         }
     }
 
     private fun sendAnswerToViewModel() {
-        viewModel.setSelectedString("Test String")
+        mathViewModel.setSelectedString("Test String")
+        mathViewModel.getSelectedString()
     }
 }

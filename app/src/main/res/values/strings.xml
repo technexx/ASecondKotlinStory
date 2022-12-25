@@ -21,6 +21,7 @@
     <string name="correct_answer">You did good at %1$s and your %2$s gets better!</string>
     <string name="wrong_answer">You did so very bad at %1$s and your %2$s gets worse!</string>
     <string name="submit">Submit</string>
+    <string name="math_problem_answered">You\'re so good at math! </string>
 
     <string-array name="job_events_bad">
         <item>Your boss hates you and lets you know it. Loudly.</item>

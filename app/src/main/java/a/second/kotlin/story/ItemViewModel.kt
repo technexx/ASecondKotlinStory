@@ -6,12 +6,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ItemViewModel : ViewModel() {
-    private val mutableSelectedItem = MutableLiveData<String>()
+open class ItemViewModel : ViewModel() {
+    val mutableSelectedItem = MutableLiveData<String>()
     val selectedItem : LiveData<String> get() = mutableSelectedItem
 
-    fun setSelectedString (string: String) {
-        mutableSelectedItem.value = string
-        Log.i("testModel", "string set as $string")
+    class MathViewModel() : ItemViewModel() {
+        fun setSelectedString (string: String) {
+            mutableSelectedItem.value = string
+        }
+
+        fun getSelectedString() : String? {
+            Log.i("testModel", "string set as ${mutableSelectedItem.value}")
+            return mutableSelectedItem.value
+        }
     }
 }
