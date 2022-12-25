@@ -21,7 +21,14 @@
     <string name="correct_answer">You did good at %1$s and your %2$s gets better!</string>
     <string name="wrong_answer">You did so very bad at %1$s and your %2$s gets worse!</string>
     <string name="submit">Submit</string>
-    <string name="math_problem_answered">You\'re so good at math! </string>
+
+    <string name="math_problem_correct">You\'re so good at math! This helps your finances</string>
+    <string name="math_problem_incorrect">Bzzt! Wrong. Bad math equals bad finances.</string>
+    <string name="hangman_problem_correct">You\'re so good at wordsmithing! This helps your social life</string>
+    <string name="hangman_problem_incorrect">If you can\'t string words together, who\'s going to be your friend?</string>
+    <string name="game3_problem_correct">You\'re so good at math! This helps your finances</string>
+    <string name="game4_problem_correct">You\'re so good at math! This helps your finances</string>
+
 
     <string-array name="job_events_bad">
         <item>Your boss hates you and lets you know it. Loudly.</item>
@@ -168,7 +175,7 @@
         <item>Strippers have begun throwing dollars at you. Silver dollars. At your head.</item>
         <item>Your significant other\'s side bae no longer wants to be friends.</item>
         <item>Your local church has started replacing \"Hell\" with \"Locked in a room with you\."</item>
-        <item>The talent at a weekly comedy show decides to abandon their sets and just heckle you for 2 hours.</item>
+        <item>The talent at a comedy show decide to abandon their sets and heckle you for 2 hours.</item>
         <item>Goodwill rejects your clothes, citing crimes against humanity.</item>
         <item>The \"Big Sibling\" program has decided to close down and euthanize its clients after meeting you.</item>
         <item>The Starbucks barista writes \"God Has Forsaken Me\" on your drink.</item>

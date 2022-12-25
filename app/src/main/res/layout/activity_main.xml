@@ -14,6 +14,14 @@
         app:layout_constraintGuide_percent=".15">
     </androidx.constraintlayout.widget.Guideline>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/event_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".7">
+    </androidx.constraintlayout.widget.Guideline>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/stats_constraint_layout"
         android:layout_width="match_parent"
@@ -22,13 +30,26 @@
         app:layout_constraintBottom_toTopOf="@id/stats_guideline"
         android:theme="@style/StatsTheme">
 
+            <TextView
+                android:id="@+id/zero_stat_warning"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/stat_four_header_textView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/teal_200"
+                android:textSize="14sp">
+            </TextView>
+
         <TextView
             android:id="@+id/stat_one_header_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="32dp">
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp">
         </TextView>
 
         <TextView
@@ -37,7 +58,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/stat_one_header_textView"
-            android:layout_marginStart="16dp">
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp">
         </TextView>
 
         <TextView
@@ -46,7 +68,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/stat_one_header_textView"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="32dp">
         </TextView>
 
@@ -56,7 +78,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/stat_two_header_textView"
             app:layout_constraintTop_toBottomOf="@id/stat_one_header_textView"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="16dp">
         </TextView>
 
@@ -66,7 +88,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/stat_three_textView"
-            android:layout_marginEnd="12dp">
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="4dp">
         </TextView>
 
         <TextView
@@ -75,7 +98,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="32dp">
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="4dp">
         </TextView>
 
         <TextView
@@ -85,7 +109,7 @@
             app:layout_constraintTop_toBottomOf="@id/stat_three_header_textView"
             app:layout_constraintEnd_toStartOf="@id/stat_four_textView"
             android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="10dp">
         </TextView>
 
         <TextView
@@ -94,7 +118,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/stat_three_header_textView"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="32dp">
         </TextView>
 
@@ -124,70 +148,55 @@
         android:layout_width="match_parent"
         android:layout_height="1.5dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/existence_timer_textView_header"
+        app:layout_constraintBottom_toTopOf="@id/events_layout"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         android:background="@color/black">
     </View>
 
-    <TextView
-        android:id="@+id/existence_timer_textView_header"
-        android:text="@string/time_since_spawn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/start_stop_button"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/events_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="8dp"
-        android:textSize="22sp">
-    </TextView>
+        app:layout_constraintTop_toTopOf="@id/event_guideline">
 
-    <TextView
-        android:id="@+id/existence_timer_textView"
-        android:text="@string/zeroed_spawn_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/start_stop_button"
-        app:layout_constraintStart_toEndOf="@id/existence_timer_textView_header"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="8dp"
-        android:textSize="22sp">
-    </TextView>
+        <TextView
+            android:id="@+id/existence_timer_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/start_stop_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="8dp"
+            android:textSize="22sp">
+        </TextView>
 
-    <com.google.android.material.button.MaterialButton
-        style="@style/MaterialButtonStyle"
-        android:id="@+id/start_stop_button"
-        android:text="Start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/event_textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/black"
-        android:textSize="16sp">
-    </com.google.android.material.button.MaterialButton>
+        <com.google.android.material.button.MaterialButton
+            style="@style/MaterialButtonStyle"
+            android:id="@+id/start_stop_button"
+            android:text="Start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/event_textView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/black"
+            android:textSize="16sp">
+        </com.google.android.material.button.MaterialButton>
 
-    <TextView
-        android:id="@+id/event_textView"
-        android:layout_width="350dp"
-        android:layout_height="60dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/zero_stat_warning"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
-        android:textSize="18sp">
-    </TextView>
+        <TextView
+            android:id="@+id/event_textView"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="4dp"
+            android:textSize="18sp">
+        </TextView>
 
-    <TextView
-        android:id="@+id/zero_stat_warning"
-        android:layout_width="350dp"
-        android:layout_height="60dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        android:textColor="@color/teal_200"
-        android:textSize="18sp">
-    </TextView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

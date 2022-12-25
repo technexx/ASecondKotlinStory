@@ -61,13 +61,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         Events = Events(applicationContext)
         Stats = Stats(applicationContext)
         MathFragment = MathFragment()
         DecimalToStringConversions = DecimalToStringConversions()
-
-        attachGameFragment()
 
         statOneHeader = findViewById(R.id.stat_one_header_textView)
         statTwoHeader = findViewById(R.id.stat_two_header_textView)
@@ -87,6 +84,9 @@ class MainActivity : AppCompatActivity() {
         Stats.setInitialRandomValuesForStats()
         Stats.iterateThroughStatsToAddOrSubtractRemainder()
 
+        existenceTimerTextView.text = getString(R.string.two_item_concat, getString(R.string.time_since_spawn), "0:00")
+
+        attachGameFragment()
         setDefaultStatHeadersOnTextViews()
         setValuesToStatsTextViews()
         setViewModelObserver()
@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity() {
 
         temporaryEventTime += timeToAdd
         totalSpawnTimeInMilliseconds += timeToAdd
-        existenceTimerTextView.text = DecimalToStringConversions.timeWithMillis(totalSpawnTimeInMilliseconds)
+        existenceTimerTextView.text = getString(R.string.two_item_concat, getString(R.string.time_since_spawn), DecimalToStringConversions.timeWithMillis(totalSpawnTimeInMilliseconds))
     }
 
     private fun resetRandomMillisValueForEventTime() {

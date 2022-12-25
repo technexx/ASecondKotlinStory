@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class Hangman {
 
+    //Todo: No Canvas. Just use "Strikes."
     class LetterHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         val letterView : TextView = itemView.findViewById(R.id.hangman_letter)
     }

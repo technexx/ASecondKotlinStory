@@ -70,23 +70,21 @@ class MathFragment : Fragment() {
         problemTextView.text = MathProblems.createProblemString()
     }
 
+    private fun setSubmitButtonListener() {
+        submitButton.setOnClickListener {
+            setStateOfAnswerTextView()
+            sendAnswerToViewModel()
+        }
+    }
     private fun setStateOfAnswerTextView() {
-
+        if (doesUserInputMatchAnswer()) answerStateTextView.text = getString(R.string.math_problem_correct) else answerStateTextView.text = getString(R.string.math_problem_incorrect)
     }
 
     private fun doesUserInputMatchAnswer() : Boolean {
         return answerEditText.text.toString() == MathProblems.answer.toString()
     }
 
-    private fun setSubmitButtonListener() {
-        submitButton.setOnClickListener {
-            sendAnswerToViewModel();
-
-        }
-    }
-
     private fun sendAnswerToViewModel() {
-        mathViewModel.setSelectedString("Test String")
-        mathViewModel.getSelectedString()
+        mathViewModel.setMathAnswer(MathProblems.answer.toString())
     }
 }

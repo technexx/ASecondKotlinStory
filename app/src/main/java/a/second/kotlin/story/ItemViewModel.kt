@@ -11,11 +11,11 @@ open class ItemViewModel : ViewModel() {
     val selectedItem : LiveData<String> get() = mutableSelectedItem
 
     class MathViewModel() : ItemViewModel() {
-        fun setSelectedString (string: String) {
+        fun setMathAnswer (string: String) {
             mutableSelectedItem.value = string
         }
 
-        fun getSelectedString() : String? {
+        fun getMathAnswer() : String? {
             Log.i("testModel", "string set as ${mutableSelectedItem.value}")
             return mutableSelectedItem.value
         }
