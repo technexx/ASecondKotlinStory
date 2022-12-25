@@ -10,6 +10,9 @@ open class ItemViewModel : ViewModel() {
     val mutableSelectedItem = MutableLiveData<String>()
     val selectedItem : LiveData<String> get() = mutableSelectedItem
 
+    val mutableCorrectAnswerBoolean = MutableLiveData<Boolean>()
+    val isAnswerCorrect : LiveData<Boolean> get() = mutableCorrectAnswerBoolean
+
     class StatsViewModel : ItemViewModel() {
 
     }
@@ -22,6 +25,14 @@ open class ItemViewModel : ViewModel() {
         fun getMathAnswer() : String? {
             Log.i("testModel", "string set as ${mutableSelectedItem.value}")
             return mutableSelectedItem.value
+        }
+
+        fun setIsAnswerCorrect(isCorrect : Boolean) {
+            mutableCorrectAnswerBoolean.value = isCorrect
+        }
+
+        fun getIsAnswerCorrect() : Boolean? {
+            return mutableCorrectAnswerBoolean.value
         }
     }
 }

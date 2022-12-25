@@ -20,7 +20,6 @@ import org.w3c.dom.Text
 class MathFragment : Fragment() {
 
     val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
-    val viewModel : ItemViewModel by activityViewModels()
     var MathProblems : MathProblems = MathProblems()
 
     lateinit var rootView : View
@@ -73,7 +72,7 @@ class MathFragment : Fragment() {
     private fun setSubmitButtonListener() {
         submitButton.setOnClickListener {
             setStateOfAnswerTextView()
-            sendAnswerToViewModel()
+            sendAnswerStateToViewModel()
         }
     }
     private fun setStateOfAnswerTextView() {
@@ -84,7 +83,8 @@ class MathFragment : Fragment() {
         return answerEditText.text.toString() == MathProblems.answer.toString()
     }
 
-    private fun sendAnswerToViewModel() {
-        gamesViewModel.setMathAnswer(MathProblems.answer.toString())
+    private fun sendAnswerStateToViewModel() {
+        gamesViewModel.setIsAnswerCorrect(doesUserInputMatchAnswer())
+//        gamesViewModel.setMathAnswer(MathProblems.answer.toString())
     }
 }

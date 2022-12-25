@@ -13,8 +13,6 @@ import androidx.lifecycle.Observer
 import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
 
-
-//Todo: Use VIEWMODEL.
 //Todo: Remember to SUSPEND and not BLOCK if using UI thread. runBlocking is a default CoroutineScope.
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -99,8 +97,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setViewModelObserver() {
-        gamesViewModel.selectedItem.observe(this, Observer {
-            Stats.statOneValue -= 5
+        gamesViewModel.mutableCorrectAnswerBoolean.observe(this, Observer {
+
+            val mathAnswerState = gamesViewModel.getIsAnswerCorrect()
+
+            if (mathAnswerState != null) {
+                if (mathAnswerState) Stats.statTwoValue +=5 else Stats.statTwoValue -=5
+            }
             setValuesToStatsTextViews()
         })
     }
