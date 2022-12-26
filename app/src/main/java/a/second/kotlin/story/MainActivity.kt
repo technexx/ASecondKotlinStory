@@ -1,6 +1,8 @@
 
 package a.second.kotlin.story
 
+import a.second.kotlin.story.games.Hangman
+import a.second.kotlin.story.games.gameFragments.HangmanFragment
 import a.second.kotlin.story.games.gameFragments.MathFragment
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -23,10 +25,10 @@ class MainActivity : AppCompatActivity() {
     var job: Job = Job()
     lateinit var Events : Events
     lateinit var Stats : Stats
+    lateinit var DecimalToStringConversions: DecimalToStringConversions
 
     lateinit var MathFragment: MathFragment
-
-    lateinit var DecimalToStringConversions: DecimalToStringConversions
+    lateinit var HangmanFragment : HangmanFragment
 
     lateinit var statOneHeader : TextView
     lateinit var statOneTextView : TextView
@@ -61,10 +63,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         Events = Events(applicationContext)
         Stats = Stats(applicationContext)
-        MathFragment = MathFragment()
         DecimalToStringConversions = DecimalToStringConversions()
+
+        MathFragment = MathFragment()
+        HangmanFragment = HangmanFragment()
 
         statOneHeader = findViewById(R.id.stat_one_header_textView)
         statTwoHeader = findViewById(R.id.stat_two_header_textView)
@@ -139,7 +144,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun attachGameFragment() {
         supportFragmentManager.beginTransaction()
-            .add(R.id.game_frame_layout, MathFragment)
+            .add(R.id.game_frame_layout, HangmanFragment)
             .commit()
     }
 

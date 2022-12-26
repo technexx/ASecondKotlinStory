@@ -1,6 +1,11 @@
 package a.second.kotlin.story.games
 
 import a.second.kotlin.story.R
+import android.content.Context
+import android.content.res.Resources
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +23,7 @@ class Hangman {
         val alphabetArray : Array<String> = alphabetStringArray()
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LetterHolder {
-            val letterItem = LayoutInflater.from(parent.context,).inflate(R.layout.hangman_keyboard_adapter_views, parent, false)
+            val letterItem = LayoutInflater.from(parent.context).inflate(R.layout.hangman_keyboard_adapter_views, parent, false)
             return LetterHolder(letterItem)
         }
 
@@ -34,6 +39,78 @@ class Hangman {
             val alphabet =
                 "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z"
             return alphabet.split(", ").toTypedArray()
+        }
+    }
+
+    class GallowsCanvas(context: Context): View(context) {
+        var mCanvas : Canvas = Canvas()
+        var mPaint : Paint = Paint()
+        var progress = 0
+
+        fun setPaintColor() {
+            mPaint.color = Color.BLACK
+            mPaint.style = Paint.Style.STROKE
+            mPaint.strokeWidth = (pxToDp(6))
+        }
+
+        fun drawGallows() {
+            val xPosStart = 125
+            val xPosEnd = 230
+            val topY = 110
+            val bottomY = 290
+
+            mCanvas.drawLine(pxToDp(xPosStart), pxToDp(topY), pxToDp(xPosEnd), pxToDp(topY), mPaint)
+
+            mCanvas.drawLine(pxToDp(xPosStart),
+                pxToDp(topY),
+                pxToDp(xPosStart),
+                pxToDp(topY + 30),
+                mPaint)
+            mCanvas.drawLine(pxToDp(xPosEnd - 30),
+                pxToDp(topY),
+                pxToDp(xPosEnd),
+                pxToDp(topY + 30),
+                mPaint)
+            mCanvas.drawLine(pxToDp(xPosEnd),
+                pxToDp(topY),
+                pxToDp(xPosEnd),
+                pxToDp(bottomY),
+                mPaint)
+            mCanvas.drawLine(pxToDp(xPosEnd - 50),
+                pxToDp(bottomY),
+                pxToDp(xPosEnd + 50),
+                pxToDp(bottomY),
+                mPaint)
+            mCanvas.drawLine(pxToDp(xPosEnd),
+                pxToDp(bottomY - 30),
+                pxToDp(xPosEnd - 30),
+                pxToDp(bottomY),
+                mPaint)
+            mCanvas.drawLine(pxToDp(xPosEnd),
+                pxToDp(bottomY - 30),
+                pxToDp(xPosEnd + 30),
+                pxToDp(bottomY),
+                mPaint)
+        }
+
+        fun drawHangman() {
+            var xPositionStart = 125
+            var topYPosition = 165
+            var bottomYPosition = 265
+
+            if (progress > 0) {
+
+            }
+        }
+
+        override fun onDraw(canvas: Canvas) {
+            mCanvas = canvas
+
+        }
+
+
+        fun pxToDp(pixels : Int) : Float {
+            return pixels * (Resources.getSystem().displayMetrics.density).toFloat()
         }
     }
 
