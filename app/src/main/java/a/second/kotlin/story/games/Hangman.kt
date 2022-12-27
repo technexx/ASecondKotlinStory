@@ -6,6 +6,7 @@ import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class Hangman {
 
-    //Todo: No Canvas. Just use "Strikes."
     class LetterHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         val letterView : TextView = itemView.findViewById(R.id.hangman_letter)
     }
@@ -42,7 +42,7 @@ class Hangman {
         }
     }
 
-    class GallowsCanvas(context: Context): View(context) {
+    class GallowsCanvas(context: Context?, attrs: AttributeSet): View(context, attrs) {
         var mCanvas : Canvas = Canvas()
         var mPaint : Paint = Paint()
         var progress = 0
@@ -54,6 +54,8 @@ class Hangman {
         }
 
         fun drawGallows() {
+            setPaintColor()
+
             val xPosStart = 125
             val xPosEnd = 230
             val topY = 110
@@ -105,7 +107,7 @@ class Hangman {
 
         override fun onDraw(canvas: Canvas) {
             mCanvas = canvas
-
+            drawGallows()
         }
 
 
