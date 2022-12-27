@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.GridView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -21,10 +22,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 class HangmanFragment : Fragment() {
 
+    val mHangmanClass = Hangman()
     val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
-
-    lateinit var keyboardRecycler : RecyclerView
-
+    lateinit var keyboardGridView : GridView
     lateinit var rootView : View
 
     override fun onAttach(context: Context) {
@@ -35,13 +35,17 @@ class HangmanFragment : Fragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
 
+
         rootView = inflater.inflate(R.layout.fragment_hangman_layout, container, false)
 
-        keyboardRecycler = rootView.findViewById(R.id.hangman_keyboard_recyclerView)
-        keyboardRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val keyboardAdapter : Hangman.KeyboardRecyclerAdapter = Hangman.KeyboardRecyclerAdapter()
+        keyboardGridView = rootView.findViewById(R.id.hangman_keyboard_gridView)
+        keyboardGridView.numColumns = 9
 
-        keyboardRecycler.adapter = keyboardAdapter
+        val letterList: List<String> = mHangmanClass.alphabetStringArray()
+        val keyboardAdapter : Hangman.KeyboardRecyclerAdapter = Hangman.KeyboardRecyclerAdapter(requireContext(), R.layout.hangman_keyboard_adapter_views, R.id.hangman_letter, letterList)
+
+        //Todo: Go back to LinearLayoutManager and set orientation there.
+        keyboardGridView.adapter = keyboardAdapter
 
 
         return rootView

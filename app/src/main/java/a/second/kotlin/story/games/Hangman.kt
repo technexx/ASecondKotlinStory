@@ -2,6 +2,7 @@ package a.second.kotlin.story.games
 
 import a.second.kotlin.story.R
 import android.content.Context
+import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Color
@@ -11,36 +12,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.security.Key
 
 class Hangman {
 
-    class KeyboardRecyclerAdapter() : RecyclerView.Adapter<KeyboardRecyclerAdapter.LetterHolder>() {
-        val alphabetArray : Array<String> = alphabetStringArray()
+    class KeyboardRecyclerAdapter(context: Context, layout: Int, letter: Int, list: List<String>) : ArrayAdapter<String>(context, layout, letter, list) {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LetterHolder {
-            val letterItem = LayoutInflater.from(parent.context).inflate(R.layout.hangman_keyboard_adapter_views, parent, false)
-            return LetterHolder(letterItem)
-        }
+    }
 
-        override fun onBindViewHolder(holder: LetterHolder, position: Int) {
-            holder.letterView.text = alphabetArray[position]
-        }
-
-        override fun getItemCount(): Int {
-            return alphabetArray.size
-        }
-
-        class LetterHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-            val letterView : TextView = itemView.findViewById(R.id.hangman_letter)
-        }
-
-        fun alphabetStringArray(): Array<String> {
-            val alphabet =
-                "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z"
-            return alphabet.split(", ").toTypedArray()
-        }
+    fun alphabetStringArray(): List<String>{
+        val alphabet =
+            "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z"
+        return alphabet.split(", ")
     }
 
     class GallowsCanvas(context: Context?, attrs: AttributeSet): View(context, attrs) {
