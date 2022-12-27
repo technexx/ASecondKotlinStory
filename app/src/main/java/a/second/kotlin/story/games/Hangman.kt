@@ -7,6 +7,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class Hangman {
 
-    class LetterHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-        val letterView : TextView = itemView.findViewById(R.id.hangman_letter)
-    }
-
-    class KeyboardRecyclerAdapter() : RecyclerView.Adapter<LetterHolder>() {
+    class KeyboardRecyclerAdapter() : RecyclerView.Adapter<KeyboardRecyclerAdapter.LetterHolder>() {
         val alphabetArray : Array<String> = alphabetStringArray()
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LetterHolder {
@@ -28,11 +25,15 @@ class Hangman {
         }
 
         override fun onBindViewHolder(holder: LetterHolder, position: Int) {
-            var letter = alphabetArray[position]
+            holder.letterView.text = alphabetArray[position]
         }
 
         override fun getItemCount(): Int {
             return alphabetArray.size
+        }
+
+        class LetterHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
+            val letterView : TextView = itemView.findViewById(R.id.hangman_letter)
         }
 
         fun alphabetStringArray(): Array<String> {
@@ -58,8 +59,8 @@ class Hangman {
 
             val xPosStart = 125
             val xPosEnd = 230
-            val topY = 110
-            val bottomY = 290
+            val topY = 20
+            val bottomY = 180
 
             mCanvas.drawLine(pxToDp(xPosStart), pxToDp(topY), pxToDp(xPosEnd), pxToDp(topY), mPaint)
 

@@ -6,9 +6,17 @@
 
     <view class="a.second.kotlin.story.games.Hangman$GallowsCanvas"
         android:id="@+id/hangman_canvas"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+    
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/hangman_keyboard_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+    </androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
