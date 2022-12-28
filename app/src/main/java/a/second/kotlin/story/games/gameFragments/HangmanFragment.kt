@@ -32,7 +32,9 @@ class HangmanFragment : Fragment() {
     var totalLetterList : ArrayList<String> = ArrayList()
     var unSelectedLetterList : ArrayList<String> = ArrayList()
     var selectedLetterList : ArrayList<String> = ArrayList()
-    var puzzleWordLetterList : ArrayList<String> = ArrayList()
+
+    var puzzleWordBankList : ArrayList<String> = ArrayList()
+    var puzzleSelectedWordLetterList: ArrayList<String> = ArrayList()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -52,7 +54,7 @@ class HangmanFragment : Fragment() {
         instantiateKeyboardGridViewAndAdapter()
         populateTotalLetterList()
         populateUnselectedLetterList()
-        populatePuzzleWordArrayList(easyWordStringList)
+        populatePuzzleWordBankList(easyWordStringList)
 
         keyboardGridView.setOnItemClickListener { parent, view, position, id ->
             val letterClicked = HangmanClass.alphabetStringArray()[position]
@@ -89,13 +91,22 @@ class HangmanFragment : Fragment() {
         }
     }
 
-    private fun populatePuzzleWordArrayList(array: ArrayList<String>) {
-        puzzleWordLetterList.addAll(array)
-        Log.i("testList", "word array is " + puzzleWordLetterList)
+    private fun populatePuzzleWordBankList(array: ArrayList<String>) {
+        puzzleWordBankList.addAll(array)
+        Log.i("testList", "word array is " + puzzleWordBankList)
+    }
+
+    private fun randomWordAsArrayList() : ArrayList<String> {
+       val testList : List<String> = (getString(R.string.easy_words_string).split(" "))
+
+    }
+
+    private fun populatePuzzleSelectedWordList(array: ArrayList<String>) {
+        puzzleSelectedWordLetterList.addAll(array)
     }
 
     private fun doesSelectedLetterExistInWord(letter: String) : Boolean {
-        return puzzleWordLetterList.contains(letter)
+        return puzzleSelectedWordLetterList.contains(letter)
     }
 
     private fun convertStringListToArrayList(list: List<String>) : ArrayList<String> {
@@ -115,7 +126,7 @@ class HangmanFragment : Fragment() {
     private fun instantiatePuzzleListView() {
         puzzleListView = rootView.findViewById(R.id.hangman_puzzle_recyclerView)
 
-        val puzzleAdapter : Hangman.PuzzleListViewAdapter = Hangman.PuzzleListViewAdapter(requireContext(), R.layout.hangman_puzzle_adapter_view, R.id.hangman_puzzle_letter, puzzleWordLetterList)
+        val puzzleAdapter : Hangman.PuzzleListViewAdapter = Hangman.PuzzleListViewAdapter(requireContext(), R.layout.hangman_puzzle_adapter_view, R.id.hangman_puzzle_letter, puzzleSelectedWordLetterList)
         puzzleListView.adapter = puzzleAdapter
     }
 
