@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -60,11 +61,12 @@ class HangmanFragment : Fragment() {
         keyboardGridView.adapter = keyboardAdapter
 
         keyboardGridView.setOnItemClickListener { parent, view, position, id ->
-            addLetterToSelectedList(HangmanClass.alphabetStringArray()[position])
-            removeLetterFromUnselectedList(HangmanClass.alphabetStringArray()[position])
-
+            val letterClicked = HangmanClass.alphabetStringArray()[position]
             val letterTextView : TextView = parent.get(position).findViewById(R.id.hangman_letter)
-            letterTextView.text = "BOO"
+
+            addLetterToSelectedList(letterClicked)
+            removeLetterFromUnselectedList(letterClicked)
+            colorSelectedLetter(letterTextView, letterClicked)
 
             Log.i("testList", "total list is $totalLetterList")
             Log.i("testList", "unSelected list is $unSelectedLetterList")
@@ -91,7 +93,9 @@ class HangmanFragment : Fragment() {
         for (i in totalLetterList) if (!selectedLetterList.contains(letter)) selectedLetterList.add(letter)
     }
 
-//    fun greyOutSelectedLetter(letter: String, position: Int) {
-//        for (i in totalLetterList) if (!selectedLetterList.contains(letter))
-//    }
+    fun colorSelectedLetter(textView: TextView, letter: String) {
+        for (i in totalLetterList) if (!unSelectedLetterList.contains(letter)) {
+            textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
+        }
+    }
 }
