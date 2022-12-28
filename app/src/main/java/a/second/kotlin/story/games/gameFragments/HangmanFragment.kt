@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Canvas
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +30,9 @@ class HangmanFragment : Fragment() {
     var mediumWordStringList : List<String> = ArrayList()
     var hardWordStringList : List<String> = ArrayList()
 
-    var totalLettersArray : List<String> = ArrayList()
+    var totalLetterList : ArrayList<String> = ArrayList()
+    var unSelectedLetterList : ArrayList<String> = ArrayList()
+    var selectedLetterList : ArrayList<String> = ArrayList()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -45,13 +48,13 @@ class HangmanFragment : Fragment() {
         mediumWordStringList = getString(R.string.medium_words_string).split(" ")
         hardWordStringList = getString(R.string.hard_words_string).split(" ")
 
-        totalLettersArray = HangmanClass.alphabetStringArray()
+        populateTotalLetterList()
+        populateUnselectedLetterList()
 
         keyboardGridView = rootView.findViewById(R.id.hangman_keyboard_gridView)
         keyboardGridView.numColumns = 9
 
-        val letterList: List<String> = HangmanClass.alphabetStringArray()
-        val keyboardAdapter : Hangman.KeyboardRecyclerAdapter = Hangman.KeyboardRecyclerAdapter(requireContext(), R.layout.hangman_keyboard_adapter_views, R.id.hangman_letter, letterList)
+        val keyboardAdapter : Hangman.KeyboardRecyclerAdapter = Hangman.KeyboardRecyclerAdapter(requireContext(), R.layout.hangman_keyboard_adapter_views, R.id.hangman_letter, totalLetterList)
 
         keyboardGridView.adapter = keyboardAdapter
 
@@ -59,6 +62,25 @@ class HangmanFragment : Fragment() {
             Toast.makeText(requireContext(), "At position $position", Toast.LENGTH_LONG).show()
         }
 
+        Log.i("testList", "total list is $totalLetterList")
+        Log.i("testList", "unSelected list is $unSelectedLetterList")
+
         return rootView
+    }
+
+    fun populateTotalLetterList() {
+        totalLetterList.addAll(HangmanClass.alphabetStringArray())
+    }
+
+    fun populateUnselectedLetterList() {
+        unSelectedLetterList.addAll(HangmanClass.alphabetStringArray())
+    }
+
+    fun removeLetterFromUnselectedList(letter: String) {
+        for (i in totalLetterList) if (unSelectedLetterList.contains(letter)) unSelectedLetterList.remove(letter)
+    }
+
+    fun addLetterToSelectedList(letter: String) {
+        for (i in totalLetterList) if (!selectedLetterList.contains(letter)) selectedLetterList.add(letter)
     }
 }
