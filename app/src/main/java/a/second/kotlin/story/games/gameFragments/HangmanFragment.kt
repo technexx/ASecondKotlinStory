@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -59,11 +60,17 @@ class HangmanFragment : Fragment() {
         keyboardGridView.adapter = keyboardAdapter
 
         keyboardGridView.setOnItemClickListener { parent, view, position, id ->
-            Toast.makeText(requireContext(), "At position $position", Toast.LENGTH_LONG).show()
+            addLetterToSelectedList(HangmanClass.alphabetStringArray()[position])
+            removeLetterFromUnselectedList(HangmanClass.alphabetStringArray()[position])
+
+            val letterTextView : TextView = parent.get(position).findViewById(R.id.hangman_letter)
+            letterTextView.text = "BOO"
+
+            Log.i("testList", "total list is $totalLetterList")
+            Log.i("testList", "unSelected list is $unSelectedLetterList")
+            Log.i("testList", "selected list is $selectedLetterList")
         }
 
-        Log.i("testList", "total list is $totalLetterList")
-        Log.i("testList", "unSelected list is $unSelectedLetterList")
 
         return rootView
     }
@@ -83,4 +90,8 @@ class HangmanFragment : Fragment() {
     fun addLetterToSelectedList(letter: String) {
         for (i in totalLetterList) if (!selectedLetterList.contains(letter)) selectedLetterList.add(letter)
     }
+
+//    fun greyOutSelectedLetter(letter: String, position: Int) {
+//        for (i in totalLetterList) if (!selectedLetterList.contains(letter))
+//    }
 }
