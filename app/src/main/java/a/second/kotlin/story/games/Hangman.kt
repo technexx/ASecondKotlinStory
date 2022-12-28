@@ -15,11 +15,39 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import java.security.Key
 
 class Hangman {
 
     class KeyboardRecyclerAdapter(context: Context, layout: Int, letter: Int, list: List<String>) : ArrayAdapter<String>(context, layout, letter, list) {
+
+//        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+//            var letterView = View(context)
+//
+//            if (convertView == null) {
+//                val inflater = LayoutInflater.from(parent.context)
+//                letterView = inflater.inflate(R.layout.hangman_keyboard_adapter_views, parent,false)
+//                val letterTextView : TextView = letterView.findViewById(R.id.hangman_letter)
+//                letterTextView.text = "BOO"
+//            }
+//
+//            return letterView
+//        }
+//
+//        override fun getItem(position: Int): String {
+//            return alphabetStringArray()[position]
+//        }
+//
+//        override fun getCount(): Int {
+//            return alphabetStringArray().size
+//        }
+//
+//        fun alphabetStringArray(): List<String>{
+//            val alphabet =
+//                "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z"
+//            return alphabet.split(", ")
+//        }
 
     }
 

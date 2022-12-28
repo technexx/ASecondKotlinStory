@@ -5,16 +5,13 @@ import a.second.kotlin.story.R
 import a.second.kotlin.story.games.Hangman
 import a.second.kotlin.story.games.MathProblems
 import android.content.Context
+import android.content.Intent
 import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.GridView
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,7 +32,6 @@ class HangmanFragment : Fragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
 
-
         rootView = inflater.inflate(R.layout.fragment_hangman_layout, container, false)
 
         keyboardGridView = rootView.findViewById(R.id.hangman_keyboard_gridView)
@@ -44,8 +40,11 @@ class HangmanFragment : Fragment() {
         val letterList: List<String> = mHangmanClass.alphabetStringArray()
         val keyboardAdapter : Hangman.KeyboardRecyclerAdapter = Hangman.KeyboardRecyclerAdapter(requireContext(), R.layout.hangman_keyboard_adapter_views, R.id.hangman_letter, letterList)
 
-        //Todo: Go back to LinearLayoutManager and set orientation there.
         keyboardGridView.adapter = keyboardAdapter
+
+        keyboardGridView.setOnItemClickListener { parent, view, position, id ->
+            Toast.makeText(requireContext(), "At position $position", Toast.LENGTH_LONG).show()
+        }
 
 
         return rootView
