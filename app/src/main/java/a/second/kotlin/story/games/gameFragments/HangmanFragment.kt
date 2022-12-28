@@ -23,7 +23,7 @@ class HangmanFragment : Fragment() {
     val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
 
     lateinit var keyboardGridView : GridView
-    lateinit var puzzleListView : ListView
+    lateinit var puzzleGridView : GridView
     lateinit var rootView : View
 
     var normalWordList : ArrayList<String> = ArrayList()
@@ -52,7 +52,7 @@ class HangmanFragment : Fragment() {
         normalWordList = convertStringListToArrayList(getString(R.string.normal_words_string).split(" "))
         hardWordStringList = convertStringListToArrayList(getString(R.string.hard_words_string).split(" "))
 
-        instantiatePuzzleListView()
+        instantiatePuzzleGridView()
         instantiateKeyboardGridViewAndAdapter()
         populateTotalLetterList()
         populateUnselectedLetterList()
@@ -137,11 +137,11 @@ class HangmanFragment : Fragment() {
         keyboardGridView.adapter = keyboardAdapter
     }
 
-    private fun instantiatePuzzleListView() {
-        puzzleListView = rootView.findViewById(R.id.hangman_puzzle_recyclerView)
+    private fun instantiatePuzzleGridView() {
+        puzzleGridView = rootView.findViewById(R.id.hangman_puzzle_gridView)
 
-        val puzzleAdapter : Hangman.PuzzleListViewAdapter = Hangman.PuzzleListViewAdapter(requireContext(), R.layout.hangman_puzzle_adapter_view, R.id.hangman_puzzle_letter, puzzleSelectedWordLetterList)
-        puzzleListView.adapter = puzzleAdapter
+        val puzzleAdapter : Hangman.PuzzleGridViewAdapter = Hangman.PuzzleGridViewAdapter(requireContext(), R.layout.hangman_puzzle_adapter_view, R.id.hangman_puzzle_letter, puzzleSelectedWordLetterList)
+        puzzleGridView.adapter = puzzleAdapter
     }
 
     private fun letterListLogs() {

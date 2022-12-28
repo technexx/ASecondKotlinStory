@@ -23,7 +23,7 @@ class Hangman {
     class KeyboardGridViewAdapter(context: Context, layout: Int, letter: Int, list: List<String>) : ArrayAdapter<String>(context, layout, letter, list) {
     }
 
-    class PuzzleListViewAdapter(context: Context, layout: Int, letter: Int, list: List<String>) : ArrayAdapter<String>(context, layout, letter, list) {
+    class PuzzleGridViewAdapter(context: Context, layout: Int, letter: Int, list: List<String>) : ArrayAdapter<String>(context, layout, letter, list) {
     }
 
 //    class PuzzleRecyclerViewAdapter(val list: ArrayList<String>) : RecyclerView.Adapter<PuzzleRecyclerViewAdapter.PuzzleViewHolder>() {
