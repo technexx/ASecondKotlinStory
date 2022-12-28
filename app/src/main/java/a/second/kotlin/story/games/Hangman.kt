@@ -20,9 +20,30 @@ import java.security.Key
 
 class Hangman {
 
-    class KeyboardRecyclerAdapter(context: Context, layout: Int, letter: Int, list: List<String>) : ArrayAdapter<String>(context, layout, letter, list) {
-
+    class KeyboardGridViewAdapter(context: Context, layout: Int, letter: Int, list: List<String>) : ArrayAdapter<String>(context, layout, letter, list) {
     }
+
+    class PuzzleListViewAdapter(context: Context, layout: Int, letter: Int, list: List<String>) : ArrayAdapter<String>(context, layout, letter, list) {
+    }
+
+//    class PuzzleRecyclerViewAdapter(val list: ArrayList<String>) : RecyclerView.Adapter<PuzzleRecyclerViewAdapter.PuzzleViewHolder>() {
+//
+//        class PuzzleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+//
+//        }
+//
+//        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PuzzleViewHolder {
+//
+//        }
+//
+//        override fun onBindViewHolder(holder: PuzzleViewHolder, position: Int) {
+//        }
+//
+//        override fun getItemCount(): Int {
+//        }
+//
+//    }
+
 
     fun alphabetStringArray(): List<String>{
         val alphabet =
@@ -46,8 +67,8 @@ class Hangman {
 
             val xPosStart = 125
             val xPosEnd = 230
-            val topY = 20
-            val bottomY = 180
+            val topY = 10
+            val bottomY = 140
 
             mCanvas.drawLine(pxToDp(xPosStart), pxToDp(topY), pxToDp(xPosEnd), pxToDp(topY), mPaint)
 
