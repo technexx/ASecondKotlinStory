@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-        <string name="easy_words_string">
+        <string name="normal_words_string">
         cat
         sun
         cup
@@ -118,10 +118,7 @@
         football
         branch
         robot
-    </string>
-
-    <string name="medium_words_string">
-        horse
+            horse
         door
         song
         trip
@@ -291,7 +288,7 @@
         desk
     </string>
 
-    <string name="hard_words_string">abruptly
+    <string name="hard_words_string"> abruptly
     absurd
     abyss
     affix

@@ -4,6 +4,7 @@ import a.second.kotlin.story.ItemViewModel
 import a.second.kotlin.story.R
 import a.second.kotlin.story.games.Hangman
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,8 +26,7 @@ class HangmanFragment : Fragment() {
     lateinit var puzzleListView : ListView
     lateinit var rootView : View
 
-    var easyWordStringList : ArrayList<String> = ArrayList()
-    var mediumWordStringList : ArrayList<String> = ArrayList()
+    var normalWordList : ArrayList<String> = ArrayList()
     var hardWordStringList : ArrayList<String> = ArrayList()
 
     var totalLetterList : ArrayList<String> = ArrayList()
@@ -35,6 +35,9 @@ class HangmanFragment : Fragment() {
 
     var puzzleWordBankList : ArrayList<String> = ArrayList()
     var puzzleSelectedWordLetterList: ArrayList<String> = ArrayList()
+
+    val NORMAL_WORD = 0
+    val HARD_WORD = 1
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,8 +49,7 @@ class HangmanFragment : Fragment() {
 
         rootView = inflater.inflate(R.layout.fragment_hangman_layout, container, false)
 
-        easyWordStringList = convertStringListToArrayList(getString(R.string.easy_words_string).split(" "))
-        mediumWordStringList = convertStringListToArrayList(getString(R.string.medium_words_string).split(" "))
+        normalWordList = convertStringListToArrayList(getString(R.string.normal_words_string).split(" "))
         hardWordStringList = convertStringListToArrayList(getString(R.string.hard_words_string).split(" "))
 
         instantiatePuzzleListView()
@@ -55,7 +57,7 @@ class HangmanFragment : Fragment() {
         populateTotalLetterList()
         populateUnselectedLetterList()
 
-        populatePuzzleWordBankList(easyWordStringList)
+        assignedWordListBasedOnDifficulty(NORMAL_WORD)
         populatePuzzleSelectedWordList(randomWordAsArrayList())
 
         keyboardGridView.setOnItemClickListener { parent, view, position, id ->
@@ -69,6 +71,30 @@ class HangmanFragment : Fragment() {
 
 
         return rootView
+    }
+
+    private fun assignedWordListBasedOnDifficulty(difficulty: Int) {
+        when (difficulty) {
+            NORMAL_WORD -> populatePuzzleWordBankList(normalWordList)
+            HARD_WORD -> populatePuzzleWordBankList(hardWordStringList)
+        }
+    }
+    private fun populatePuzzleWordBankList(array: ArrayList<String>) {
+        puzzleWordBankList.addAll(array)
+        Log.i("testList", "word array is " + puzzleWordBankList)
+    }
+
+    private fun populatePuzzleSelectedWordList(array: ArrayList<String>) {
+        puzzleSelectedWordLetterList.addAll(array)
+        Log.i("testSelect", "selected word list is " + puzzleSelectedWordLetterList)
+    }
+
+    private fun randomWordAsArrayList() : ArrayList<String> {
+        val wordRoll = (puzzleWordBankList.indices).random()
+        val wordSelected : String = puzzleWordBankList.get(wordRoll)
+        val stringAsList = wordSelected.split(" ")
+
+        return convertStringListToArrayList(stringAsList)
     }
 
     private fun populateTotalLetterList() {
@@ -91,24 +117,6 @@ class HangmanFragment : Fragment() {
         for (i in totalLetterList) if (!unSelectedLetterList.contains(letter)) {
             textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
         }
-    }
-
-    private fun populatePuzzleWordBankList(array: ArrayList<String>) {
-        puzzleWordBankList.addAll(array)
-        Log.i("testList", "word array is " + puzzleWordBankList)
-    }
-
-    private fun populatePuzzleSelectedWordList(array: ArrayList<String>) {
-        puzzleSelectedWordLetterList.addAll(array)
-        Log.i("testSelect", "selected word list is " + puzzleSelectedWordLetterList)
-    }
-
-    private fun randomWordAsArrayList() : ArrayList<String> {
-        val wordRoll = (puzzleWordBankList.indices).random()
-        val wordSelected : String = puzzleWordBankList.get(wordRoll)
-        val stringAsList = wordSelected.split(" ")
-
-        return convertStringListToArrayList(stringAsList)
     }
 
     private fun doesSelectedLetterExistInWord(letter: String) : Boolean {
