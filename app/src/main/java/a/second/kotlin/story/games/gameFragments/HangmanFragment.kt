@@ -54,7 +54,9 @@ class HangmanFragment : Fragment() {
         instantiateKeyboardGridViewAndAdapter()
         populateTotalLetterList()
         populateUnselectedLetterList()
+
         populatePuzzleWordBankList(easyWordStringList)
+        populatePuzzleSelectedWordList(randomWordAsArrayList())
 
         keyboardGridView.setOnItemClickListener { parent, view, position, id ->
             val letterClicked = HangmanClass.alphabetStringArray()[position]
@@ -96,13 +98,17 @@ class HangmanFragment : Fragment() {
         Log.i("testList", "word array is " + puzzleWordBankList)
     }
 
-    private fun randomWordAsArrayList() : ArrayList<String> {
-       val testList : List<String> = (getString(R.string.easy_words_string).split(" "))
-
-    }
-
     private fun populatePuzzleSelectedWordList(array: ArrayList<String>) {
         puzzleSelectedWordLetterList.addAll(array)
+        Log.i("testSelect", "selected word list is " + puzzleSelectedWordLetterList)
+    }
+
+    private fun randomWordAsArrayList() : ArrayList<String> {
+        val wordRoll = (puzzleWordBankList.indices).random()
+        val wordSelected : String = puzzleWordBankList.get(wordRoll)
+        val stringAsList = wordSelected.split(" ")
+
+        return convertStringListToArrayList(stringAsList)
     }
 
     private fun doesSelectedLetterExistInWord(letter: String) : Boolean {
