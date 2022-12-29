@@ -27,6 +27,7 @@ class HangmanFragment : Fragment() {
 
     lateinit var keyboardGridView : GridView
     lateinit var puzzleRecyclerView : RecyclerView
+    lateinit var puzzleAdapter : Hangman.PuzzleRecyclerAdapter
     lateinit var rootView : View
 
     var normalWordList : ArrayList<String> = ArrayList()
@@ -37,7 +38,8 @@ class HangmanFragment : Fragment() {
     var selectedLetterList : ArrayList<String> = ArrayList()
 
     var puzzleWordBankList : ArrayList<String> = ArrayList()
-    var puzzleSelectedWordLetterList: ArrayList<String> = ArrayList()
+    var selectedWordLetterListForPuzzle: ArrayList<String> = ArrayList()
+    var blankedOutLetterListOfPuzzleWord: ArrayList<String> = ArrayList()
 
     val NORMAL_WORD = 0
     val HARD_WORD = 1
@@ -62,6 +64,9 @@ class HangmanFragment : Fragment() {
 
         assignedWordListBasedOnDifficulty(NORMAL_WORD)
         populatePuzzleSelectedWordList(randomWordAsArrayList())
+
+        populateBlankedOutLetterListOfPuzzleWord()
+        refreshEntirePuzzleLetterAdapter()
 
         keyboardGridView.setOnItemClickListener { parent, view, position, id ->
             val letterClicked = HangmanClass.alphabetStringArray()[position]
@@ -88,8 +93,8 @@ class HangmanFragment : Fragment() {
     }
 
     private fun populatePuzzleSelectedWordList(array: ArrayList<String>) {
-        puzzleSelectedWordLetterList.addAll(array)
-        Log.i("testSelect", "selected word list is " + puzzleSelectedWordLetterList)
+        selectedWordLetterListForPuzzle.addAll(array)
+        Log.i("testSelect", "selected word list is " + selectedWordLetterListForPuzzle)
     }
 
     private fun randomWordAsArrayList() : ArrayList<String> {
@@ -123,7 +128,7 @@ class HangmanFragment : Fragment() {
     }
 
     private fun doesSelectedLetterExistInWord(letter: String) : Boolean {
-        return puzzleSelectedWordLetterList.contains(letter)
+        return selectedWordLetterListForPuzzle.contains(letter)
     }
 
     private fun convertStringListToArrayList(list: List<String>) : ArrayList<String> {
@@ -143,9 +148,22 @@ class HangmanFragment : Fragment() {
     private fun instantiatePuzzleRecyclerView() {
         puzzleRecyclerView = rootView.findViewById(R.id.hangman_puzzle_recyclerView)
 
-        val puzzleAdapter : Hangman.PuzzleRecyclerAdapter = Hangman.PuzzleRecyclerAdapter(convertStringListToArrayList(HangmanClass.alphabetStringArray()))
+        puzzleAdapter = Hangman.PuzzleRecyclerAdapter(blankedOutLetterListOfPuzzleWord)
         puzzleRecyclerView.adapter = puzzleAdapter
         puzzleRecyclerView.layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
+    }
+
+    private fun populateBlankedOutLetterListOfPuzzleWord() {
+        for (i in 0..selectedWordLetterListForPuzzle.size) {
+            blankedOutLetterListOfPuzzleWord.add("\uFF3F")
+        }
+    }
+    private fun refreshSinglePositionOfPuzzleLetterAdapter(position : Int) {
+        puzzleAdapter.notifyItemChanged(position)
+    }
+
+    private fun refreshEntirePuzzleLetterAdapter() {
+        puzzleAdapter.notifyDataSetChanged()
     }
 
     private fun letterListLogs() {
