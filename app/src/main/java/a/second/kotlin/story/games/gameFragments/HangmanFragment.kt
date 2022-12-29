@@ -15,7 +15,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 
 class HangmanFragment : Fragment() {
 
@@ -23,7 +26,7 @@ class HangmanFragment : Fragment() {
     val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
 
     lateinit var keyboardGridView : GridView
-    lateinit var puzzleGridView : GridView
+    lateinit var puzzleRecyclerView : RecyclerView
     lateinit var rootView : View
 
     var normalWordList : ArrayList<String> = ArrayList()
@@ -52,7 +55,7 @@ class HangmanFragment : Fragment() {
         normalWordList = convertStringListToArrayList(getString(R.string.normal_words_string).split(" "))
         hardWordStringList = convertStringListToArrayList(getString(R.string.hard_words_string).split(" "))
 
-        instantiatePuzzleGridView()
+        instantiatePuzzleRecyclerView()
         instantiateKeyboardGridViewAndAdapter()
         populateTotalLetterList()
         populateUnselectedLetterList()
@@ -125,7 +128,7 @@ class HangmanFragment : Fragment() {
 
     private fun convertStringListToArrayList(list: List<String>) : ArrayList<String> {
         val arrayListToReturn : ArrayList<String> = ArrayList()
-        for (i in list) arrayListToReturn.addAll(list)
+        arrayListToReturn.addAll(list)
         return arrayListToReturn
     }
 
@@ -137,11 +140,12 @@ class HangmanFragment : Fragment() {
         keyboardGridView.adapter = keyboardAdapter
     }
 
-    private fun instantiatePuzzleGridView() {
-        puzzleGridView = rootView.findViewById(R.id.hangman_puzzle_gridView)
+    private fun instantiatePuzzleRecyclerView() {
+        puzzleRecyclerView = rootView.findViewById(R.id.hangman_puzzle_recyclerView)
 
-        val puzzleAdapter : Hangman.PuzzleGridViewAdapter = Hangman.PuzzleGridViewAdapter(requireContext(), R.layout.hangman_puzzle_adapter_view, R.id.hangman_puzzle_letter, puzzleSelectedWordLetterList)
-        puzzleGridView.adapter = puzzleAdapter
+        val puzzleAdapter : Hangman.PuzzleRecyclerAdapter = Hangman.PuzzleRecyclerAdapter(convertStringListToArrayList(HangmanClass.alphabetStringArray()))
+        puzzleRecyclerView.adapter = puzzleAdapter
+        puzzleRecyclerView.layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
     }
 
     private fun letterListLogs() {

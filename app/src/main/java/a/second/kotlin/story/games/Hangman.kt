@@ -23,27 +23,26 @@ class Hangman {
     class KeyboardGridViewAdapter(context: Context, layout: Int, letter: Int, list: List<String>) : ArrayAdapter<String>(context, layout, letter, list) {
     }
 
-    class PuzzleGridViewAdapter(context: Context, layout: Int, letter: Int, list: List<String>) : ArrayAdapter<String>(context, layout, letter, list) {
+    class PuzzleRecyclerAdapter(alphabetList: ArrayList<String>) : RecyclerView.Adapter<PuzzleRecyclerAdapter.LetterHolder>() {
+        val alphabetArray : ArrayList<String> = alphabetList
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LetterHolder {
+            val letterItem = LayoutInflater.from(parent.context).inflate(R.layout.hangman_puzzle_adapter_view, parent, false)
+            return LetterHolder(letterItem)
+        }
+
+        override fun onBindViewHolder(holder: LetterHolder, position: Int) {
+            holder.letterView.text = alphabetArray[position]
+        }
+
+        override fun getItemCount(): Int {
+            return alphabetArray.size
+        }
+
+        class LetterHolder(itemView : View) : ViewHolder(itemView) {
+            val letterView : TextView = itemView.findViewById(R.id.hangman_puzzle_letter)
+        }
     }
-
-//    class PuzzleRecyclerViewAdapter(val list: ArrayList<String>) : RecyclerView.Adapter<PuzzleRecyclerViewAdapter.PuzzleViewHolder>() {
-//
-//        class PuzzleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-//
-//        }
-//
-//        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PuzzleViewHolder {
-//
-//        }
-//
-//        override fun onBindViewHolder(holder: PuzzleViewHolder, position: Int) {
-//        }
-//
-//        override fun getItemCount(): Int {
-//        }
-//
-//    }
-
 
     fun alphabetStringArray(): List<String>{
         val alphabet =
