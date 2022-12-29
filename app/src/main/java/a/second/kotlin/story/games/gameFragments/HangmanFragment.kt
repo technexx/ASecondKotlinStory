@@ -63,7 +63,7 @@ class HangmanFragment : Fragment() {
         populateUnselectedLetterList()
 
         assignedWordListBasedOnDifficulty(NORMAL_WORD)
-        populatePuzzleSelectedWordList(randomWordAsArrayList())
+        populatePuzzleSelectedWordList(randomWordAsArrayListOfLetters())
 
         populateBlankedOutLetterListOfPuzzleWord()
         refreshEntirePuzzleLetterAdapter()
@@ -97,10 +97,17 @@ class HangmanFragment : Fragment() {
         Log.i("testSelect", "selected word list is " + selectedWordLetterListForPuzzle)
     }
 
-    private fun randomWordAsArrayList() : ArrayList<String> {
+    private fun randomWordAsArrayListOfLetters() : ArrayList<String> {
+        var listToReturn: ArrayList<String> = ArrayList()
+
         val wordRoll = (puzzleWordBankList.indices).random()
         val wordSelected : String = puzzleWordBankList.get(wordRoll)
-        val stringAsList = wordSelected.split(" ")
+        val stringAsList : List<String> = wordSelected.split("")
+
+        for (i in stringAsList.indices) {
+            if (!stringAsList.get(i).equals(""))
+                listToReturn.add(stringAsList.get(i))
+        }
 
         return convertStringListToArrayList(stringAsList)
     }
