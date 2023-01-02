@@ -2,13 +2,11 @@ package a.second.kotlin.story.games
 
 import a.second.kotlin.story.R
 import android.content.Context
-import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +14,6 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import java.security.Key
 
 class Hangman {
 
@@ -50,9 +47,11 @@ class Hangman {
         return alphabet.split(", ")
     }
 
-    class GallowsCanvas(context: Context?, attrs: AttributeSet): View(context, attrs) {
+    class GallowsCanvas(context: Context?, attrs: AttributeSet?): View(context, attrs) {
         var mCanvas : Canvas = Canvas()
         var mPaint : Paint = Paint()
+
+        val mPaintText : Paint = Paint()
         var progress = 0
 
         fun setPaintColor() {
@@ -60,6 +59,14 @@ class Hangman {
             mPaint.style = Paint.Style.STROKE
             mPaint.strokeWidth = (pxToDp(6))
         }
+
+        fun setPaintTextColor() {
+            mPaintText.textSize = pxToDp(23)
+            mPaintText.color = Color.BLACK
+        }
+
+        fun iterateProgress() { progress++ }
+        fun resetProgress() { progress = 0 }
 
         fun drawGallows() {
             setPaintColor()
@@ -103,15 +110,78 @@ class Hangman {
                 mPaint)
         }
 
-        fun drawHangman() {
-            var xPositionStart = 125
-            var topYPosition = 165
-            var bottomYPosition = 265
+        fun drawHangMan() {
+            val xPosStart = 125
+            val topY = 165
+            val bottomY = 265
 
             if (progress > 0) {
-
+                mCanvas.drawCircle(pxToDp(xPosStart), pxToDp(topY), pxToDp(25), mPaint)
+                if (progress <= 5) {
+                    mCanvas.drawCircle(pxToDp(xPosStart - 10), pxToDp(topY - 10), pxToDp(3), mPaint)
+                    mCanvas.drawCircle(pxToDp(xPosStart + 10), pxToDp(topY - 10), pxToDp(3), mPaint)
+                } else {
+                    mPaintText.setTextSize(pxToDp(13))
+                    mCanvas.drawText("x", pxToDp(xPosStart - 10), pxToDp(topY - 10), mPaintText)
+                    mCanvas.drawText("x", pxToDp(xPosStart + 3), pxToDp(topY - 10), mPaintText)
+                    mPaintText.setTextSize(pxToDp(23))
+                    mCanvas.drawLine(pxToDp(xPosStart),
+                        pxToDp(topY + 9),
+                        pxToDp(xPosStart),
+                        pxToDp(topY + 20),
+                        mPaint)
+                }
+                mPaint.style = Paint.Style.FILL
+                mCanvas.drawCircle(pxToDp(xPosStart), pxToDp(topY), pxToDp(3), mPaint)
+                mPaint.style = Paint.Style.STROKE
+                mCanvas.drawLine(pxToDp(xPosStart),
+                    pxToDp(topY + 9),
+                    pxToDp(xPosStart + 5),
+                    pxToDp(topY + 18),
+                    mPaint)
+                mCanvas.drawLine(pxToDp(xPosStart),
+                    pxToDp(topY + 9),
+                    pxToDp(xPosStart - 5),
+                    pxToDp(topY + 18),
+                    mPaint)
+            }
+            if (progress > 1) {
+                mCanvas.drawLine(pxToDp(xPosStart),
+                    pxToDp(topY + 25),
+                    pxToDp(xPosStart),
+                    pxToDp(bottomY),
+                    mPaint)
+            }
+            if (progress > 2) {
+                mCanvas.drawLine(pxToDp(xPosStart),
+                    pxToDp(topY + 60),
+                    pxToDp(xPosStart - 30),
+                    pxToDp(topY + 30),
+                    mPaint)
+            }
+            if (progress > 3) {
+                mCanvas.drawLine(pxToDp(xPosStart),
+                    pxToDp(topY + 60),
+                    pxToDp(xPosStart + 30),
+                    pxToDp(topY + 30),
+                    mPaint)
+            }
+            if (progress > 4) {
+                mCanvas.drawLine(pxToDp(xPosStart),
+                    pxToDp(bottomY),
+                    pxToDp(xPosStart - 30),
+                    pxToDp(bottomY + 30),
+                    mPaint)
+            }
+            if (progress > 5) {
+                mCanvas.drawLine(pxToDp(xPosStart),
+                    pxToDp(bottomY),
+                    pxToDp(xPosStart + 30),
+                    pxToDp(bottomY + 30),
+                    mPaint)
             }
         }
+
 
         override fun onDraw(canvas: Canvas) {
             mCanvas = canvas
@@ -156,32 +226,4 @@ class Hangman {
             return letter
         }
     }
-
 }
-
-//        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-//            var letterView = View(context)
-//
-//            if (convertView == null) {
-//                val inflater = LayoutInflater.from(parent.context)
-//                letterView = inflater.inflate(R.layout.hangman_keyboard_adapter_views, parent,false)
-//                val letterTextView : TextView = letterView.findViewById(R.id.hangman_letter)
-//                letterTextView.text = "BOO"
-//            }
-//
-//            return letterView
-//        }
-//
-//        override fun getItem(position: Int): String {
-//            return alphabetStringArray()[position]
-//        }
-//
-//        override fun getCount(): Int {
-//            return alphabetStringArray().size
-//        }
-//
-//        fun alphabetStringArray(): List<String>{
-//            val alphabet =
-//                "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z"
-//            return alphabet.split(", ")
-//        }
