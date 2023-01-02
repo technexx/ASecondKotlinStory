@@ -73,6 +73,7 @@ class HangmanFragment : Fragment() {
             addLetterToGuessedList(letterClicked)
             removeLetterFromUnguessedList(letterClicked)
             colorSelectedLetter(letterTextView, letterClicked)
+            drawLetterOnBoardOrDrawHangman(letterClicked)
         }
 
 
@@ -92,7 +93,6 @@ class HangmanFragment : Fragment() {
 
     private fun populatePuzzleSelectedWordList(array: ArrayList<String>) {
         selectedWordLetterListForPuzzle.addAll(array)
-        Log.i("testSelect", "selected word list is " + selectedWordLetterListForPuzzle)
     }
 
     private fun randomWordAsArrayListOfLetters() : ArrayList<String> {
@@ -107,7 +107,7 @@ class HangmanFragment : Fragment() {
                 listToReturn.add(stringAsList.get(i))
         }
 
-        return convertStringListToArrayList(stringAsList)
+        return convertStringListToArrayList(listToReturn)
     }
 
     private fun convertStringListToArrayList(list: List<String>) : ArrayList<String> {
@@ -123,6 +123,8 @@ class HangmanFragment : Fragment() {
     private fun populateUnselectedLetterList() {
         listOfLetterNotYetGuessed.addAll(HangmanClass.alphabetStringArray())
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
 
     private fun removeLetterFromUnguessedList(letter: String) {
         for (i in totalLetterList) if (listOfLetterNotYetGuessed.contains(letter)) listOfLetterNotYetGuessed.remove(letter)
@@ -140,8 +142,7 @@ class HangmanFragment : Fragment() {
 
     private fun drawLetterOnBoardOrDrawHangman(letter: String) {
         if (doesSelectedLetterExistInWord(letter)) {
-            revealedLetterListOfPuzzleWord.clear()
-            revealedLetterListOfPuzzleWord.addAll(selectedWordLetterListForPuzzle)
+            replaceBlankWithLetterInRevealedLetterList(letter)
             refreshEntirePuzzleLetterAdapter()
             Log.i("testLetter", "letter $letter exists")
         } else {
@@ -156,9 +157,10 @@ class HangmanFragment : Fragment() {
         return selectedWordLetterListForPuzzle.contains(letter)
     }
 
-//    private fun replaceBlankWithLetterInRevealedLetterList(letter: String) {
-//        if (selectedWordLetterListForPuzzle)
-//    }
+    private fun replaceBlankWithLetterInRevealedLetterList(letter: String) {
+        for (i in selectedWordLetterListForPuzzle.indices) if (selectedWordLetterListForPuzzle[i] == letter) revealedLetterListOfPuzzleWord[i] =
+            letter
+    }
 
     private fun populateRevealedLetterListOfPuzzleWordWithBlanks() {
         for (i in 0..selectedWordLetterListForPuzzle.size) {
@@ -173,6 +175,8 @@ class HangmanFragment : Fragment() {
     private fun refreshEntirePuzzleLetterAdapter() {
         puzzleAdapter.notifyDataSetChanged()
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////
 
     private fun instantiateKeyboardGridViewAndAdapter() {
         keyboardGridView = rootView.findViewById(R.id.hangman_keyboard_gridView)
