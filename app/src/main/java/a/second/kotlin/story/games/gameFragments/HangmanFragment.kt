@@ -21,7 +21,8 @@ import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 
 class HangmanFragment : Fragment() {
 
-    val HangmanClass = Hangman()
+    var HangmanClass = Hangman()
+    lateinit var GallowsClass : Hangman.GallowsCanvas
     val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
 
     private lateinit var keyboardGridView : GridView
@@ -52,6 +53,10 @@ class HangmanFragment : Fragment() {
                               savedInstanceState: Bundle?): View {
 
         rootView = inflater.inflate(R.layout.fragment_hangman_layout, container, false)
+
+        HangmanClass = Hangman()
+//        GallowsClass = Hangman.GallowsCanvas(requireContext(), null)
+        GallowsClass = rootView.findViewById(R.id.hangman_canvas)
 
         normalWordList = convertStringListToArrayList(getString(R.string.normal_words_string).split(" "))
         hardWordStringList = convertStringListToArrayList(getString(R.string.hard_words_string).split(" "))
@@ -147,9 +152,8 @@ class HangmanFragment : Fragment() {
             refreshEntirePuzzleLetterAdapter()
             Log.i("testLetter", "letter $letter exists")
         } else {
-            val gallowsClass : Hangman.GallowsCanvas = Hangman.GallowsCanvas(requireContext(), null)
-            gallowsClass.iterateProgress()
-            gallowsClass.drawHangMan()
+            GallowsClass.iterateProgress()
+            GallowsClass.reDrawCanvas()
             Log.i("testLetter", "letter $letter does NOT exist")
         }
     }

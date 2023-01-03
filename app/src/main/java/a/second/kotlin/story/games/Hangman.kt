@@ -54,6 +54,16 @@ class Hangman {
         val mPaintText : Paint = Paint()
         var progress = 0
 
+        override fun onDraw(canvas: Canvas) {
+            mCanvas = canvas
+            drawHangMan()
+            drawGallows()
+        }
+
+        fun reDrawCanvas() {
+            invalidate()
+        }
+
         fun setPaintColor() {
             mPaint.color = Color.BLACK
             mPaint.style = Paint.Style.STROKE
@@ -180,12 +190,6 @@ class Hangman {
                     pxToDp(bottomY + 30),
                     mPaint)
             }
-        }
-
-
-        override fun onDraw(canvas: Canvas) {
-            mCanvas = canvas
-            drawGallows()
         }
 
 
