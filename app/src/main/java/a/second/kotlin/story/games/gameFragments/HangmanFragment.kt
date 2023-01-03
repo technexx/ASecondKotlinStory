@@ -76,10 +76,11 @@ class HangmanFragment : Fragment() {
             val letterClicked = HangmanClass.alphabetStringArray()[position]
             val letterTextView : TextView = parent[position].findViewById(R.id.hangman_alphabet_letter)
 
-            addLetterToGuessedList(letterClicked)
-            removeLetterFromUnguessedList(letterClicked)
             colorSelectedLetter(letterTextView, letterClicked)
             drawLetterOnBoardOrDrawHangman(letterClicked)
+
+            addLetterToGuessedList(letterClicked)
+            removeLetterFromUnguessedList(letterClicked)
         }
 
 
@@ -147,15 +148,22 @@ class HangmanFragment : Fragment() {
     }
 
     private fun drawLetterOnBoardOrDrawHangman(letter: String) {
-        if (doesSelectedLetterExistInWord(letter)) {
-            replaceBlankWithLetterInRevealedLetterList(letter)
-            refreshEntirePuzzleLetterAdapter()
-            Log.i("testLetter", "letter $letter exists")
-        } else {
-            GallowsClass.iterateProgress()
-            GallowsClass.reDrawCanvas()
-            Log.i("testLetter", "letter $letter does NOT exist")
+        if (!hasLetterBeenSelectedBefore(letter)) {
+            if (doesSelectedLetterExistInWord(letter)) {
+                replaceBlankWithLetterInRevealedLetterList(letter)
+                refreshEntirePuzzleLetterAdapter()
+                Log.i("testLetter", "letter $letter exists")
+            } else {
+                GallowsClass.iterateProgress()
+                GallowsClass.reDrawCanvas()
+                Log.i("testLetter", "letter $letter does NOT exist")
+                //Todo: Fix position of hanging man.
+            }
         }
+    }
+
+    private fun hasLetterBeenSelectedBefore(letter: String) : Boolean {
+        return listOfLettersGuessed.contains(letter)
     }
 
     private fun doesSelectedLetterExistInWord(letter: String) : Boolean {
