@@ -33,7 +33,7 @@ class HangmanFragment : Fragment() {
     private var normalWordList : ArrayList<String> = ArrayList()
     private var hardWordStringList : ArrayList<String> = ArrayList()
 
-    private var totalLetterList : ArrayList<String> = ArrayList()
+    private var fullAlphabetLetterList : ArrayList<String> = ArrayList()
     private var listOfLetterNotYetGuessed : ArrayList<String> = ArrayList()
     private var listOfLettersGuessed : ArrayList<String> = ArrayList()
 
@@ -63,7 +63,7 @@ class HangmanFragment : Fragment() {
 
         instantiatePuzzleRecyclerView()
         instantiateKeyboardGridViewAndAdapter()
-        populateTotalLetterList()
+        populateFullAlphabetLetterList()
         populateUnselectedLetterList()
 
         assignedWordListBasedOnDifficulty(NORMAL_WORD)
@@ -123,8 +123,8 @@ class HangmanFragment : Fragment() {
         return arrayListToReturn
     }
 
-    private fun populateTotalLetterList() {
-        totalLetterList.addAll(HangmanClass.alphabetStringArray())
+    private fun populateFullAlphabetLetterList() {
+        fullAlphabetLetterList.addAll(HangmanClass.alphabetStringArray())
     }
 
     private fun populateUnselectedLetterList() {
@@ -134,15 +134,16 @@ class HangmanFragment : Fragment() {
     ////////////////////////////////////////////////////////////////////////////////
 
     private fun removeLetterFromUnguessedList(letter: String) {
-        for (i in totalLetterList) if (listOfLetterNotYetGuessed.contains(letter)) listOfLetterNotYetGuessed.remove(letter)
+        for (i in fullAlphabetLetterList) if (listOfLetterNotYetGuessed.contains(letter)) listOfLetterNotYetGuessed.remove(letter)
     }
 
     private fun addLetterToGuessedList(letter: String) {
-        for (i in totalLetterList) if (!listOfLettersGuessed.contains(letter)) listOfLettersGuessed.add(letter)
+        for (i in fullAlphabetLetterList) if (!listOfLettersGuessed.contains(letter)) listOfLettersGuessed.add(letter)
     }
 
+    //Todo: B0rked this
     private fun colorSelectedLetter(textView: TextView, letter: String) {
-        for (i in totalLetterList) if (!listOfLetterNotYetGuessed.contains(letter)) {
+        for (i in fullAlphabetLetterList) if (listOfLettersGuessed.contains(letter)) {
             textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
         }
     }
@@ -157,7 +158,6 @@ class HangmanFragment : Fragment() {
                 GallowsClass.iterateProgress()
                 GallowsClass.reDrawCanvas()
                 Log.i("testLetter", "letter $letter does NOT exist")
-                //Todo: Fix position of hanging man.
             }
         }
     }
@@ -195,7 +195,7 @@ class HangmanFragment : Fragment() {
         keyboardGridView = rootView.findViewById(R.id.hangman_keyboard_gridView)
         keyboardGridView.numColumns = 9
 
-        val keyboardAdapter : Hangman.KeyboardGridViewAdapter = Hangman.KeyboardGridViewAdapter(requireContext(), R.layout.hangman_keyboard_adapter_view, R.id.hangman_alphabet_letter, totalLetterList)
+        val keyboardAdapter : Hangman.KeyboardGridViewAdapter = Hangman.KeyboardGridViewAdapter(requireContext(), R.layout.hangman_keyboard_adapter_view, R.id.hangman_alphabet_letter, fullAlphabetLetterList)
         keyboardGridView.adapter = keyboardAdapter
     }
 
@@ -215,7 +215,7 @@ class HangmanFragment : Fragment() {
     }
 
     private fun letterListLogs() {
-        Log.i("testList", "total list is $totalLetterList")
+        Log.i("testList", "total list is $fullAlphabetLetterList")
         Log.i("testList", "unSelected list is $listOfLetterNotYetGuessed")
         Log.i("testList", "selected list is $listOfLettersGuessed")
     }
