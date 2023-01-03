@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
@@ -163,8 +164,8 @@ class HangmanFragment : Fragment() {
     }
 
     private fun populateRevealedLetterListOfPuzzleWordWithBlanks() {
-        for (i in 0..selectedWordLetterListForPuzzle.size) {
-            revealedLetterListOfPuzzleWord.add("\uFF3F  ")
+        for (i in 0 until selectedWordLetterListForPuzzle.size) {
+            revealedLetterListOfPuzzleWord.add("\uFF3F")
         }
     }
 
@@ -191,7 +192,14 @@ class HangmanFragment : Fragment() {
 
         puzzleAdapter = Hangman.PuzzleRecyclerAdapter(revealedLetterListOfPuzzleWord)
         puzzleRecyclerView.adapter = puzzleAdapter
+        puzzleRecyclerView.addItemDecoration(puzzleLetterDivider())
         puzzleRecyclerView.layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
+    }
+
+    private fun puzzleLetterDivider() : DividerItemDecoration {
+        var decoration = DividerItemDecoration(requireContext(), LinearLayoutManager.HORIZONTAL)
+        decoration.setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.horizontal_divider_blank)!!)
+        return decoration
     }
 
     private fun letterListLogs() {
