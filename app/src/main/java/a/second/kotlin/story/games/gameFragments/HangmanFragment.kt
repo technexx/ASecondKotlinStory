@@ -76,11 +76,12 @@ class HangmanFragment : Fragment() {
             val letterClicked = HangmanClass.alphabetStringArray()[position]
             val letterTextView : TextView = parent[position].findViewById(R.id.hangman_alphabet_letter)
 
-            colorSelectedLetter(letterTextView, letterClicked)
             drawLetterOnBoardOrDrawHangman(letterClicked)
 
             addLetterToGuessedList(letterClicked)
             removeLetterFromUnguessedList(letterClicked)
+            colorSelectedLetter(letterTextView, letterClicked)
+
         }
 
 
@@ -134,16 +135,17 @@ class HangmanFragment : Fragment() {
     ////////////////////////////////////////////////////////////////////////////////
 
     private fun removeLetterFromUnguessedList(letter: String) {
-        for (i in fullAlphabetLetterList) if (listOfLetterNotYetGuessed.contains(letter)) listOfLetterNotYetGuessed.remove(letter)
+        if (listOfLetterNotYetGuessed.contains(letter)) listOfLetterNotYetGuessed.remove(letter)
     }
 
     private fun addLetterToGuessedList(letter: String) {
-        for (i in fullAlphabetLetterList) if (!listOfLettersGuessed.contains(letter)) listOfLettersGuessed.add(letter)
+        if (!listOfLettersGuessed.contains(letter)) {
+            listOfLettersGuessed.add(letter)
+        }
     }
 
-    //Todo: B0rked this
     private fun colorSelectedLetter(textView: TextView, letter: String) {
-        for (i in fullAlphabetLetterList) if (listOfLettersGuessed.contains(letter)) {
+        if (listOfLettersGuessed.contains(letter)) {
             textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
         }
     }
