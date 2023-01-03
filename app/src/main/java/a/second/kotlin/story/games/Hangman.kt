@@ -92,7 +92,7 @@ class Hangman {
             mCanvas.drawLine(pxToDp(xPosStart),
                 pxToDp(topY),
                 pxToDp(xPosStart),
-                pxToDp(topY + 30),
+                pxToDp(topY + 10),
                 mPaint)
             mCanvas.drawLine(pxToDp(xPosEnd - 30),
                 pxToDp(topY),
@@ -125,8 +125,8 @@ class Hangman {
 
         fun drawHangMan() {
             val xPosStart = 125
-            val topY = 65
-            val bottomY = 140
+            val topY = 45
+            val bottomY = 120
 
             if (progress > 0) {
                 mCanvas.drawCircle(pxToDp(xPosStart), pxToDp(topY), pxToDp(25), mPaint)
