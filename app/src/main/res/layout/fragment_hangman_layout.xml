@@ -4,12 +4,33 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gallows_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent=".4"
+        android:orientation="horizontal">
+    </androidx.constraintlayout.widget.Guideline>
+
     <view class="a.second.kotlin.story.games.Hangman$GallowsCanvas"
         android:id="@+id/hangman_canvas"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/gallows_guideline"
         app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/hangman_state_of_answer_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hangman_canvas"
+        app:layout_constraintBottom_toTopOf="@id/hangman_puzzle_recyclerView"
+        android:textSize="20sp"
+        android:textColor="@color/black">
+    </TextView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/hangman_puzzle_recyclerView"
@@ -32,16 +53,5 @@
         android:gravity="center_horizontal">
     </GridView>
 
-    <TextView
-        android:id="@+id/hangman_state_of_answer_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hangman_canvas"
-        app:layout_constraintBottom_toTopOf="@id/hangman_puzzle_recyclerView"
-        android:textSize="20sp"
-        android:textColor="@color/black">
-    </TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

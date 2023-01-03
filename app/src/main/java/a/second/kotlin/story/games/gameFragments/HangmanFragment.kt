@@ -88,6 +88,7 @@ class HangmanFragment : Fragment() {
             removeLetterFromUnguessedList(letterClicked)
             colorSelectedLetter(letterTextView, letterClicked)
 
+            setStateOfAnswersTextView()
             disableKeyboardWhenGameHasEnded()
         }
 
@@ -162,11 +163,9 @@ class HangmanFragment : Fragment() {
             if (doesSelectedLetterExistInWord(letter)) {
                 replaceBlankWithLetterInRevealedLetterList(letter)
                 refreshEntirePuzzleLetterAdapter()
-                Log.i("testLetter", "letter $letter exists")
             } else {
                 GallowsClass.iterateProgress()
                 GallowsClass.reDrawCanvas()
-                Log.i("testLetter", "letter $letter does NOT exist")
             }
         }
     }
@@ -199,19 +198,29 @@ class HangmanFragment : Fragment() {
     }
 
     private fun setStateOfAnswersTextView() {
-
+        if (gameHasBeenWon()) {
+            hangmanStateOfAnswerTextView.setText("WIN")
+        }
+        if (gameHasBeenLost()) {
+            hangmanStateOfAnswerTextView.setText("LOSER!")
+        }
     }
 
     private fun disableKeyboardWhenGameHasEnded() {
-        if (GallowsClass.progress > 6 || hasGameBeenWon()) keyboardGridView.isEnabled = false
+        if (gameHasBeenWon() || gameHasBeenLost() ) keyboardGridView.isEnabled = false
     }
 
-    private fun hasGameBeenWon() : Boolean {
+    private fun gameHasBeenWon() : Boolean {
         return selectedWordLetterListForPuzzle.equals(revealedLetterListOfPuzzleWord)
     }
 
+    private fun gameHasBeenLost() : Boolean {
+        return GallowsClass.progress > 6
+    }
+
     private fun sendAnswerStateToViewModel() {
-        gamesViewModel.setIsAnswerCorrect(hasGameBeenWon())
+        if (gameHasBeenWon()) gamesViewModel.setIsAnswerCorrect(true)
+        if (gameHasBeenLost()) gamesViewModel.setIsAnswerCorrect(false)
     }
 
     private fun sendGameBeingPlayedToViewModel() {

@@ -16,6 +16,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
 
 //Todo: Remember to SUSPEND and not BLOCK if using UI thread. runBlocking is a default CoroutineScope.
+//Todo: Canvas takes up entire framelayout.
 
 @OptIn(DelicateCoroutinesApi::class)
 class MainActivity : AppCompatActivity() {
