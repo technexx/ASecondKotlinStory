@@ -23,7 +23,7 @@ class MathFragment : Fragment() {
     lateinit var problemTextView : TextView
     lateinit var answerEditText : EditText
     lateinit var submitButton : Button
-    lateinit var answerStateTextView : TextView
+    lateinit var mathAnswerStateTextView : TextView
 
     var inputOne : Int = 0
     var inputTwo : Int = 0
@@ -40,7 +40,7 @@ class MathFragment : Fragment() {
         problemTextView = rootView.findViewById(R.id.problem_textView)
         answerEditText = rootView.findViewById(R.id.math_answer_editText)
         submitButton = rootView.findViewById(R.id.submit_math_button)
-        answerStateTextView = rootView.findViewById(R.id.state_of_answer_textView)
+        mathAnswerStateTextView = rootView.findViewById(R.id.math_state_of_answer_textView)
 
         setTypeOfProblem()
         setInputsToTextView()
@@ -76,7 +76,7 @@ class MathFragment : Fragment() {
         }
     }
     private fun setStateOfAnswerTextView() {
-        if (doesUserInputMatchAnswer()) answerStateTextView.text = getString(R.string.math_problem_correct) else answerStateTextView.text = getString(R.string.math_problem_incorrect)
+        if (doesUserInputMatchAnswer()) mathAnswerStateTextView.text = getString(R.string.math_problem_correct) else mathAnswerStateTextView.text = getString(R.string.math_problem_incorrect)
     }
 
     private fun doesUserInputMatchAnswer() : Boolean {

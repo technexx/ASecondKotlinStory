@@ -32,4 +32,16 @@
         android:gravity="center_horizontal">
     </GridView>
 
+    <TextView
+        android:id="@+id/hangman_state_of_answer_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hangman_canvas"
+        app:layout_constraintBottom_toTopOf="@id/hangman_puzzle_recyclerView"
+        android:textSize="20sp"
+        android:textColor="@color/black">
+    </TextView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

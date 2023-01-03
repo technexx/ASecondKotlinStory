@@ -21,11 +21,13 @@ import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 
 class HangmanFragment : Fragment() {
 
+    //Todo: Use ViewModel to change stats on win/loss.
     var HangmanClass = Hangman()
     lateinit var GallowsClass : Hangman.GallowsCanvas
     val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
 
     private lateinit var keyboardGridView : GridView
+    private lateinit var keyboardAdapter : Hangman.KeyboardGridViewAdapter
     private lateinit var puzzleRecyclerView : RecyclerView
     private lateinit var puzzleAdapter : Hangman.PuzzleRecyclerAdapter
     private lateinit var rootView : View
@@ -44,6 +46,8 @@ class HangmanFragment : Fragment() {
     private val NORMAL_WORD = 0
     private val HARD_WORD = 1
 
+    private lateinit var hangmanStateOfAnswerTextView : TextView
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
     }
@@ -55,11 +59,13 @@ class HangmanFragment : Fragment() {
         rootView = inflater.inflate(R.layout.fragment_hangman_layout, container, false)
 
         HangmanClass = Hangman()
-//        GallowsClass = Hangman.GallowsCanvas(requireContext(), null)
         GallowsClass = rootView.findViewById(R.id.hangman_canvas)
+
+        hangmanStateOfAnswerTextView = rootView.findViewById(R.id.hangman_state_of_answer_textView)
 
         normalWordList = convertStringListToArrayList(getString(R.string.normal_words_string).split(" "))
         hardWordStringList = convertStringListToArrayList(getString(R.string.hard_words_string).split(" "))
+
 
         instantiatePuzzleRecyclerView()
         instantiateKeyboardGridViewAndAdapter()
@@ -82,6 +88,7 @@ class HangmanFragment : Fragment() {
             removeLetterFromUnguessedList(letterClicked)
             colorSelectedLetter(letterTextView, letterClicked)
 
+            disableKeyboardWhenGameHasEnded()
         }
 
 
@@ -191,13 +198,33 @@ class HangmanFragment : Fragment() {
         puzzleAdapter.notifyDataSetChanged()
     }
 
+    private fun setStateOfAnswersTextView() {
+
+    }
+
+    private fun disableKeyboardWhenGameHasEnded() {
+        if (GallowsClass.progress > 6 || hasGameBeenWon()) keyboardGridView.isEnabled = false
+    }
+
+    private fun hasGameBeenWon() : Boolean {
+        return selectedWordLetterListForPuzzle.equals(revealedLetterListOfPuzzleWord)
+    }
+
+    private fun sendAnswerStateToViewModel() {
+        gamesViewModel.setIsAnswerCorrect(hasGameBeenWon())
+    }
+
+    private fun sendGameBeingPlayedToViewModel() {
+        gamesViewModel.setWhichGameIsBeingPlayed("Math")
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////
 
     private fun instantiateKeyboardGridViewAndAdapter() {
         keyboardGridView = rootView.findViewById(R.id.hangman_keyboard_gridView)
         keyboardGridView.numColumns = 9
 
-        val keyboardAdapter : Hangman.KeyboardGridViewAdapter = Hangman.KeyboardGridViewAdapter(requireContext(), R.layout.hangman_keyboard_adapter_view, R.id.hangman_alphabet_letter, fullAlphabetLetterList)
+        keyboardAdapter = Hangman.KeyboardGridViewAdapter(requireContext(), R.layout.hangman_keyboard_adapter_view, R.id.hangman_alphabet_letter, fullAlphabetLetterList)
         keyboardGridView.adapter = keyboardAdapter
     }
 

@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
         if (game == "GameOne") statOneTextView.text = getString(R.string.two_item_concat, Stats.statOneValue.toString(), intToPlusOrMinusString(value))
         if (game == "Math") statTwoTextView.text = getString(R.string.two_item_concat, Stats.statTwoValue.toString(), intToPlusOrMinusString(value))
         if (game == "GameThree") statThreeTextView.text = getString(R.string.two_item_concat, Stats.statThreeValue.toString(), intToPlusOrMinusString(value))
-        if (game == "Word") statFourTextView.text = getString(R.string.two_item_concat, Stats.statFourValue.toString(), intToPlusOrMinusString(value))
+        if (game == "Hangman") statFourTextView.text = getString(R.string.two_item_concat, Stats.statFourValue.toString(), intToPlusOrMinusString(value))
     }
 
     private fun statChangeValueForGame() : Int {
