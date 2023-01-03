@@ -88,11 +88,11 @@ class HangmanFragment : Fragment() {
     }
     private fun populatePuzzleWordBankList(array: ArrayList<String>) {
         puzzleWordBankList.addAll(array)
-        Log.i("testList", "word array is " + puzzleWordBankList)
     }
 
     private fun populatePuzzleSelectedWordList(array: ArrayList<String>) {
         selectedWordLetterListForPuzzle.addAll(array)
+        Log.i("testSelect", "selected word list after copied to array is " + selectedWordLetterListForPuzzle)
     }
 
     private fun randomWordAsArrayListOfLetters() : ArrayList<String> {
