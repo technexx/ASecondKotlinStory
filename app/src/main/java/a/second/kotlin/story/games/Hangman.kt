@@ -88,6 +88,7 @@ class Hangman {
 
             mCanvas.drawLine(pxToDp(xPosStart), pxToDp(topY), pxToDp(xPosEnd), pxToDp(topY), mPaint)
 
+            //Top left -> right line and noose
             mCanvas.drawLine(pxToDp(xPosStart),
                 pxToDp(topY),
                 pxToDp(xPosStart),
@@ -98,11 +99,13 @@ class Hangman {
                 pxToDp(xPosEnd),
                 pxToDp(topY + 30),
                 mPaint)
+            //Top right -> bottom right line.
             mCanvas.drawLine(pxToDp(xPosEnd),
                 pxToDp(topY),
                 pxToDp(xPosEnd),
                 pxToDp(bottomY),
                 mPaint)
+            //Bottom horizontal line
             mCanvas.drawLine(pxToDp(xPosEnd - 50),
                 pxToDp(bottomY),
                 pxToDp(xPosEnd + 50),
@@ -122,38 +125,30 @@ class Hangman {
 
         fun drawHangMan() {
             val xPosStart = 125
-            val topY = 165
-            val bottomY = 265
+            val topY = 65
+            val bottomY = 140
 
             if (progress > 0) {
                 mCanvas.drawCircle(pxToDp(xPosStart), pxToDp(topY), pxToDp(25), mPaint)
-                if (progress <= 5) {
-                    mCanvas.drawCircle(pxToDp(xPosStart - 10), pxToDp(topY - 10), pxToDp(3), mPaint)
-                    mCanvas.drawCircle(pxToDp(xPosStart + 10), pxToDp(topY - 10), pxToDp(3), mPaint)
-                } else {
-                    mPaintText.setTextSize(pxToDp(13))
+                if (progress > 6) {
+                    mPaintText.setTextSize(pxToDp(15))
                     mCanvas.drawText("x", pxToDp(xPosStart - 10), pxToDp(topY - 10), mPaintText)
                     mCanvas.drawText("x", pxToDp(xPosStart + 3), pxToDp(topY - 10), mPaintText)
-                    mPaintText.setTextSize(pxToDp(23))
+
+                    mPaint.style = Paint.Style.FILL
+                    mCanvas.drawCircle(pxToDp(xPosStart), pxToDp(topY), pxToDp(3), mPaint)
+                    mPaint.style = Paint.Style.STROKE
                     mCanvas.drawLine(pxToDp(xPosStart),
                         pxToDp(topY + 9),
-                        pxToDp(xPosStart),
-                        pxToDp(topY + 20),
+                        pxToDp(xPosStart + 5),
+                        pxToDp(topY + 18),
+                        mPaint)
+                    mCanvas.drawLine(pxToDp(xPosStart),
+                        pxToDp(topY + 9),
+                        pxToDp(xPosStart - 5),
+                        pxToDp(topY + 18),
                         mPaint)
                 }
-                mPaint.style = Paint.Style.FILL
-                mCanvas.drawCircle(pxToDp(xPosStart), pxToDp(topY), pxToDp(3), mPaint)
-                mPaint.style = Paint.Style.STROKE
-                mCanvas.drawLine(pxToDp(xPosStart),
-                    pxToDp(topY + 9),
-                    pxToDp(xPosStart + 5),
-                    pxToDp(topY + 18),
-                    mPaint)
-                mCanvas.drawLine(pxToDp(xPosStart),
-                    pxToDp(topY + 9),
-                    pxToDp(xPosStart - 5),
-                    pxToDp(topY + 18),
-                    mPaint)
             }
             if (progress > 1) {
                 mCanvas.drawLine(pxToDp(xPosStart),
