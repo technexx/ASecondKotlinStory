@@ -78,6 +78,8 @@ class HangmanFragment : Fragment() {
         populateRevealedLetterListOfPuzzleWordWithBlanks()
         refreshEntirePuzzleLetterAdapter()
 
+        sendGameBeingPlayedToViewModel()
+
         keyboardGridView.setOnItemClickListener { parent, view, position, id ->
             val letterClicked = HangmanClass.alphabetStringArray()[position]
             val letterTextView : TextView = parent[position].findViewById(R.id.hangman_alphabet_letter)
@@ -90,6 +92,8 @@ class HangmanFragment : Fragment() {
 
             setStateOfAnswersTextView()
             disableKeyboardWhenGameHasEnded()
+
+            sendAnswerStateToViewModel()
         }
 
 
@@ -224,7 +228,7 @@ class HangmanFragment : Fragment() {
     }
 
     private fun sendGameBeingPlayedToViewModel() {
-        gamesViewModel.setWhichGameIsBeingPlayed("Math")
+        gamesViewModel.setWhichGameIsBeingPlayed("Hangman")
     }
 
     /////////////////////////////////////////////////////////////////////////////////////

@@ -22,6 +22,7 @@ open class ItemViewModel : ViewModel() {
     class GamesViewModel : ItemViewModel() {
         fun setIsAnswerCorrect(isCorrect : Boolean) {
             mutableCorrectAnswerBoolean.value = isCorrect
+            Log.i("testLiveDataAnswer", "livedata answer received as $isCorrect")
         }
 
         fun getIsAnswerCorrect() : Boolean? {
@@ -30,6 +31,7 @@ open class ItemViewModel : ViewModel() {
 
         fun setWhichGameIsBeingPlayed(game: String) {
             gameBeingPlayed = game
+            Log.i("testLiveDataAnswer", "livedata game received as $game")
         }
 
         fun getWhichIsGameBeingPlayed() : String {
