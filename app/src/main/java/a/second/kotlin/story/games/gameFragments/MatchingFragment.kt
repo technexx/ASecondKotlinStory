@@ -11,11 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.GridView
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 class MatchingFragment : Fragment() {
 
@@ -29,6 +32,8 @@ class MatchingFragment : Fragment() {
     private var blankCardLetterList : ArrayList<String> = ArrayList()
     private var guessedCardLetterList : ArrayList<String> = ArrayList()
     private var displayedCardLetterList : ArrayList<String> = ArrayList()
+
+    private var testHashMap : HashMap<String, Boolean> = HashMap()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,8 +51,16 @@ class MatchingFragment : Fragment() {
         populatedBlankLetterCardList()
         displayFullCardLetterList()
 
+        matchingGridView.setOnItemClickListener { parent, view, position, id ->
+            val cardClicked = parent[position]
+        }
+
         return rootView
     }
+
+//    private fun isCardTurnedOver() : Boolean {
+//
+//    }
 
     private fun clearDisplayedCardLetterList() { displayedCardLetterList.clear() }
 
@@ -87,7 +100,23 @@ class MatchingFragment : Fragment() {
         matchingGridView = rootView.findViewById(R.id.matching_cards_gridView)
         matchingGridView.numColumns = 4
         matchingAdapter = ArrayAdapter(requireContext(), R.layout.matching_adapter_views, R.id.matching_card_textView, displayedCardLetterList)
-        matchingGridView.adapter = matchingAdapter
 
+        val customAdapter: CustomAdapter = CustomAdapter(requireContext(), R.layout.matching_adapter_views, R.id.matching_card_textView, displayedCardLetterList)
+        matchingGridView.adapter = customAdapter
     }
+}
+
+class CustomAdapter (context: Context, resource: Int, item: Int, list: ArrayList<String>) : ArrayAdapter<String>(context, resource, item, list) {
+
+    override fun getView(position: Int, view: View?, parent: ViewGroup): View {
+        val inflater = LayoutInflater.from(context)
+        var rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
+
+        val cardTextView = rowView.findViewById(R.id.matching_card_textView) as TextView
+
+        cardTextView.text = "BOO"
+
+        return rowView
+    }
+
 }
