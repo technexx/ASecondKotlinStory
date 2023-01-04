@@ -23,26 +23,26 @@ class MainActivity : AppCompatActivity() {
     val gamesViewModel : ItemViewModel.GamesViewModel by viewModels()
 
     var job: Job = Job()
-    lateinit var Events : Events
-    lateinit var Stats : Stats
-    lateinit var DecimalToStringConversions: DecimalToStringConversions
+    private lateinit var Events : Events
+    private lateinit var Stats : Stats
+    private lateinit var DecimalToStringConversions: DecimalToStringConversions
 
-    lateinit var MathFragment: MathFragment
-    lateinit var HangmanFragment : HangmanFragment
+    private lateinit var MathFragment: MathFragment
+    private lateinit var HangmanFragment : HangmanFragment
 
-    lateinit var statOneHeader : TextView
-    lateinit var statOneTextView : TextView
-    lateinit var statTwoHeader : TextView
-    lateinit var statTwoTextView : TextView
-    lateinit var statThreeHeader : TextView
-    lateinit var statThreeTextView : TextView
-    lateinit var statFourHeader : TextView
-    lateinit var statFourTextView : TextView
+    private lateinit var statOneHeader : TextView
+    private lateinit var statOneTextView : TextView
+    private lateinit var statTwoHeader : TextView
+    private lateinit var statTwoTextView : TextView
+    private lateinit var statThreeHeader : TextView
+    private lateinit var statThreeTextView : TextView
+    private lateinit var statFourHeader : TextView
+    private lateinit var statFourTextView : TextView
 
-    lateinit var existenceTimerTextView : TextView
-    lateinit var startStopButton : TextView
-    lateinit var eventTextView : TextView
-    lateinit var statWarningTextView : TextView
+    private lateinit var existenceTimerTextView : TextView
+    private lateinit var startStopButton : TextView
+    private lateinit var eventTextView : TextView
+    private lateinit var statWarningTextView : TextView
 
     private var totalSpawnTimeInMilliseconds : Long = 0
     private var temporaryEventTime : Long = 0
@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity() {
     private var BAD_ROLL = 0
     private var GOOD_ROLL = 1
 
+    //Todo: Match Game, Unscramble,
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

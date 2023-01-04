@@ -22,15 +22,15 @@ import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 class HangmanFragment : Fragment() {
 
     //Todo: Use ViewModel to change stats on win/loss.
-    var HangmanClass = Hangman()
-    lateinit var GallowsClass : Hangman.GallowsCanvas
-    val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
+    private var HangmanClass = Hangman()
+    private lateinit var GallowsClass : Hangman.GallowsCanvas
+    private val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
+    private lateinit var rootView : View
 
     private lateinit var keyboardGridView : GridView
     private lateinit var keyboardAdapter : Hangman.KeyboardGridViewAdapter
     private lateinit var puzzleRecyclerView : RecyclerView
     private lateinit var puzzleAdapter : Hangman.PuzzleRecyclerAdapter
-    private lateinit var rootView : View
 
     private var normalWordList : ArrayList<String> = ArrayList()
     private var hardWordStringList : ArrayList<String> = ArrayList()
