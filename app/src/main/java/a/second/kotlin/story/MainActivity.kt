@@ -3,6 +3,7 @@ package a.second.kotlin.story
 
 import a.second.kotlin.story.games.Hangman
 import a.second.kotlin.story.games.gameFragments.HangmanFragment
+import a.second.kotlin.story.games.gameFragments.MatchingFragment
 import a.second.kotlin.story.games.gameFragments.MathFragment
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -27,8 +28,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var Stats : Stats
     private lateinit var DecimalToStringConversions: DecimalToStringConversions
 
-    private lateinit var MathFragment: MathFragment
+    private lateinit var MathFragment : MathFragment
     private lateinit var HangmanFragment : HangmanFragment
+    private lateinit var MatchingFragment : MatchingFragment
 
     private lateinit var statOneHeader : TextView
     private lateinit var statOneTextView : TextView
@@ -71,6 +73,7 @@ class MainActivity : AppCompatActivity() {
 
         MathFragment = MathFragment()
         HangmanFragment = HangmanFragment()
+        MatchingFragment = MatchingFragment()
 
         statOneHeader = findViewById(R.id.stat_one_header_textView)
         statTwoHeader = findViewById(R.id.stat_two_header_textView)
@@ -145,7 +148,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun attachGameFragment() {
         supportFragmentManager.beginTransaction()
-            .add(R.id.game_frame_layout, HangmanFragment)
+            .add(R.id.game_frame_layout, MatchingFragment)
             .commit()
     }
 
