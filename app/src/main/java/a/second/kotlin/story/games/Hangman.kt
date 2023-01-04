@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 class Hangman {
-
     class KeyboardGridViewAdapter(context: Context, layout: Int, letter: Int, list: List<String>) : ArrayAdapter<String>(context, layout, letter, list) {
     }
 
