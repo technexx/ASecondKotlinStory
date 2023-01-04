@@ -107,14 +107,14 @@ class MatchingFragment : Fragment() {
 }
 
 class CustomAdapter (context: Context, resource: Int, item: Int, list: ArrayList<String>) : ArrayAdapter<String>(context, resource, item, list) {
+    val cardList : ArrayList<String> = list
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
-        var rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
+        val rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
 
         val cardTextView = rowView.findViewById(R.id.matching_card_textView) as TextView
-
-        cardTextView.text = "BOO"
+        cardTextView.text = cardList[position]
 
         return rowView
     }
