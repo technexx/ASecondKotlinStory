@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -14,7 +14,10 @@
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="0dp"
         app:cardElevation="5dp"
-        app:cardUseCompatPadding="true">
+        app:cardUseCompatPadding="true"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true">
 
         <TextView
             android:id="@+id/hangman_alphabet_letter"
@@ -27,7 +30,7 @@
             android:gravity="center_horizontal"
             android:textSize="25sp">
         </TextView>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 
 

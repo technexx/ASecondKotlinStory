@@ -25,7 +25,10 @@ class MatchingFragment : Fragment() {
     private lateinit var matchingGridView : GridView
     private lateinit var matchingAdapter : ArrayAdapter<String>
 
-    private var cardLetterList : ArrayList<String> = ArrayList()
+    private var fullCardLetterList : ArrayList<String> = ArrayList()
+    private var blankCardLetterList : ArrayList<String> = ArrayList()
+    private var guessedCardLetterList : ArrayList<String> = ArrayList()
+    private var displayedCardLetterList : ArrayList<String> = ArrayList()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -37,31 +40,53 @@ class MatchingFragment : Fragment() {
 
         rootView = inflater.inflate(R.layout.fragment_matching_layout, container, false)
 
-        populateCardLetterList()
         instantiateMatchingGridViewAndAdapter()
+
+        populateFullCardLetterList()
+        populatedBlankLetterCardList()
+        displayFullCardLetterList()
 
         return rootView
     }
 
-    private fun populateCardLetterList() {
+    private fun clearDisplayedCardLetterList() { displayedCardLetterList.clear() }
+
+    private fun displayFullCardLetterList() {
+        displayedCardLetterList.addAll(fullCardLetterList)
+        matchingAdapter.notifyDataSetChanged()
+    }
+
+    private fun displayBlankCardLetterList() {
+        displayedCardLetterList.addAll(blankCardLetterList)
+        matchingAdapter.notifyDataSetChanged()
+    }
+
+    private fun displayGuessedCardLetterList() {
+        displayedCardLetterList.addAll(guessedCardLetterList)
+        matchingAdapter.notifyDataSetChanged()
+    }
+
+    private fun populateFullCardLetterList() {
         var input: Char
         input = 'A'
 
         while (input <= 'H') {
-            cardLetterList.add(input.toString())
-            cardLetterList.add(input.toString())
+            fullCardLetterList.add(input.toString())
+            fullCardLetterList.add(input.toString())
             input++
         }
 
-        cardLetterList.shuffle()
+        fullCardLetterList.shuffle()
+    }
 
-        Log.i("testList", "list is $cardLetterList")
+    private fun populatedBlankLetterCardList() {
+        for (i in fullCardLetterList) blankCardLetterList.add(" ")
     }
 
     private fun instantiateMatchingGridViewAndAdapter() {
         matchingGridView = rootView.findViewById(R.id.matching_cards_gridView)
         matchingGridView.numColumns = 4
-        matchingAdapter = ArrayAdapter(requireContext(), R.layout.matching_adapter_views, R.id.matching_card_textView, cardLetterList)
+        matchingAdapter = ArrayAdapter(requireContext(), R.layout.matching_adapter_views, R.id.matching_card_textView, displayedCardLetterList)
         matchingGridView.adapter = matchingAdapter
 
     }
