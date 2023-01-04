@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
         if (game == "GameOne") Stats.statOneValue += value
         if (game == "Math") Stats.statTwoValue += value
         if (game == "GameThee") Stats.statThreeValue += value
-        if (game == "Word") Stats.statFourValue += value
+        if (game == "Hangman") Stats.statFourValue += value
     }
 
     private fun changeStatTextViewFromGame(game: String?, value: Int) {
