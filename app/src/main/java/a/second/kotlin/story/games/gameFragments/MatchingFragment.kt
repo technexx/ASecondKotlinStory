@@ -105,13 +105,25 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         val cardTextView = rowView.findViewById(R.id.matching_card_textView) as TextView
         cardTextView.text = displayedList[position]
 
+        rowView.setOnClickListener {
+            turnOverCardIfFaceDown(position)
+            Log.i("testClick","clicked at position $position")
+        }
+
         return rowView
     }
 
-    private fun turnOverCardIfFaceDown(stringList: ArrayList<String>, position: Int) {
-        val selectedCard = guessedList[position]
-        val valueUnderSelectedCard =
-        if (selectedCard.equals("")) guessedList.set(position)
+    override fun getCount(): Int {
+        return fullCardList.size
+    }
 
+    private fun turnOverCardIfFaceDown(position: Int) {
+        val selectedCard = guessedList[position]
+        val valueBeneathSelectedCard = fullCardList[position]
+        if (selectedCard.equals(" ")) {
+            guessedList.set(position, valueBeneathSelectedCard)
+            displayedList.set(position,valueBeneathSelectedCard)
+            notifyDataSetChanged()
+        }
     }
 }
