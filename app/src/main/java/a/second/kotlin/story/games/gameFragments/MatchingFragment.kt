@@ -97,7 +97,8 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
                      val fullCardList: ArrayList<String>) : ArrayAdapter<String>(context, resource) {
 
     var numberOfCardsTurnedOver = 0
-    val twoCardSelectedList : MutableList<String> = MutableList(2) {""}
+    val twoCardSelectedPositionList : MutableList<Int> = mutableListOf(0, 1)
+    val twoCardSelectedValueList : MutableList<String> = mutableListOf(" ", " ")
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
@@ -127,7 +128,8 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
                 displayedList.set(position,valueBeneathSelectedCard)
                 notifyDataSetChanged()
 
-                populateTwoCardSelectedList(valueBeneathSelectedCard)
+                populateTwoCardSelectedPositionList(position)
+                populateTwoCardSelectedValueList(valueBeneathSelectedCard)
                 numberOfCardsTurnedOver++
             }
         }
@@ -140,13 +142,25 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         return (displayedList[position].equals(" "))
     }
 
-    private fun populateTwoCardSelectedList(cardValue: String) {
-        if (numberOfCardsTurnedOver == 0) twoCardSelectedList[0] = cardValue
-        if (numberOfCardsTurnedOver == 1) twoCardSelectedList[1] = cardValue
-        Log.i("testList", "two card list is $twoCardSelectedList")
+    private fun populateTwoCardSelectedPositionList(position: Int) {
+        if (numberOfCardsTurnedOver == 0) twoCardSelectedPositionList[0] = position
+        if (numberOfCardsTurnedOver == 1) twoCardSelectedPositionList[1] = position
+        Log.i("testList", "two card position list is $twoCardSelectedPositionList")
+    }
+
+    private fun populateTwoCardSelectedValueList(cardValue: String) {
+        if (numberOfCardsTurnedOver == 0) twoCardSelectedValueList[0] = cardValue
+        if (numberOfCardsTurnedOver == 1) twoCardSelectedValueList[1] = cardValue
+        Log.i("testList", "two card value list is $twoCardSelectedValueList")
     }
 
     private fun doBothSelectedCardsMatch() : Boolean {
-        return twoCardSelectedList[0] == twoCardSelectedList[1]
+        return twoCardSelectedValueList[0] == twoCardSelectedValueList[1]
     }
+
+    private fun turnSelectedCardsFaceDownIfTheyDoNotMatch() {
+
+    }
+
+    private fun resetCardTurnOverCount() { numberOfCardsTurnedOver = 0 }
 }
