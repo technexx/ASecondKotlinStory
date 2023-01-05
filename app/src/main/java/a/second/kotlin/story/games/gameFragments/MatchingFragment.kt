@@ -14,6 +14,8 @@ import android.widget.GridView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.view.menu.MenuView.ItemView
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -104,12 +106,22 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         val inflater = LayoutInflater.from(context)
 
         val rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
+        val cardItemView = rowView.findViewById(R.id.matching_card_cardView) as CardView
         val cardTextView = rowView.findViewById(R.id.matching_card_textView) as TextView
         cardTextView.text = displayedList[position]
 
         rowView.setOnClickListener {
-            turnOverCardIfFaceDown(position)
-            Log.i("testClick","clicked at position $position")
+            if (haveTwoOrLessCardsBeenTurnedUpright()) {
+                //notifyDataSetChanged() resets background of view
+                changeBackgroundOfCardIfSelected(cardItemView)
+                turnOverCardIfFaceDown(position)
+            } else {
+                turnSelectedCardsBackDownIfTheyDoNotMatch()
+                resetBackGroundOfCardsWhenUnSelected(cardItemView)
+                changeBackgroundOfSelectedCardsIfTheyMatch(cardItemView)
+                resetCardTurnOverCount()
+            }
+//            notifyDataSetChanged()
         }
 
         return rowView
@@ -122,24 +134,26 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
     private fun turnOverCardIfFaceDown(position: Int) {
         val valueBeneathSelectedCard = fullCardList[position]
 
-        if (haveTwoOrLessCardsBeenTurnedUpright()) {
-            if (isDisplayedCardFaceDown(position)) {
-                guessedList.set(position, valueBeneathSelectedCard)
-                displayedList.set(position,valueBeneathSelectedCard)
-                notifyDataSetChanged()
+        if (isDisplayedCardFaceDown(position)) {
+            guessedList.set(position, valueBeneathSelectedCard)
+            displayedList.set(position,valueBeneathSelectedCard)
 
-                populateTwoCardSelectedPositionList(position)
-                populateTwoCardSelectedValueList(valueBeneathSelectedCard)
-                numberOfCardsTurnedOver++
-            }
+            populateTwoCardSelectedPositionList(position)
+            populateTwoCardSelectedValueList(valueBeneathSelectedCard)
+            numberOfCardsTurnedOver++
         }
     }
 
-    private fun haveTwoOrLessCardsBeenTurnedUpright() : Boolean {
-        return numberOfCardsTurnedOver < 2
-    }
     private fun isDisplayedCardFaceDown(position: Int) : Boolean {
         return (displayedList[position].equals(" "))
+    }
+
+    private fun changeBackgroundOfCardIfSelected(cardView: CardView) {
+        cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.teal_200))
+    }
+
+    private fun resetBackGroundOfCardsWhenUnSelected(cardView: CardView) {
+        cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
     }
 
     private fun populateTwoCardSelectedPositionList(position: Int) {
@@ -154,13 +168,26 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         Log.i("testList", "two card value list is $twoCardSelectedValueList")
     }
 
+    private fun turnSelectedCardsBackDownIfTheyDoNotMatch() {
+        if (!doBothSelectedCardsMatch()) {
+            displayedList[twoCardSelectedPositionList[0]] = " "
+            displayedList[twoCardSelectedPositionList[1]] = " "
+        }
+    }
+
+    private fun changeBackgroundOfSelectedCardsIfTheyMatch(cardView: CardView) {
+        if (doBothSelectedCardsMatch()) {
+            cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.purple_200))
+        }
+    }
+
     private fun doBothSelectedCardsMatch() : Boolean {
         return twoCardSelectedValueList[0] == twoCardSelectedValueList[1]
     }
 
-    private fun turnSelectedCardsFaceDownIfTheyDoNotMatch() {
-
-    }
-
     private fun resetCardTurnOverCount() { numberOfCardsTurnedOver = 0 }
+
+    private fun haveTwoOrLessCardsBeenTurnedUpright() : Boolean {
+        return numberOfCardsTurnedOver < 2
+    }
 }
