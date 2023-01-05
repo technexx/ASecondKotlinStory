@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import java.nio.channels.SelectableChannel
 
 class MatchingFragment : Fragment() {
 
@@ -29,11 +30,8 @@ class MatchingFragment : Fragment() {
     private lateinit var matchingAdapter : ArrayAdapter<String>
 
     private var fullCardLetterList : ArrayList<String> = ArrayList()
-    private var blankCardLetterList : ArrayList<String> = ArrayList()
     private var guessedCardLetterList : ArrayList<String> = ArrayList()
     private var displayedCardLetterList : ArrayList<String> = ArrayList()
-
-    private var testHashMap : HashMap<String, Boolean> = HashMap()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -48,29 +46,17 @@ class MatchingFragment : Fragment() {
         instantiateMatchingGridViewAndAdapter()
 
         populateFullCardLetterList()
-        populatedBlankLetterCardList()
-        displayFullCardLetterList()
+        populateGuessedCardLetterListWithBlanks()
+        displayGuessedCardLetterList()
 
         matchingGridView.setOnItemClickListener { parent, view, position, id ->
-            val cardClicked = parent[position]
         }
 
         return rootView
     }
 
-//    private fun isCardTurnedOver() : Boolean {
-//
-//    }
-
-    private fun clearDisplayedCardLetterList() { displayedCardLetterList.clear() }
-
     private fun displayFullCardLetterList() {
         displayedCardLetterList.addAll(fullCardLetterList)
-        matchingAdapter.notifyDataSetChanged()
-    }
-
-    private fun displayBlankCardLetterList() {
-        displayedCardLetterList.addAll(blankCardLetterList)
         matchingAdapter.notifyDataSetChanged()
     }
 
@@ -92,8 +78,8 @@ class MatchingFragment : Fragment() {
         fullCardLetterList.shuffle()
     }
 
-    private fun populatedBlankLetterCardList() {
-        for (i in fullCardLetterList) blankCardLetterList.add(" ")
+    private fun populateGuessedCardLetterListWithBlanks() {
+        for (i in fullCardLetterList) guessedCardLetterList.add(" ")
     }
 
     private fun instantiateMatchingGridViewAndAdapter() {
@@ -101,22 +87,31 @@ class MatchingFragment : Fragment() {
         matchingGridView.numColumns = 4
         matchingAdapter = ArrayAdapter(requireContext(), R.layout.matching_adapter_views, R.id.matching_card_textView, displayedCardLetterList)
 
-        val customAdapter: CustomAdapter = CustomAdapter(requireContext(), R.layout.matching_adapter_views, R.id.matching_card_textView, displayedCardLetterList)
+        val customAdapter: CustomAdapter = CustomAdapter(requireContext(), R.layout.matching_adapter_views, displayedCardLetterList, guessedCardLetterList, fullCardLetterList)
         matchingGridView.adapter = customAdapter
     }
 }
 
-class CustomAdapter (context: Context, resource: Int, item: Int, list: ArrayList<String>) : ArrayAdapter<String>(context, resource, item, list) {
-    val cardList : ArrayList<String> = list
+//We can explicitly declare our objects in our constructor, so we don't have to re-assign them (e.g. guessedList = mGuessedList) within class.
+class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayList<String>, val guessedList: ArrayList<String>,
+                     val fullCardList: ArrayList<String>) : ArrayAdapter<String>(context, resource) {
+
+    var numberOfCardsSelected = 0
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
-        val rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
 
+        val rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
         val cardTextView = rowView.findViewById(R.id.matching_card_textView) as TextView
-        cardTextView.text = cardList[position]
+        cardTextView.text = displayedList[position]
 
         return rowView
     }
 
+    private fun turnOverCardIfFaceDown(stringList: ArrayList<String>, position: Int) {
+        val selectedCard = guessedList[position]
+        val valueUnderSelectedCard =
+        if (selectedCard.equals("")) guessedList.set(position)
+
+    }
 }
