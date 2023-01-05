@@ -92,11 +92,12 @@ class MatchingFragment : Fragment() {
     }
 }
 
-//We can explicitly declare our objects in our constructor, so we don't have to re-assign them (e.g. guessedList = mGuessedList) within class.
+//We can explicitly declare objects in our constructor, so we don't have to re-assign them (e.g. guessedList = mGuessedList) within class.
 class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayList<String>, val guessedList: ArrayList<String>,
                      val fullCardList: ArrayList<String>) : ArrayAdapter<String>(context, resource) {
 
-    var numberOfCardsSelected = 0
+    var numberOfCardsTurnedOver = 0
+    val twoCardSelectedList : MutableList<String> = MutableList(2) {""}
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
@@ -118,12 +119,34 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
     }
 
     private fun turnOverCardIfFaceDown(position: Int) {
-        val selectedCard = guessedList[position]
         val valueBeneathSelectedCard = fullCardList[position]
-        if (selectedCard.equals(" ")) {
-            guessedList.set(position, valueBeneathSelectedCard)
-            displayedList.set(position,valueBeneathSelectedCard)
-            notifyDataSetChanged()
+
+        if (haveTwoOrLessCardsBeenTurnedUpright()) {
+            if (isDisplayedCardFaceDown(position)) {
+                guessedList.set(position, valueBeneathSelectedCard)
+                displayedList.set(position,valueBeneathSelectedCard)
+                notifyDataSetChanged()
+
+                populateTwoCardSelectedList(valueBeneathSelectedCard)
+                numberOfCardsTurnedOver++
+            }
         }
+    }
+
+    private fun haveTwoOrLessCardsBeenTurnedUpright() : Boolean {
+        return numberOfCardsTurnedOver < 2
+    }
+    private fun isDisplayedCardFaceDown(position: Int) : Boolean {
+        return (displayedList[position].equals(" "))
+    }
+
+    private fun populateTwoCardSelectedList(cardValue: String) {
+        if (numberOfCardsTurnedOver == 0) twoCardSelectedList[0] = cardValue
+        if (numberOfCardsTurnedOver == 1) twoCardSelectedList[1] = cardValue
+        Log.i("testList", "two card list is $twoCardSelectedList")
+    }
+
+    private fun doBothSelectedCardsMatch() : Boolean {
+        return twoCardSelectedList[0] == twoCardSelectedList[1]
     }
 }
