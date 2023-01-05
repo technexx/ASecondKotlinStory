@@ -108,6 +108,7 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         val rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
         val cardItemView = rowView.findViewById(R.id.matching_card_cardView) as CardView
         val cardTextView = rowView.findViewById(R.id.matching_card_textView) as TextView
+        //Todo: This text plays just fine w/ background.
         cardTextView.text = displayedList[position]
 
         rowView.setOnClickListener {
@@ -115,13 +116,14 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
                 //notifyDataSetChanged() resets background of view
                 changeBackgroundOfCardIfSelected(cardItemView)
                 turnOverCardIfFaceDown(position)
+
             } else {
                 turnSelectedCardsBackDownIfTheyDoNotMatch()
                 resetBackGroundOfCardsWhenUnSelected(cardItemView)
                 changeBackgroundOfSelectedCardsIfTheyMatch(cardItemView)
                 resetCardTurnOverCount()
             }
-//            notifyDataSetChanged()
+            cardTextView.text = displayedList[position]
         }
 
         return rowView
@@ -153,7 +155,7 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
     }
 
     private fun resetBackGroundOfCardsWhenUnSelected(cardView: CardView) {
-        cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+        cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))
     }
 
     private fun populateTwoCardSelectedPositionList(position: Int) {
