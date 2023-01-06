@@ -114,18 +114,34 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         rowView.setOnClickListener {
             numberOfCardsTurnedOver++
 
+            if (numberOfCardsTurnedOver == 1) if (twoCardSelectedPositionList.contains(position)) resetBackGroundOfCard(cardItemView)
+
             if (numberOfCardsTurnedOver <= 2) {
                 changeBackgroundOfCardIfSelected(cardItemView)
                 turnOverCardIfFaceDown(position)
             }
+
             if (numberOfCardsTurnedOver == 2) {
-                turnSelectedCardsBackDownIfTheyDoNotMatch()
-                resetBackGroundOfCardsWhenUnSelected(cardItemView)
-                changeBackgroundOfSelectedCardsIfTheyMatch(cardItemView)
+//                turnSelectedCardsBackDownIfTheyDoNotMatch()
                 resetCardTurnOverCount()
+
+                //Works for getting our two-item list positions. Note that TextView is set below, so fetching a String from it will not work here.
+                val cardViewOne = parent.get(twoCardSelectedPositionList[0]).findViewById(R.id.matching_card_cardView) as CardView
+                val cardViewTwo = parent.get(twoCardSelectedPositionList[1]).findViewById(R.id.matching_card_cardView) as CardView
+                val cardTextOne = parent.get(twoCardSelectedPositionList[0]).findViewById(R.id.matching_card_textView) as TextView
+                val cardTextTwo = parent.get(twoCardSelectedPositionList[1]).findViewById(R.id.matching_card_textView) as TextView
+
+                changeBackgroundOfSelectedCardsDependingOnMatch(cardViewOne)
+                changeBackgroundOfSelectedCardsDependingOnMatch(cardViewTwo)
+
             }
             //Using notifyDataSetChanged() to update textView via list resets background of view, so we do it here.
             cardTextView.text = displayedList[position]
+
+            //Todo: Need to refresh adapter if we're basing this on position iteration. Otherwise, we should manually change (better).
+//            if (position == twoCardSelectedPositionList[0] || position == twoCardSelectedPositionList[1]) {
+//                changeBackgroundOfSelectedCardsDependingOnMatch(cardItemView)
+//            }
         }
 
         return rowView
@@ -157,8 +173,15 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.teal_200))
     }
 
-    private fun resetBackGroundOfCardsWhenUnSelected(cardView: CardView) {
+    private fun resetBackGroundOfCard(cardView: CardView) {
         cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))
+    }
+
+    private fun turnSelectedCardsBackDownIfTheyDoNotMatch() {
+        if (!doBothSelectedCardsMatch()) {
+            displayedList[twoCardSelectedPositionList[0]] = " "
+            displayedList[twoCardSelectedPositionList[1]] = " "
+        }
     }
 
     private fun populateTwoCardSelectedPositionList(position: Int) {
@@ -173,22 +196,17 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         Log.i("testList", "two card value list during population is $twoCardSelectedValueList")
     }
 
-    private fun turnSelectedCardsBackDownIfTheyDoNotMatch() {
-        if (!doBothSelectedCardsMatch()) {
-            displayedList[twoCardSelectedPositionList[0]] = " "
-            displayedList[twoCardSelectedPositionList[1]] = " "
-        }
-    }
-
     private fun doBothSelectedCardsMatch() : Boolean {
         Log.i("testList", "two card value list during check is $twoCardSelectedValueList")
 
         return twoCardSelectedValueList[0] == twoCardSelectedValueList[1]
     }
 
-    private fun changeBackgroundOfSelectedCardsIfTheyMatch(cardView: CardView) {
+    private fun changeBackgroundOfSelectedCardsDependingOnMatch(cardView: CardView) {
         if (doBothSelectedCardsMatch()) {
-            cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.purple_200))
+            cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.purple_200))
+        } else {
+            cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))
         }
     }
 }
