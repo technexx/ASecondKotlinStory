@@ -108,21 +108,23 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         val rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
         val cardItemView = rowView.findViewById(R.id.matching_card_cardView) as CardView
         val cardTextView = rowView.findViewById(R.id.matching_card_textView) as TextView
-        //Todo: This text plays just fine w/ background.
+
         cardTextView.text = displayedList[position]
 
         rowView.setOnClickListener {
-            if (haveTwoOrLessCardsBeenTurnedUpright()) {
-                //notifyDataSetChanged() resets background of view
+            numberOfCardsTurnedOver++
+
+            if (numberOfCardsTurnedOver <= 2) {
                 changeBackgroundOfCardIfSelected(cardItemView)
                 turnOverCardIfFaceDown(position)
-
-            } else {
+            }
+            if (numberOfCardsTurnedOver == 2) {
                 turnSelectedCardsBackDownIfTheyDoNotMatch()
                 resetBackGroundOfCardsWhenUnSelected(cardItemView)
                 changeBackgroundOfSelectedCardsIfTheyMatch(cardItemView)
                 resetCardTurnOverCount()
             }
+            //Using notifyDataSetChanged() to update textView via list resets background of view, so we do it here.
             cardTextView.text = displayedList[position]
         }
 
@@ -133,6 +135,8 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         return fullCardList.size
     }
 
+    private fun resetCardTurnOverCount() { numberOfCardsTurnedOver = 0 }
+
     private fun turnOverCardIfFaceDown(position: Int) {
         val valueBeneathSelectedCard = fullCardList[position]
 
@@ -142,7 +146,6 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
 
             populateTwoCardSelectedPositionList(position)
             populateTwoCardSelectedValueList(valueBeneathSelectedCard)
-            numberOfCardsTurnedOver++
         }
     }
 
@@ -159,15 +162,15 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
     }
 
     private fun populateTwoCardSelectedPositionList(position: Int) {
-        if (numberOfCardsTurnedOver == 0) twoCardSelectedPositionList[0] = position
-        if (numberOfCardsTurnedOver == 1) twoCardSelectedPositionList[1] = position
-        Log.i("testList", "two card position list is $twoCardSelectedPositionList")
+        if (numberOfCardsTurnedOver == 1) twoCardSelectedPositionList[0] = position
+        if (numberOfCardsTurnedOver == 2) twoCardSelectedPositionList[1] = position
+//        Log.i("testList", "two card position list is $twoCardSelectedPositionList")
     }
 
     private fun populateTwoCardSelectedValueList(cardValue: String) {
-        if (numberOfCardsTurnedOver == 0) twoCardSelectedValueList[0] = cardValue
-        if (numberOfCardsTurnedOver == 1) twoCardSelectedValueList[1] = cardValue
-        Log.i("testList", "two card value list is $twoCardSelectedValueList")
+        if (numberOfCardsTurnedOver == 1) twoCardSelectedValueList[0] = cardValue
+        if (numberOfCardsTurnedOver == 2) twoCardSelectedValueList[1] = cardValue
+        Log.i("testList", "two card value list during population is $twoCardSelectedValueList")
     }
 
     private fun turnSelectedCardsBackDownIfTheyDoNotMatch() {
@@ -177,19 +180,15 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         }
     }
 
+    private fun doBothSelectedCardsMatch() : Boolean {
+        Log.i("testList", "two card value list during check is $twoCardSelectedValueList")
+
+        return twoCardSelectedValueList[0] == twoCardSelectedValueList[1]
+    }
+
     private fun changeBackgroundOfSelectedCardsIfTheyMatch(cardView: CardView) {
         if (doBothSelectedCardsMatch()) {
             cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.purple_200))
         }
-    }
-
-    private fun doBothSelectedCardsMatch() : Boolean {
-        return twoCardSelectedValueList[0] == twoCardSelectedValueList[1]
-    }
-
-    private fun resetCardTurnOverCount() { numberOfCardsTurnedOver = 0 }
-
-    private fun haveTwoOrLessCardsBeenTurnedUpright() : Boolean {
-        return numberOfCardsTurnedOver < 2
     }
 }
