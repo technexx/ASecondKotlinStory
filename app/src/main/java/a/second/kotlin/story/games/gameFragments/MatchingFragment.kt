@@ -122,26 +122,26 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
             }
 
             if (numberOfCardsTurnedOver == 2) {
-//                turnSelectedCardsBackDownIfTheyDoNotMatch()
+                turnSelectedCardsBackDownIfTheyDoNotMatch()
                 resetCardTurnOverCount()
 
-                //Works for getting our two-item list positions. Note that TextView is set below, so fetching a String from it will not work here.
-                val cardViewOne = parent.get(twoCardSelectedPositionList[0]).findViewById(R.id.matching_card_cardView) as CardView
-                val cardViewTwo = parent.get(twoCardSelectedPositionList[1]).findViewById(R.id.matching_card_cardView) as CardView
-                val cardTextOne = parent.get(twoCardSelectedPositionList[0]).findViewById(R.id.matching_card_textView) as TextView
-                val cardTextTwo = parent.get(twoCardSelectedPositionList[1]).findViewById(R.id.matching_card_textView) as TextView
+                val firstCardSelectedPosition = twoCardSelectedPositionList[0]
+                val secondCardSelectedPosition = twoCardSelectedPositionList[1]
 
+                //Works for getting our two-item list positions. Note that TextView is set below, so fetching a String from it will not work here.
+                val cardViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
+                val cardViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
+                val cardTextOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
+                val cardTextTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
+
+                //Using notifyDataSetChanged() to update textView via list resets background of view, so we do it here.
+                cardTextOne.text = displayedList[firstCardSelectedPosition]
+                cardTextTwo.text = displayedList[secondCardSelectedPosition]
                 changeBackgroundOfSelectedCardsDependingOnMatch(cardViewOne)
                 changeBackgroundOfSelectedCardsDependingOnMatch(cardViewTwo)
 
             }
-            //Using notifyDataSetChanged() to update textView via list resets background of view, so we do it here.
             cardTextView.text = displayedList[position]
-
-            //Todo: Need to refresh adapter if we're basing this on position iteration. Otherwise, we should manually change (better).
-//            if (position == twoCardSelectedPositionList[0] || position == twoCardSelectedPositionList[1]) {
-//                changeBackgroundOfSelectedCardsDependingOnMatch(cardItemView)
-//            }
         }
 
         return rowView
