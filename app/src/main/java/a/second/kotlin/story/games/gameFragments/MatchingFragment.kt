@@ -117,31 +117,34 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
             if (numberOfCardsTurnedOver == 1) if (twoCardSelectedPositionList.contains(position)) resetBackGroundOfCard(cardItemView)
 
             if (numberOfCardsTurnedOver <= 2) {
-                changeBackgroundOfCardIfSelected(cardItemView)
                 turnOverCardIfFaceDown(position)
             }
 
             if (numberOfCardsTurnedOver == 2) {
-                turnSelectedCardsBackDownIfTheyDoNotMatch()
+                //This clears our displayedList, hence blank textViews set below.
+//                turnSelectedCardsBackDownIfTheyDoNotMatch()
                 resetCardTurnOverCount()
 
                 val firstCardSelectedPosition = twoCardSelectedPositionList[0]
                 val secondCardSelectedPosition = twoCardSelectedPositionList[1]
 
-                //Works for getting our two-item list positions. Note that TextView is set below, so fetching a String from it will not work here.
                 val cardViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
                 val cardViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
                 val cardTextOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
                 val cardTextTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
 
                 //Using notifyDataSetChanged() to update textView via list resets background of view, so we do it here.
-                cardTextOne.text = displayedList[firstCardSelectedPosition]
-                cardTextTwo.text = displayedList[secondCardSelectedPosition]
-                changeBackgroundOfSelectedCardsDependingOnMatch(cardViewOne)
-                changeBackgroundOfSelectedCardsDependingOnMatch(cardViewTwo)
+                val cardOneString = displayedList[firstCardSelectedPosition]
+                val cardTwoString = displayedList[secondCardSelectedPosition]
 
+                changeBackgroundOfSelectedCard(cardViewOne, cardOneString)
+                changeBackgroundOfSelectedCard(cardViewTwo, cardTwoString)
+
+                cardTextOne.text = cardOneString
+                cardTextTwo.text = cardTwoString
+            } else {
+                cardTextView.text = displayedList[position]
             }
-            cardTextView.text = displayedList[position]
         }
 
         return rowView
@@ -157,8 +160,8 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         val valueBeneathSelectedCard = fullCardList[position]
 
         if (isDisplayedCardFaceDown(position)) {
-            guessedList.set(position, valueBeneathSelectedCard)
-            displayedList.set(position,valueBeneathSelectedCard)
+            guessedList[position] = valueBeneathSelectedCard
+            displayedList[position] = valueBeneathSelectedCard
 
             populateTwoCardSelectedPositionList(position)
             populateTwoCardSelectedValueList(valueBeneathSelectedCard)
@@ -167,10 +170,6 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
 
     private fun isDisplayedCardFaceDown(position: Int) : Boolean {
         return (displayedList[position].equals(" "))
-    }
-
-    private fun changeBackgroundOfCardIfSelected(cardView: CardView) {
-        cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.teal_200))
     }
 
     private fun resetBackGroundOfCard(cardView: CardView) {
@@ -202,11 +201,22 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         return twoCardSelectedValueList[0] == twoCardSelectedValueList[1]
     }
 
-    private fun changeBackgroundOfSelectedCardsDependingOnMatch(cardView: CardView) {
-        if (doBothSelectedCardsMatch()) {
-            cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.purple_200))
-        } else {
-            cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))
+    private fun changeBackgroundOfSelectedCard(cardView: CardView, letter: String) {
+        cardView.setCardBackgroundColor(ContextCompat.getColor(context, cardColor(letter)))
+    }
+
+    private fun cardColor(letter: String) : Int {
+        var colorToReturn = R.color.white
+        when (letter) {
+            "A" -> colorToReturn = R.color.light_teal
+            "B" -> colorToReturn = R.color.purple_200
+            "C" -> colorToReturn = R.color.circular_progress_default_progress
+            "D" -> colorToReturn = R.color.lighter_green
+            "E" -> colorToReturn = R.color.light_red
+            "F" -> colorToReturn = R.color.light_blue
+            "G" -> colorToReturn = R.color.light_orange
+            "H" -> colorToReturn = R.color.android_yellow
         }
+        return colorToReturn
     }
 }
