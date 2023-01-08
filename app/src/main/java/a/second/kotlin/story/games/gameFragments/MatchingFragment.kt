@@ -99,7 +99,7 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
                      val fullCardList: ArrayList<String>) : ArrayAdapter<String>(context, resource) {
 
     var numberOfCardsTurnedOver = 0
-    val twoCardSelectedPositionList : MutableList<Int> = mutableListOf(0, 1)
+    val twoCardSelectedPositionList : MutableList<Int> = mutableListOf(0, 0)
     val twoCardSelectedValueList : MutableList<String> = mutableListOf(" ", " ")
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
@@ -109,41 +109,32 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         val cardItemView = rowView.findViewById(R.id.matching_card_cardView) as CardView
         val cardTextView = rowView.findViewById(R.id.matching_card_textView) as TextView
 
-        cardTextView.text = displayedList[position]
-
         rowView.setOnClickListener {
             numberOfCardsTurnedOver++
 
-            if (numberOfCardsTurnedOver == 1) if (twoCardSelectedPositionList.contains(position)) resetBackGroundOfCard(cardItemView)
+            populateCardHolderListsWithSelection(position)
 
-            if (numberOfCardsTurnedOver <= 2) {
-                turnOverCardIfFaceDown(position)
-            }
+            val firstCardSelectedPosition = twoCardSelectedPositionList[0]
+            val secondCardSelectedPosition = twoCardSelectedPositionList[1]
+
+            val cardViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
+            val cardViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
+            val cardTextOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
+            val cardTextTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
+
+            val cardOneString = displayedList[firstCardSelectedPosition]
+            val cardTwoString = displayedList[secondCardSelectedPosition]
+
+
+            changeBackgroundOfSelectedCard(cardViewOne, cardOneString)
+            changeBackgroundOfSelectedCard(cardViewTwo, cardTwoString)
+
+            cardTextOne.text = cardOneString
+            cardTextTwo.text = cardTwoString
 
             if (numberOfCardsTurnedOver == 2) {
-                //This clears our displayedList, hence blank textViews set below.
-//                turnSelectedCardsBackDownIfTheyDoNotMatch()
                 resetCardTurnOverCount()
-
-                val firstCardSelectedPosition = twoCardSelectedPositionList[0]
-                val secondCardSelectedPosition = twoCardSelectedPositionList[1]
-
-                val cardViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
-                val cardViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
-                val cardTextOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
-                val cardTextTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
-
-                //Using notifyDataSetChanged() to update textView via list resets background of view, so we do it here.
-                val cardOneString = displayedList[firstCardSelectedPosition]
-                val cardTwoString = displayedList[secondCardSelectedPosition]
-
-                changeBackgroundOfSelectedCard(cardViewOne, cardOneString)
-                changeBackgroundOfSelectedCard(cardViewTwo, cardTwoString)
-
-                cardTextOne.text = cardOneString
-                cardTextTwo.text = cardTwoString
-            } else {
-                cardTextView.text = displayedList[position]
+//                cardTextView.text = displayedList[position]
             }
         }
 
@@ -156,7 +147,7 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
 
     private fun resetCardTurnOverCount() { numberOfCardsTurnedOver = 0 }
 
-    private fun turnOverCardIfFaceDown(position: Int) {
+    private fun populateCardHolderListsWithSelection(position: Int) {
         val valueBeneathSelectedCard = fullCardList[position]
 
         if (isDisplayedCardFaceDown(position)) {
