@@ -109,9 +109,10 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         val cardItemView = rowView.findViewById(R.id.matching_card_cardView) as CardView
         val cardTextView = rowView.findViewById(R.id.matching_card_textView) as TextView
 
+        var nextClickResetsFlippedCards = false
+
         rowView.setOnClickListener {
             numberOfCardsTurnedOver++
-
             populateCardHolderListsWithSelection(position)
 
             val firstCardSelectedPosition = twoCardSelectedPositionList[0]
@@ -125,16 +126,35 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
             val cardOneString = displayedList[firstCardSelectedPosition]
             val cardTwoString = displayedList[secondCardSelectedPosition]
 
+            if (!nextClickResetsFlippedCards) {
+                changeBackgroundOfSelectedCard(cardViewOne, cardOneString)
+                changeBackgroundOfSelectedCard(cardViewTwo, cardTwoString)
 
-            changeBackgroundOfSelectedCard(cardViewOne, cardOneString)
-            changeBackgroundOfSelectedCard(cardViewTwo, cardTwoString)
+                cardTextOne.text = cardOneString
+                cardTextTwo.text = cardTwoString
 
-            cardTextOne.text = cardOneString
-            cardTextTwo.text = cardTwoString
+                if (numberOfCardsTurnedOver == 2) {
+                    if (!doBothSelectedCardsMatch()) {
+                        lowerAlphaOfSelectedCards(cardViewOne)
+                        lowerAlphaOfSelectedCards(cardViewTwo)
+                        nextClickResetsFlippedCards = true
+                    }
+                    resetCardTurnOverCount()
+                }
+            } else {
+                //Todo: Needs to retain previous two card positions for this to work.
+                restoreAlphaOfSelectedCards(cardViewOne)
+                restoreAlphaOfSelectedCards(cardViewTwo)
+                resetBackGroundOfCard(cardViewOne)
+                resetBackGroundOfCard(cardViewTwo)
 
-            if (numberOfCardsTurnedOver == 2) {
-                resetCardTurnOverCount()
-//                cardTextView.text = displayedList[position]
+                cardTextOne.text = " "
+                cardTextTwo.text = " "
+
+                changeBackgroundOfSelectedCard(cardViewOne, " ")
+                changeBackgroundOfSelectedCard(cardViewTwo, " ")
+
+                nextClickResetsFlippedCards = false
             }
         }
 
@@ -150,28 +170,15 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
     private fun populateCardHolderListsWithSelection(position: Int) {
         val valueBeneathSelectedCard = fullCardList[position]
 
-        if (isDisplayedCardFaceDown(position)) {
-            guessedList[position] = valueBeneathSelectedCard
-            displayedList[position] = valueBeneathSelectedCard
+        guessedList[position] = valueBeneathSelectedCard
+        displayedList[position] = valueBeneathSelectedCard
 
-            populateTwoCardSelectedPositionList(position)
-            populateTwoCardSelectedValueList(valueBeneathSelectedCard)
-        }
-    }
-
-    private fun isDisplayedCardFaceDown(position: Int) : Boolean {
-        return (displayedList[position].equals(" "))
+        populateTwoCardSelectedPositionList(position)
+        populateTwoCardSelectedValueList(valueBeneathSelectedCard)
     }
 
     private fun resetBackGroundOfCard(cardView: CardView) {
         cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))
-    }
-
-    private fun turnSelectedCardsBackDownIfTheyDoNotMatch() {
-        if (!doBothSelectedCardsMatch()) {
-            displayedList[twoCardSelectedPositionList[0]] = " "
-            displayedList[twoCardSelectedPositionList[1]] = " "
-        }
     }
 
     private fun populateTwoCardSelectedPositionList(position: Int) {
@@ -183,13 +190,23 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
     private fun populateTwoCardSelectedValueList(cardValue: String) {
         if (numberOfCardsTurnedOver == 1) twoCardSelectedValueList[0] = cardValue
         if (numberOfCardsTurnedOver == 2) twoCardSelectedValueList[1] = cardValue
-        Log.i("testList", "two card value list during population is $twoCardSelectedValueList")
+    }
+
+    private fun setTwoCardListValuesToBlankString() {
+        twoCardSelectedValueList[0] = " "
+        twoCardSelectedValueList[1] = " "
     }
 
     private fun doBothSelectedCardsMatch() : Boolean {
-        Log.i("testList", "two card value list during check is $twoCardSelectedValueList")
-
         return twoCardSelectedValueList[0] == twoCardSelectedValueList[1]
+    }
+
+    private fun lowerAlphaOfSelectedCards(cardView: CardView) {
+        cardView.alpha = 0.4f
+    }
+
+    private fun restoreAlphaOfSelectedCards(cardView: CardView) {
+        cardView.alpha = 1.0f
     }
 
     private fun changeBackgroundOfSelectedCard(cardView: CardView, letter: String) {
