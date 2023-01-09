@@ -119,6 +119,8 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         var cardTwoString: String
 
         rowView.setOnClickListener {
+            //            Log.i("testCard", "position list is $twoCardSelectedPositionList")
+            //            Log.i("testCard","value list is $twoCardSelectedValueList")
 
             if (!nextClickResetsFlippedCards) {
                 numberOfCardsTurnedOver++
@@ -128,23 +130,23 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
                 secondCardSelectedPosition = twoCardSelectedPositionList[1]
             }
 
-//            Log.i("testCard", "position list is $twoCardSelectedPositionList")
-//            Log.i("testCard","value list is $twoCardSelectedValueList")
-
             cardViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
             cardViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
             cardTextViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
             cardTextViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
 
             if (!nextClickResetsFlippedCards) {
-                cardOneString = displayedList[firstCardSelectedPosition]
-                cardTwoString = displayedList[secondCardSelectedPosition]
+                if (numberOfCardsTurnedOver == 1) {
+                    cardOneString = displayedList[firstCardSelectedPosition]
+                    changeBackgroundOfSelectedCard(cardViewOne, cardOneString)
+                    cardTextViewOne.text = cardOneString
 
-                changeBackgroundOfSelectedCard(cardViewOne, cardOneString)
-                changeBackgroundOfSelectedCard(cardViewTwo, cardTwoString)
-
-                cardTextViewOne.text = cardOneString
-                cardTextViewTwo.text = cardTwoString
+                }
+                if (numberOfCardsTurnedOver == 2) {
+                    cardTwoString = displayedList[secondCardSelectedPosition]
+                    changeBackgroundOfSelectedCard(cardViewTwo, cardTwoString)
+                    cardTextViewTwo.text = cardTwoString
+                }
 
                 if (numberOfCardsTurnedOver == 2) {
                     if (!doBothSelectedCardsMatch()) {
@@ -195,7 +197,6 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
     private fun populateTwoCardSelectedPositionList(position: Int) {
         if (numberOfCardsTurnedOver == 1) twoCardSelectedPositionList[0] = position
         if (numberOfCardsTurnedOver == 2) twoCardSelectedPositionList[1] = position
-//        Log.i("testList", "two card position list is $twoCardSelectedPositionList")
     }
 
     private fun populateTwoCardSelectedValueList(cardValue: String) {
