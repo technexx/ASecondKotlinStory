@@ -104,6 +104,9 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
     val twoCardSelectedPositionList : MutableList<Int> = mutableListOf(0, 0)
     val twoCardSelectedValueList : MutableList<String> = mutableListOf(" ", " ")
 
+    var firstCardSelectedPosition = 0
+    var secondCardSelectedPosition = 0
+
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
         val rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
@@ -114,8 +117,6 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         var cardTextViewTwo: TextView
         var cardOneString: String
         var cardTwoString: String
-        var firstCardSelectedPosition = 0
-        var secondCardSelectedPosition = 0
 
         rowView.setOnClickListener {
 
@@ -127,8 +128,8 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
                 secondCardSelectedPosition = twoCardSelectedPositionList[1]
             }
 
-            Log.i("testCard", "position list is $twoCardSelectedPositionList")
-            Log.i("testCard","value list is $twoCardSelectedValueList")
+//            Log.i("testCard", "position list is $twoCardSelectedPositionList")
+//            Log.i("testCard","value list is $twoCardSelectedValueList")
 
             cardViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
             cardViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
