@@ -99,57 +99,63 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
                      val fullCardList: ArrayList<String>) : ArrayAdapter<String>(context, resource) {
 
     var numberOfCardsTurnedOver = 0
+    var nextClickResetsFlippedCards = false
+
     val twoCardSelectedPositionList : MutableList<Int> = mutableListOf(0, 0)
     val twoCardSelectedValueList : MutableList<String> = mutableListOf(" ", " ")
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
-
         val rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
-        val cardItemView = rowView.findViewById(R.id.matching_card_cardView) as CardView
-        val cardTextView = rowView.findViewById(R.id.matching_card_textView) as TextView
 
-        var nextClickResetsFlippedCards = false
+        var cardViewOne = CardView(context)
+        var cardViewTwo = CardView(context)
+        var cardTextViewOne = TextView(context)
+        var cardTextViewTwo = TextView(context)
+        var cardOneString = " "
+        var cardTwoString = " "
+
 
         rowView.setOnClickListener {
-            numberOfCardsTurnedOver++
-            populateCardHolderListsWithSelection(position)
-
-            val firstCardSelectedPosition = twoCardSelectedPositionList[0]
-            val secondCardSelectedPosition = twoCardSelectedPositionList[1]
-
-            val cardViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
-            val cardViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
-            val cardTextOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
-            val cardTextTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
-
-            val cardOneString = displayedList[firstCardSelectedPosition]
-            val cardTwoString = displayedList[secondCardSelectedPosition]
-
             if (!nextClickResetsFlippedCards) {
+                numberOfCardsTurnedOver++
+                populateCardHolderListsWithSelection(position)
+
+                val firstCardSelectedPosition = twoCardSelectedPositionList[0]
+                val secondCardSelectedPosition = twoCardSelectedPositionList[1]
+
+                cardViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
+                cardViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
+                cardTextViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
+                cardTextViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
+
+                cardOneString = displayedList[firstCardSelectedPosition]
+                cardTwoString = displayedList[secondCardSelectedPosition]
+
                 changeBackgroundOfSelectedCard(cardViewOne, cardOneString)
                 changeBackgroundOfSelectedCard(cardViewTwo, cardTwoString)
 
-                cardTextOne.text = cardOneString
-                cardTextTwo.text = cardTwoString
+                cardTextViewOne.text = cardOneString
+                cardTextViewTwo.text = cardTwoString
 
                 if (numberOfCardsTurnedOver == 2) {
                     if (!doBothSelectedCardsMatch()) {
                         lowerAlphaOfSelectedCards(cardViewOne)
                         lowerAlphaOfSelectedCards(cardViewTwo)
+                        //Todo: Not staying true.
                         nextClickResetsFlippedCards = true
                     }
                     resetCardTurnOverCount()
                 }
             } else {
-                //Todo: Needs to retain previous two card positions for this to work.
+                //Todo: Needs to retain previous two card positions for this to work. We want all above logic to skip if cards do not match on second flip.
                 restoreAlphaOfSelectedCards(cardViewOne)
                 restoreAlphaOfSelectedCards(cardViewTwo)
                 resetBackGroundOfCard(cardViewOne)
                 resetBackGroundOfCard(cardViewTwo)
 
-                cardTextOne.text = " "
-                cardTextTwo.text = " "
+                cardTextViewOne.text = " "
+                cardTextViewTwo.text = " "
 
                 changeBackgroundOfSelectedCard(cardViewOne, " ")
                 changeBackgroundOfSelectedCard(cardViewTwo, " ")
