@@ -4,6 +4,9 @@ import a.second.kotlin.story.ItemViewModel
 import a.second.kotlin.story.R
 import a.second.kotlin.story.games.Hangman
 import android.content.Context
+import android.graphics.BlendModeColorFilter
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.GridView
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.cardview.widget.CardView
@@ -35,6 +39,8 @@ class MatchingFragment : Fragment() {
     private var guessedCardLetterList : ArrayList<String> = ArrayList()
     private var displayedCardLetterList : ArrayList<String> = ArrayList()
 
+    private lateinit var timerProgressBar : ProgressBar
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
     }
@@ -46,15 +52,22 @@ class MatchingFragment : Fragment() {
         rootView = inflater.inflate(R.layout.fragment_matching_layout, container, false)
 
         instantiateMatchingGridViewAndAdapter()
+        instantiateProgressBar()
 
         populateFullCardLetterList()
         populateGuessedCardLetterListWithBlanks()
         displayGuessedCardLetterList()
 
-        matchingGridView.setOnItemClickListener { parent, view, position, id ->
-        }
-
         return rootView
+    }
+
+    private fun instantiateProgressBar() {
+        timerProgressBar = ProgressBar(requireContext())
+        timerProgressBar.max = 1000
+    }
+
+    private fun iterateProgressBar() {
+
     }
 
     private fun displayFullCardLetterList() {
@@ -96,7 +109,7 @@ class MatchingFragment : Fragment() {
 
 //We can explicitly declare objects in our constructor, so we don't have to re-assign them (e.g. guessedList = mGuessedList) within class.
 class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayList<String>, val guessedList: ArrayList<String>,
-                     val fullCardList: ArrayList<String>) : ArrayAdapter<String>(context, resource) {
+                     val fullCardList: ArrayList<String>): ArrayAdapter<String>(context, resource) {
 
     var numberOfCardsTurnedOver = 0
     var nextClickResetsFlippedCards = false
