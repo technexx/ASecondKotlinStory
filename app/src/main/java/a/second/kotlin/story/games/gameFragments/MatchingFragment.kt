@@ -108,27 +108,34 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         val inflater = LayoutInflater.from(context)
         val rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
 
-        var cardViewOne = CardView(context)
-        var cardViewTwo = CardView(context)
-        var cardTextViewOne = TextView(context)
-        var cardTextViewTwo = TextView(context)
-        var cardOneString = " "
-        var cardTwoString = " "
-
+        var cardViewOne: CardView
+        var cardViewTwo: CardView
+        var cardTextViewOne: TextView
+        var cardTextViewTwo: TextView
+        var cardOneString: String
+        var cardTwoString: String
+        var firstCardSelectedPosition = 0
+        var secondCardSelectedPosition = 0
 
         rowView.setOnClickListener {
+
             if (!nextClickResetsFlippedCards) {
                 numberOfCardsTurnedOver++
                 populateCardHolderListsWithSelection(position)
 
-                val firstCardSelectedPosition = twoCardSelectedPositionList[0]
-                val secondCardSelectedPosition = twoCardSelectedPositionList[1]
+                firstCardSelectedPosition = twoCardSelectedPositionList[0]
+                secondCardSelectedPosition = twoCardSelectedPositionList[1]
+            }
 
-                cardViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
-                cardViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
-                cardTextViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
-                cardTextViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
+            Log.i("testCard", "position list is $twoCardSelectedPositionList")
+            Log.i("testCard","value list is $twoCardSelectedValueList")
 
+            cardViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
+            cardViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
+            cardTextViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
+            cardTextViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
+
+            if (!nextClickResetsFlippedCards) {
                 cardOneString = displayedList[firstCardSelectedPosition]
                 cardTwoString = displayedList[secondCardSelectedPosition]
 
@@ -142,13 +149,11 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
                     if (!doBothSelectedCardsMatch()) {
                         lowerAlphaOfSelectedCards(cardViewOne)
                         lowerAlphaOfSelectedCards(cardViewTwo)
-                        //Todo: Not staying true.
                         nextClickResetsFlippedCards = true
                     }
                     resetCardTurnOverCount()
                 }
             } else {
-                //Todo: Needs to retain previous two card positions for this to work. We want all above logic to skip if cards do not match on second flip.
                 restoreAlphaOfSelectedCards(cardViewOne)
                 restoreAlphaOfSelectedCards(cardViewTwo)
                 resetBackGroundOfCard(cardViewOne)
@@ -163,7 +168,6 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
                 nextClickResetsFlippedCards = false
             }
         }
-
         return rowView
     }
 
