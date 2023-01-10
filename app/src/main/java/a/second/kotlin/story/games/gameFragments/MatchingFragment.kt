@@ -3,15 +3,18 @@ package a.second.kotlin.story.games.gameFragments
 import a.second.kotlin.story.ItemViewModel
 import a.second.kotlin.story.R
 import a.second.kotlin.story.games.Hangman
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.BlendModeColorFilter
 import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
 import android.widget.ArrayAdapter
 import android.widget.GridView
 import android.widget.ImageView
@@ -40,6 +43,10 @@ class MatchingFragment : Fragment() {
     private var displayedCardLetterList : ArrayList<String> = ArrayList()
 
     private lateinit var timerProgressBar : ProgressBar
+    private lateinit var progressBarRunnable : Runnable
+    private lateinit var objectAnimator : ObjectAnimator
+    private var handler = Handler()
+    private var progressValue = 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -53,6 +60,7 @@ class MatchingFragment : Fragment() {
 
         instantiateMatchingGridViewAndAdapter()
         instantiateProgressBar()
+        instantiateProgressBarRunnable()
 
         populateFullCardLetterList()
         populateGuessedCardLetterListWithBlanks()
@@ -62,11 +70,31 @@ class MatchingFragment : Fragment() {
     }
 
     private fun instantiateProgressBar() {
-        timerProgressBar = ProgressBar(requireContext())
-        timerProgressBar.max = 1000
+        timerProgressBar = rootView.findViewById(R.id.matching_cards_timer_progress_bar)
+        progressValue = 1000
+        timerProgressBar.max = progressValue
     }
 
-    private fun iterateProgressBar() {
+    private fun instantiateProgressBarRunnable() {
+        progressBarRunnable = Runnable {
+            progressValue -= 10
+            timerProgressBar.progress = progressValue
+            handler.postDelayed(progressBarRunnable, 100)
+
+            Log.i("testProgress", "progressValue is $progressValue")
+        }
+
+        handler.post(progressBarRunnable)
+    }
+
+    private fun instantiateObjectAnimator() {
+        objectAnimator = ObjectAnimator.ofInt(timerProgressBar, "progress", progressValue, 0)
+        objectAnimator.interpolator = LinearInterpolator()
+        objectAnimator.duration = 15000
+        objectAnimator.start()
+    }
+
+    fun iterateProgressBar() {
 
     }
 
