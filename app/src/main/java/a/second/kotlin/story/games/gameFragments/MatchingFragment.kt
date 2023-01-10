@@ -3,6 +3,8 @@ package a.second.kotlin.story.games.gameFragments
 import a.second.kotlin.story.ItemViewModel
 import a.second.kotlin.story.R
 import a.second.kotlin.story.games.Hangman
+import android.animation.Animator
+import android.animation.Animator.AnimatorListener
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.BlendModeColorFilter
@@ -15,13 +17,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
-import android.widget.ArrayAdapter
-import android.widget.GridView
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.cardview.widget.CardView
+import androidx.core.animation.addListener
+import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
@@ -43,10 +43,10 @@ class MatchingFragment : Fragment() {
     private var displayedCardLetterList : ArrayList<String> = ArrayList()
 
     private lateinit var timerProgressBar : ProgressBar
-    private lateinit var progressBarRunnable : Runnable
     private lateinit var objectAnimator : ObjectAnimator
-    private var handler = Handler()
     private var progressValue = 0
+
+    private lateinit var stateOfAnswerTextView : TextView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -58,13 +58,14 @@ class MatchingFragment : Fragment() {
 
         rootView = inflater.inflate(R.layout.fragment_matching_layout, container, false)
 
+        instantiateXmlViews()
         instantiateMatchingGridViewAndAdapter()
         instantiateProgressBar()
-        instantiateProgressBarRunnable()
+        instantiateObjectAnimator()
+        startObjectAnimator()
 
         populateFullCardLetterList()
         populateGuessedCardLetterListWithBlanks()
-        displayGuessedCardLetterList()
 
         return rootView
     }
@@ -75,37 +76,30 @@ class MatchingFragment : Fragment() {
         timerProgressBar.max = progressValue
     }
 
-    private fun instantiateProgressBarRunnable() {
-        progressBarRunnable = Runnable {
-            progressValue -= 10
-            timerProgressBar.progress = progressValue
-            handler.postDelayed(progressBarRunnable, 100)
-
-            Log.i("testProgress", "progressValue is $progressValue")
-        }
-
-        handler.post(progressBarRunnable)
-    }
-
     private fun instantiateObjectAnimator() {
         objectAnimator = ObjectAnimator.ofInt(timerProgressBar, "progress", progressValue, 0)
         objectAnimator.interpolator = LinearInterpolator()
-        objectAnimator.duration = 15000
+        objectAnimator.duration = 5000
+
+        objectAnimator.doOnEnd {
+            setLosingTextView()
+        }
+    }
+
+    private fun startObjectAnimator() {
         objectAnimator.start()
     }
 
-    fun iterateProgressBar() {
-
+    private fun stopObjectAnimator() {
+        objectAnimator.cancel()
     }
 
-    private fun displayFullCardLetterList() {
-        displayedCardLetterList.addAll(fullCardLetterList)
-        matchingAdapter.notifyDataSetChanged()
+    private fun setWinningTextView() {
+        stateOfAnswerTextView.setText(R.string.matching_problem_correct)
     }
 
-    private fun displayGuessedCardLetterList() {
-        displayedCardLetterList.addAll(guessedCardLetterList)
-        matchingAdapter.notifyDataSetChanged()
+    private fun setLosingTextView() {
+        stateOfAnswerTextView.setText(R.string.matching_problem_incorrect)
     }
 
     private fun populateFullCardLetterList() {
@@ -132,6 +126,10 @@ class MatchingFragment : Fragment() {
 
         val customAdapter: CustomAdapter = CustomAdapter(requireContext(), R.layout.matching_adapter_views, displayedCardLetterList, guessedCardLetterList, fullCardLetterList)
         matchingGridView.adapter = customAdapter
+    }
+
+    private fun instantiateXmlViews() {
+        stateOfAnswerTextView = rootView.findViewById(R.id.matching_state_of_answer_textView)
     }
 }
 

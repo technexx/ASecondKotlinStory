@@ -29,9 +29,19 @@
         app:layout_constraintTop_toBottomOf="@id/matching_cards_gridView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="4dp"
         android:progressBackgroundTint="@color/teal_200"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal">
     </ProgressBar>
+
+    <TextView
+        android:id="@+id/matching_state_of_answer_textView"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/matching_gridView_guideline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+    </TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
