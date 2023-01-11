@@ -15,6 +15,7 @@ import android.widget.GridView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.animation.addListener
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
@@ -22,19 +23,13 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 
-interface AdapterData {
-    fun gameIsWon()
-}
-
-class MatchingFragment : Fragment(), AdapterData {
-
-    private val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
-    private lateinit var customAdapter : CustomAdapter
-
+class MatchingFragment : Fragment(), CustomAdapter.AdapterData {
     private lateinit var rootView : View
 
+    private val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
+
     private lateinit var matchingGridView : GridView
-    private lateinit var matchingAdapter : ArrayAdapter<String>
+    private lateinit var customAdapter : CustomAdapter
 
     private var fullCardLetterList : ArrayList<String> = ArrayList()
 
@@ -44,8 +39,15 @@ class MatchingFragment : Fragment(), AdapterData {
 
     private lateinit var stateOfAnswerTextView : TextView
 
+    private var gameHasBeenWon = false
+
     override fun gameIsWon() {
-        Log.i("testInt", "interface called!")
+        gameHasBeenWon = true
+
+        setWinningTextView()
+        stopObjectAnimator()
+        disableGridView()
+        Log.i("testWin", "game won callback")
     }
 
     override fun onAttach(context: Context) {
@@ -80,10 +82,11 @@ class MatchingFragment : Fragment(), AdapterData {
     private fun instantiateObjectAnimator() {
         objectAnimator = ObjectAnimator.ofInt(timerProgressBar, "progress", progressValue, 0)
         objectAnimator.interpolator = LinearInterpolator()
-        objectAnimator.duration = 5000
+        objectAnimator.duration = 50000
 
         objectAnimator.doOnEnd {
-            setLosingTextView()
+            if (!gameHasBeenWon) setLosingTextView() else setWinningTextView()
+            gameHasBeenWon = false
         }
     }
 
@@ -103,6 +106,16 @@ class MatchingFragment : Fragment(), AdapterData {
         stateOfAnswerTextView.setText(R.string.matching_problem_incorrect)
     }
 
+    private fun disableGridView() {
+        matchingGridView.isEnabled = false
+        matchingGridView.isClickable = false
+    }
+
+    private fun enableGridView() {
+        matchingGridView.isEnabled = true
+        matchingGridView.isClickable = true
+    }
+
     private fun populateFullCardLetterList() {
         var input: Char
         input = 'A'
@@ -119,7 +132,6 @@ class MatchingFragment : Fragment(), AdapterData {
     private fun instantiateMatchingGridViewAndAdapter() {
         matchingGridView = rootView.findViewById(R.id.matching_cards_gridView)
         matchingGridView.numColumns = 4
-        matchingAdapter = ArrayAdapter(requireContext(), R.layout.matching_adapter_views, R.id.matching_card_textView)
 
         matchingGridView.adapter = customAdapter
     }
@@ -132,6 +144,11 @@ class MatchingFragment : Fragment(), AdapterData {
 //We can explicitly declare objects in our constructor, so we don't have to re-assign them (e.g. guessedList = mGuessedList) within class.
 class CustomAdapter (context: Context, resource: Int, val fullCardList: ArrayList<String>, val adapterData: AdapterData
 ): ArrayAdapter<String>(context, resource) {
+
+    interface AdapterData {
+        fun gameIsWon()
+    }
+
     var numberOfCardsTurnedOver = 0
     var numberOfCardsMatched = 0
     var nextClickResetsFlippedCards = false
@@ -142,6 +159,9 @@ class CustomAdapter (context: Context, resource: Int, val fullCardList: ArrayLis
     var firstCardSelectedPosition = 0
     var secondCardSelectedPosition = 0
 
+    var gameIsOver = false
+
+    //Todo: Clicking same card twice shows a match.
     //Todo: Click after non-matching should flip new card in addition to unflipping unmatched cards.
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
@@ -155,8 +175,6 @@ class CustomAdapter (context: Context, resource: Int, val fullCardList: ArrayLis
         var cardTwoString: String
 
         rowView.setOnClickListener {
-            adapterData.gameIsWon()
-
             if (!nextClickResetsFlippedCards) {
                 numberOfCardsTurnedOver++
                 populateCardHolderListsWithSelection(position)
@@ -191,8 +209,9 @@ class CustomAdapter (context: Context, resource: Int, val fullCardList: ArrayLis
                     } else {
                         numberOfCardsMatched +=2
                         if (numberOfCardsMatched == 16) {
-
+                            adapterData.gameIsWon()
                         }
+                        Log.i("testWin", "number of cards matched is $numberOfCardsMatched")
                     }
                     resetCardTurnOverCount()
                 }
