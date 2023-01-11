@@ -5,7 +5,6 @@ import a.second.kotlin.story.R
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,17 +13,12 @@ import android.widget.ArrayAdapter
 import android.widget.GridView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.animation.addListener
 import androidx.core.animation.doOnEnd
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.findFragment
 
 class MatchingFragment : Fragment(), CustomAdapter.AdapterData {
     private lateinit var rootView : View
@@ -48,7 +42,6 @@ class MatchingFragment : Fragment(), CustomAdapter.AdapterData {
         gameHasBeenWon = true
         setWinningTextView()
         stopObjectAnimator()
-        customAdapter.setGameIsOverToTrue()
     }
 
     override fun onAttach(context: Context) {
@@ -86,9 +79,16 @@ class MatchingFragment : Fragment(), CustomAdapter.AdapterData {
         objectAnimator.duration = 50000
 
         objectAnimator.doOnEnd {
+            sendEndGameLiveData()
+
             if (!gameHasBeenWon) setLosingTextView() else setWinningTextView()
             gameHasBeenWon = false
         }
+    }
+
+    private fun sendEndGameLiveData() {
+        gamesViewModel.setWhichGameIsBeingPlayed("Matching")
+        gamesViewModel.setIsAnswerCorrect(gameHasBeenWon)
     }
 
     private fun startObjectAnimator() {
