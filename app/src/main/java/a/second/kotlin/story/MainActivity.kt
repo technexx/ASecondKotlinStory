@@ -125,7 +125,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun switchFragmentForNextGame() {
         supportFragmentManager.beginTransaction()
-
     }
 
     private fun changeStatValueFromGame(game: String?, value: Int) {

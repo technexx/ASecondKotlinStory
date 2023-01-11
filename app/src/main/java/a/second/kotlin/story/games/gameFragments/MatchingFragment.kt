@@ -2,51 +2,51 @@ package a.second.kotlin.story.games.gameFragments
 
 import a.second.kotlin.story.ItemViewModel
 import a.second.kotlin.story.R
-import a.second.kotlin.story.games.Hangman
-import android.animation.Animator
-import android.animation.Animator.AnimatorListener
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.graphics.BlendModeColorFilter
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
-import android.widget.*
-import androidx.appcompat.view.menu.MenuView.ItemView
+import android.widget.ArrayAdapter
+import android.widget.GridView
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.animation.addListener
 import androidx.core.animation.doOnEnd
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import java.nio.channels.SelectableChannel
 
-class MatchingFragment : Fragment() {
+interface AdapterData {
+    fun gameIsWon()
+}
+
+class MatchingFragment : Fragment(), AdapterData {
 
     private val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
+    private lateinit var customAdapter : CustomAdapter
+
     private lateinit var rootView : View
 
     private lateinit var matchingGridView : GridView
     private lateinit var matchingAdapter : ArrayAdapter<String>
 
     private var fullCardLetterList : ArrayList<String> = ArrayList()
-    private var guessedCardLetterList : ArrayList<String> = ArrayList()
-    private var displayedCardLetterList : ArrayList<String> = ArrayList()
 
     private lateinit var timerProgressBar : ProgressBar
     private lateinit var objectAnimator : ObjectAnimator
     private var progressValue = 0
 
     private lateinit var stateOfAnswerTextView : TextView
+
+    override fun gameIsWon() {
+        Log.i("testInt", "interface called!")
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -58,6 +58,8 @@ class MatchingFragment : Fragment() {
 
         rootView = inflater.inflate(R.layout.fragment_matching_layout, container, false)
 
+        customAdapter = CustomAdapter(requireContext(), R.layout.matching_adapter_views, fullCardLetterList, this)
+
         instantiateXmlViews()
         instantiateMatchingGridViewAndAdapter()
         instantiateProgressBar()
@@ -65,7 +67,6 @@ class MatchingFragment : Fragment() {
         startObjectAnimator()
 
         populateFullCardLetterList()
-        populateGuessedCardLetterListWithBlanks()
 
         return rootView
     }
@@ -115,16 +116,11 @@ class MatchingFragment : Fragment() {
         fullCardLetterList.shuffle()
     }
 
-    private fun populateGuessedCardLetterListWithBlanks() {
-        for (i in fullCardLetterList) guessedCardLetterList.add(" ")
-    }
-
     private fun instantiateMatchingGridViewAndAdapter() {
         matchingGridView = rootView.findViewById(R.id.matching_cards_gridView)
         matchingGridView.numColumns = 4
-        matchingAdapter = ArrayAdapter(requireContext(), R.layout.matching_adapter_views, R.id.matching_card_textView, displayedCardLetterList)
+        matchingAdapter = ArrayAdapter(requireContext(), R.layout.matching_adapter_views, R.id.matching_card_textView)
 
-        val customAdapter: CustomAdapter = CustomAdapter(requireContext(), R.layout.matching_adapter_views, displayedCardLetterList, guessedCardLetterList, fullCardLetterList)
         matchingGridView.adapter = customAdapter
     }
 
@@ -134,10 +130,10 @@ class MatchingFragment : Fragment() {
 }
 
 //We can explicitly declare objects in our constructor, so we don't have to re-assign them (e.g. guessedList = mGuessedList) within class.
-class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayList<String>, val guessedList: ArrayList<String>,
-                     val fullCardList: ArrayList<String>): ArrayAdapter<String>(context, resource) {
-
+class CustomAdapter (context: Context, resource: Int, val fullCardList: ArrayList<String>, val adapterData: AdapterData
+): ArrayAdapter<String>(context, resource) {
     var numberOfCardsTurnedOver = 0
+    var numberOfCardsMatched = 0
     var nextClickResetsFlippedCards = false
 
     val twoCardSelectedPositionList : MutableList<Int> = mutableListOf(0, 0)
@@ -146,6 +142,7 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
     var firstCardSelectedPosition = 0
     var secondCardSelectedPosition = 0
 
+    //Todo: Click after non-matching should flip new card in addition to unflipping unmatched cards.
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
         val rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
@@ -158,8 +155,7 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
         var cardTwoString: String
 
         rowView.setOnClickListener {
-            //            Log.i("testCard", "position list is $twoCardSelectedPositionList")
-            //            Log.i("testCard","value list is $twoCardSelectedValueList")
+            adapterData.gameIsWon()
 
             if (!nextClickResetsFlippedCards) {
                 numberOfCardsTurnedOver++
@@ -176,13 +172,13 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
 
             if (!nextClickResetsFlippedCards) {
                 if (numberOfCardsTurnedOver == 1) {
-                    cardOneString = displayedList[firstCardSelectedPosition]
+                    cardOneString = fullCardList[firstCardSelectedPosition]
                     changeBackgroundOfSelectedCard(cardViewOne, cardOneString)
                     cardTextViewOne.text = cardOneString
 
                 }
                 if (numberOfCardsTurnedOver == 2) {
-                    cardTwoString = displayedList[secondCardSelectedPosition]
+                    cardTwoString = fullCardList[secondCardSelectedPosition]
                     changeBackgroundOfSelectedCard(cardViewTwo, cardTwoString)
                     cardTextViewTwo.text = cardTwoString
                 }
@@ -192,6 +188,11 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
                         lowerAlphaOfSelectedCards(cardViewOne)
                         lowerAlphaOfSelectedCards(cardViewTwo)
                         nextClickResetsFlippedCards = true
+                    } else {
+                        numberOfCardsMatched +=2
+                        if (numberOfCardsMatched == 16) {
+
+                        }
                     }
                     resetCardTurnOverCount()
                 }
@@ -221,9 +222,6 @@ class CustomAdapter (context: Context, resource: Int, val displayedList: ArrayLi
 
     private fun populateCardHolderListsWithSelection(position: Int) {
         val valueBeneathSelectedCard = fullCardList[position]
-
-        guessedList[position] = valueBeneathSelectedCard
-        displayedList[position] = valueBeneathSelectedCard
 
         populateTwoCardSelectedPositionList(position)
         populateTwoCardSelectedValueList(valueBeneathSelectedCard)
