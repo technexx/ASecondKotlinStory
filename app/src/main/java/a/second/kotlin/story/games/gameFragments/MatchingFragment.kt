@@ -14,7 +14,9 @@ import android.widget.ArrayAdapter
 import android.widget.GridView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.addListener
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -22,6 +24,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.findFragment
 
 class MatchingFragment : Fragment(), CustomAdapter.AdapterData {
     private lateinit var rootView : View
@@ -43,11 +46,9 @@ class MatchingFragment : Fragment(), CustomAdapter.AdapterData {
 
     override fun gameIsWon() {
         gameHasBeenWon = true
-
         setWinningTextView()
         stopObjectAnimator()
-        disableGridView()
-        Log.i("testWin", "game won callback")
+        customAdapter.setGameIsOverToTrue()
     }
 
     override fun onAttach(context: Context) {
@@ -91,7 +92,7 @@ class MatchingFragment : Fragment(), CustomAdapter.AdapterData {
     }
 
     private fun startObjectAnimator() {
-//        objectAnimator.start()
+        objectAnimator.start()
     }
 
     private fun stopObjectAnimator() {
@@ -104,16 +105,6 @@ class MatchingFragment : Fragment(), CustomAdapter.AdapterData {
 
     private fun setLosingTextView() {
         stateOfAnswerTextView.setText(R.string.matching_problem_incorrect)
-    }
-
-    private fun disableGridView() {
-        matchingGridView.isEnabled = false
-        matchingGridView.isClickable = false
-    }
-
-    private fun enableGridView() {
-        matchingGridView.isEnabled = true
-        matchingGridView.isClickable = true
     }
 
     private fun populateFullCardLetterList() {
@@ -149,91 +140,103 @@ class CustomAdapter (context: Context, resource: Int, val fullCardList: ArrayLis
         fun gameIsWon()
     }
 
-    var cardViewOne = CardView(context)
-    var cardViewTwo = CardView(context)
-    var cardTextViewOne = TextView(context)
-    var cardTextViewTwo = TextView(context)
-    var cardOneString = " "
-    var cardTwoString = " "
+    class ObjectHolder() {
+        lateinit var cardViewOne : CardView
+        lateinit var cardViewTwo : CardView
+        lateinit var cardTextViewOne : TextView
+        lateinit var cardTextViewTwo : TextView
+        var cardOneString = " "
+        var cardTwoString = " "
 
-    var numberOfCardsTurnedOver = 0
-    var numberOfCardsMatched = 0
-    var nextClickResetsFlippedCards = false
+        var numberOfCardsTurnedOver = 0
+        var numberOfCardsMatched = 0
+        var nextClickResetsFlippedCards = false
 
-    val twoCardSelectedPositionList : MutableList<Int> = mutableListOf(0, 0)
-    val twoCardSelectedValueList : MutableList<String> = mutableListOf(" ", " ")
+        val twoCardSelectedPositionList : MutableList<Int> = mutableListOf(0, 0)
+        val twoCardSelectedValueList : MutableList<String> = mutableListOf(" ", " ")
+        var matchedPositionsList : ArrayList<Int> = ArrayList()
 
-    var previousCardSelectedPosition = -1
-    var firstCardSelectedPosition = 0
-    var secondCardSelectedPosition = 0
+        var previousCardSelectedPosition = -1
+        var firstCardSelectedPosition = 0
+        var secondCardSelectedPosition = 0
 
-    private var matchedPositionsList : ArrayList<Int> = ArrayList()
+        var gameIsOver = false
+    }
+
+    private var holder = ObjectHolder()
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
         val rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
 
         rowView.setOnClickListener {
-            if (position != previousCardSelectedPosition && !matchedPositionsList.contains(position)) {
-                Log.i("testFlip", "flipped!")
-                if (nextClickResetsFlippedCards) {
-                    restoreAlphaOfSelectedCards(cardViewOne)
-                    restoreAlphaOfSelectedCards(cardViewTwo)
-                    resetBackGroundOfCard(cardViewOne)
-                    resetBackGroundOfCard(cardViewTwo)
+            if (position != holder.previousCardSelectedPosition && !holder.matchedPositionsList.contains(position)) {
+                if (holder.nextClickResetsFlippedCards) {
+                    restoreAlphaOfSelectedCards(holder.cardViewOne)
+                    restoreAlphaOfSelectedCards(holder.cardViewTwo)
+                    resetBackGroundOfCard(holder.cardViewOne)
+                    resetBackGroundOfCard(holder.cardViewTwo)
 
-                    resetCardTextViewToBlank(cardTextViewOne)
-                    resetCardTextViewToBlank(cardTextViewTwo)
+                    resetCardTextViewToBlank(holder.cardTextViewOne)
+                    resetCardTextViewToBlank(holder.cardTextViewTwo)
 
-                    changeBackgroundOfSelectedCard(cardViewOne, " ")
-                    changeBackgroundOfSelectedCard(cardViewTwo, " ")
+                    changeBackgroundOfSelectedCard(holder.cardViewOne, " ")
+                    changeBackgroundOfSelectedCard(holder.cardViewTwo, " ")
 
-                    nextClickResetsFlippedCards = false
+                    holder.nextClickResetsFlippedCards = false
                 }
 
-                numberOfCardsTurnedOver++
-                previousCardSelectedPosition = position
+                holder.numberOfCardsTurnedOver++
+                holder.previousCardSelectedPosition = position
 
                 populateCardHolderListsWithSelection(position)
-                firstCardSelectedPosition = twoCardSelectedPositionList[0]
-                secondCardSelectedPosition = twoCardSelectedPositionList[1]
+                holder.firstCardSelectedPosition = holder.twoCardSelectedPositionList[0]
+                holder.secondCardSelectedPosition = holder.twoCardSelectedPositionList[1]
 
-                cardViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
-                cardViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
-                cardTextViewOne = parent[firstCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
-                cardTextViewTwo = parent[secondCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
+                holder.cardViewOne = parent[holder.firstCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
+                holder.cardViewTwo = parent[holder.secondCardSelectedPosition].findViewById(R.id.matching_card_cardView) as CardView
+                holder.cardTextViewOne = parent[holder.firstCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
+                holder.cardTextViewTwo = parent[holder.secondCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
 
-                if (numberOfCardsTurnedOver == 1) {
-                    cardOneString = fullCardList[firstCardSelectedPosition]
-                    changeBackgroundOfSelectedCard(cardViewOne, cardOneString)
-                    cardTextViewOne.text = cardOneString
+                if (holder.numberOfCardsTurnedOver == 1) {
+                    holder.cardOneString = fullCardList[holder.firstCardSelectedPosition]
+                    changeBackgroundOfSelectedCard(holder.cardViewOne, holder.cardOneString)
+                    holder.cardTextViewOne.text = holder.cardOneString
                 }
-                if (numberOfCardsTurnedOver == 2) {
-                    cardTwoString = fullCardList[secondCardSelectedPosition]
-                    changeBackgroundOfSelectedCard(cardViewTwo, cardTwoString)
-                    cardTextViewTwo.text = cardTwoString
+                if (holder.numberOfCardsTurnedOver == 2) {
+                    holder.cardTwoString = fullCardList[holder.secondCardSelectedPosition]
+                    changeBackgroundOfSelectedCard(holder.cardViewTwo, holder.cardTwoString)
+                    holder.cardTextViewTwo.text = holder.cardTwoString
 
                     if (!doBothSelectedCardsMatch()) {
-                        lowerAlphaOfSelectedCards(cardViewOne)
-                        lowerAlphaOfSelectedCards(cardViewTwo)
-                        nextClickResetsFlippedCards = true
+                        lowerAlphaOfSelectedCards(holder.cardViewOne)
+                        lowerAlphaOfSelectedCards(holder.cardViewTwo)
+                        holder.nextClickResetsFlippedCards = true
                     } else {
-                        addPositionsToMatchedPositionsList(firstCardSelectedPosition)
-                        addPositionsToMatchedPositionsList(secondCardSelectedPosition)
-                        numberOfCardsMatched +=2
-                        if (numberOfCardsMatched == 16) adapterData.gameIsWon()
+                        addPositionsToMatchedPositionsList(holder.firstCardSelectedPosition)
+                        addPositionsToMatchedPositionsList(holder.secondCardSelectedPosition)
+                        holder.numberOfCardsMatched +=2
+                        if (holder.numberOfCardsMatched == 16) adapterData.gameIsWon()
                     }
                     resetCardTurnOverCount()
-                    previousCardSelectedPosition = -1
+                    holder.previousCardSelectedPosition = -1
                 }
             }
-
         }
         return rowView
     }
 
     override fun getCount(): Int {
         return fullCardList.size
+    }
+
+    fun setGameIsOverToTrue() {
+        holder.gameIsOver = true
+    }
+
+    fun resetBoard() {
+        holder = ObjectHolder()
+        notifyDataSetChanged()
     }
 
     private fun populateCardHolderListsWithSelection(position: Int) {
@@ -244,19 +247,19 @@ class CustomAdapter (context: Context, resource: Int, val fullCardList: ArrayLis
     }
 
     private fun populateTwoCardSelectedPositionList(position: Int) {
-        if (numberOfCardsTurnedOver == 1) twoCardSelectedPositionList[0] = position
-        if (numberOfCardsTurnedOver == 2) twoCardSelectedPositionList[1] = position
+        if (holder.numberOfCardsTurnedOver == 1) holder.twoCardSelectedPositionList[0] = position
+        if (holder.numberOfCardsTurnedOver == 2) holder.twoCardSelectedPositionList[1] = position
     }
 
     private fun populateTwoCardSelectedValueList(cardValue: String) {
-        if (numberOfCardsTurnedOver == 1) twoCardSelectedValueList[0] = cardValue
-        if (numberOfCardsTurnedOver == 2) twoCardSelectedValueList[1] = cardValue
+        if (holder.numberOfCardsTurnedOver == 1) holder.twoCardSelectedValueList[0] = cardValue
+        if (holder.numberOfCardsTurnedOver == 2) holder.twoCardSelectedValueList[1] = cardValue
     }
 
-    private fun addPositionsToMatchedPositionsList(position: Int) { matchedPositionsList.add(position) }
+    private fun addPositionsToMatchedPositionsList(position: Int) { holder.matchedPositionsList.add(position) }
 
     private fun doBothSelectedCardsMatch() : Boolean {
-        return twoCardSelectedValueList[0] == twoCardSelectedValueList[1]
+        return holder.twoCardSelectedValueList[0] == holder.twoCardSelectedValueList[1]
     }
 
     private fun resetBackGroundOfCard(cardView: CardView) {
@@ -275,7 +278,7 @@ class CustomAdapter (context: Context, resource: Int, val fullCardList: ArrayLis
         cardView.alpha = 1.0f
     }
 
-    private fun resetCardTurnOverCount() { numberOfCardsTurnedOver = 0 }
+    private fun resetCardTurnOverCount() { holder.numberOfCardsTurnedOver = 0 }
 
     private fun changeBackgroundOfSelectedCard(cardView: CardView, letter: String) {
         cardView.setCardBackgroundColor(ContextCompat.getColor(context, cardColor(letter)))
