@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.get
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 
@@ -48,7 +49,6 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData{
         rootView = inflater.inflate(R.layout.fragment_sums_layout, container, false)
 
         populateFullCardIntegerList()
-
         instantiateSumsGridViewAndAdapter()
 
         return rootView
@@ -61,15 +61,14 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData{
                 fullCardIntegerList.add(valueToAdd)
             }
         }
+
         Log.i("testList", "list is $fullCardIntegerList")
     }
 
     private fun instantiateSumsGridViewAndAdapter() {
         sumsCustomAdapter = SumsCustomAdapter(requireContext(), R.layout.sums_adapter_views, fullCardIntegerList, this)
-
         sumsGridView = rootView.findViewById(R.id.sums_cards_gridView)
         sumsGridView.numColumns = 4
-
         sumsGridView.adapter = sumsCustomAdapter
     }
 }
@@ -88,29 +87,27 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardList: Arra
 
     private var holder = ObjectHolder()
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+    //Todo: Our assignment of parent w/ in Matching is only in onClick, which is why it doesn't crash.
+    override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
         val rowView = inflater.inflate(R.layout.sums_adapter_views, null, true)
 
-//        holder.selectedCardView = getCardViewAtPosition(parent, position)
-//        holder.selectedCardTextView = getCardTextViewAtPosition(parent, position)
+        holder.selectedCardView = rowView.findViewById(R.id.sums_card_cardView)
+        holder.selectedCardTextView = rowView.findViewById(R.id.sums_card_textView)
 
-//        holder.selectedCardView.setOnClickListener {
-//            Log.i("testClick", "clicked at $position")
-//        }
+        holder.selectedCardTextView.setText(fullCardList[position].toString())
+
+        rowView.setOnClickListener {
+            holder.selectedCardView = parent[position].findViewById(R.id.sums_card_cardView)
+            holder.selectedCardTextView = parent[position].findViewById(R.id.sums_card_textView)
+        }
 
         return rowView
     }
+
 
     override fun getCount(): Int {
         return fullCardList.size
     }
 
-    private fun getCardViewAtPosition(parent: ViewGroup, position: Int) : CardView {
-        return parent[position].findViewById(R.id.sums_card_cardView) as CardView
-    }
-
-    private fun getCardTextViewAtPosition(parent: ViewGroup, position: Int) : TextView {
-        return parent[position].findViewById(R.id.sums_card_textView) as TextView
-    }
 }
