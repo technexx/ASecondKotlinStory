@@ -14,7 +14,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 
-class MathFragment : Fragment() {
+class MathProblemsFragment : Fragment() {
 
     val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
     var MathProblems : MathProblems = MathProblems()

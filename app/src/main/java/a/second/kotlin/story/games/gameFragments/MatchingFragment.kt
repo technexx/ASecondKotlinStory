@@ -20,13 +20,13 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 
-class MatchingFragment : Fragment(), CustomAdapter.AdapterData {
+class MatchingFragment : Fragment(), MatchingCustomAdapter.AdapterData {
     private lateinit var rootView : View
 
     private val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
 
     private lateinit var matchingGridView : GridView
-    private lateinit var customAdapter : CustomAdapter
+    private lateinit var MatchingCustomAdapter : MatchingCustomAdapter
 
     private var fullCardLetterList : ArrayList<String> = ArrayList()
 
@@ -54,7 +54,7 @@ class MatchingFragment : Fragment(), CustomAdapter.AdapterData {
 
         rootView = inflater.inflate(R.layout.fragment_matching_layout, container, false)
 
-        customAdapter = CustomAdapter(requireContext(), R.layout.matching_adapter_views, fullCardLetterList, this)
+        MatchingCustomAdapter = MatchingCustomAdapter(requireContext(), R.layout.matching_adapter_views, fullCardLetterList, this)
 
         instantiateXmlViews()
         instantiateMatchingGridViewAndAdapter()
@@ -124,7 +124,7 @@ class MatchingFragment : Fragment(), CustomAdapter.AdapterData {
         matchingGridView = rootView.findViewById(R.id.matching_cards_gridView)
         matchingGridView.numColumns = 4
 
-        matchingGridView.adapter = customAdapter
+        matchingGridView.adapter = MatchingCustomAdapter
     }
 
     private fun instantiateXmlViews() {
@@ -133,7 +133,7 @@ class MatchingFragment : Fragment(), CustomAdapter.AdapterData {
 }
 
 //We can explicitly declare objects in our constructor, so we don't have to re-assign them (e.g. guessedList = mGuessedList) within class.
-class CustomAdapter (context: Context, resource: Int, val fullCardList: ArrayList<String>, val adapterData: AdapterData
+class MatchingCustomAdapter (context: Context, resource: Int, val fullCardList: ArrayList<String>, val adapterData: AdapterData
 ): ArrayAdapter<String>(context, resource) {
 
     interface AdapterData {

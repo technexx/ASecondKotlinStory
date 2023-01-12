@@ -1,17 +1,16 @@
 
 package a.second.kotlin.story
 
-import a.second.kotlin.story.games.Hangman
 import a.second.kotlin.story.games.gameFragments.HangmanFragment
 import a.second.kotlin.story.games.gameFragments.MatchingFragment
-import a.second.kotlin.story.games.gameFragments.MathFragment
+import a.second.kotlin.story.games.gameFragments.MathProblemsFragment
+import a.second.kotlin.story.games.gameFragments.MathSumsFragment
 import android.annotation.SuppressLint
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
@@ -28,7 +27,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var Stats : Stats
     private lateinit var DecimalToStringConversions: DecimalToStringConversions
 
-    private lateinit var MathFragment : MathFragment
+    private lateinit var SumsFragment : MathSumsFragment
+    private lateinit var MathFragment : MathProblemsFragment
     private lateinit var HangmanFragment : HangmanFragment
     private lateinit var MatchingFragment : MatchingFragment
 
@@ -71,7 +71,8 @@ class MainActivity : AppCompatActivity() {
         Stats = Stats(applicationContext)
         DecimalToStringConversions = DecimalToStringConversions()
 
-        MathFragment = MathFragment()
+        SumsFragment = MathSumsFragment()
+        MathFragment = MathProblemsFragment()
         HangmanFragment = HangmanFragment()
         MatchingFragment = MatchingFragment()
 
@@ -147,7 +148,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun attachGameFragment() {
         supportFragmentManager.beginTransaction()
-            .add(R.id.game_frame_layout, MatchingFragment)
+            .add(R.id.game_frame_layout, SumsFragment)
             .commit()
     }
 
