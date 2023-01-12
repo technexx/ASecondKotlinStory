@@ -47,16 +47,15 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData{
                               savedInstanceState: Bundle?): View {
         rootView = inflater.inflate(R.layout.fragment_sums_layout, container, false)
 
-        sumsCustomAdapter = SumsCustomAdapter(requireContext(), R.layout.sums_adapter_views, fullCardIntegerList, this)
-
         populateFullCardIntegerList()
+
         instantiateSumsGridViewAndAdapter()
 
         return rootView
     }
 
     private fun populateFullCardIntegerList() {
-        while (fullCardIntegerList.size > 16) {
+        while (fullCardIntegerList.size < 16) {
             val valueToAdd = (2..99).random()
             if (!fullCardIntegerList.contains(valueToAdd)) {
                 fullCardIntegerList.add(valueToAdd)
@@ -66,6 +65,8 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData{
     }
 
     private fun instantiateSumsGridViewAndAdapter() {
+        sumsCustomAdapter = SumsCustomAdapter(requireContext(), R.layout.sums_adapter_views, fullCardIntegerList, this)
+
         sumsGridView = rootView.findViewById(R.id.sums_cards_gridView)
         sumsGridView.numColumns = 4
 
@@ -91,12 +92,12 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardList: Arra
         val inflater = LayoutInflater.from(context)
         val rowView = inflater.inflate(R.layout.sums_adapter_views, null, true)
 
-        holder.selectedCardView = getCardViewAtPosition(parent, position)
-        holder.selectedCardTextView = getCardTextViewAtPosition(parent, position)
+//        holder.selectedCardView = getCardViewAtPosition(parent, position)
+//        holder.selectedCardTextView = getCardTextViewAtPosition(parent, position)
 
-        holder.selectedCardView.setOnClickListener {
-            Log.i("testClick", "clicked at $position")
-        }
+//        holder.selectedCardView.setOnClickListener {
+//            Log.i("testClick", "clicked at $position")
+//        }
 
         return rowView
     }
