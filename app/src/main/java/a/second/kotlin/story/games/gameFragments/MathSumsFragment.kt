@@ -88,7 +88,9 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardList: Arra
         lateinit var selectedCardTextView : TextView
 
         var cardSelectedPositionsList : ArrayList<Int> = ArrayList()
-        var cardSelectedValueList : ArrayList<String> = ArrayList()
+        var cardSelectedValueList : ArrayList<Int> = ArrayList()
+
+        var totalCardsValue = 0
     }
 
     private var holder = ObjectHolder()
@@ -104,7 +106,15 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardList: Arra
             holder.selectedCardView = parent[position].findViewById(R.id.sums_card_cardView)
             holder.selectedCardTextView = parent[position].findViewById(R.id.sums_card_textView)
 
-            if (!isCardHighlighted(holder.selectedCardView)) highlightBackgroundOfCardView() else unHighlightBackgroundOfCardView()
+            if (!isCardHighlighted(holder.selectedCardView)){
+                highlightBackgroundOfCardView()
+                addSelectedCardValue(fullCardList[position])
+            } else {
+                unHighlightBackgroundOfCardView()
+                subtractSelectedCardValue(fullCardList[position])
+            }
+
+            Log.i("testValue", "value total is ${holder.totalCardsValue}")
 
             addToCardPositionList(position)
         }
@@ -136,5 +146,13 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardList: Arra
 
     private fun isCardHighlighted(cardView: CardView) : Boolean {
         return cardView.isSelected
+    }
+
+    private fun addSelectedCardValue(value: Int) {
+        holder.totalCardsValue += value
+    }
+
+    private fun subtractSelectedCardValue(value: Int) {
+        holder.totalCardsValue -= value
     }
 }

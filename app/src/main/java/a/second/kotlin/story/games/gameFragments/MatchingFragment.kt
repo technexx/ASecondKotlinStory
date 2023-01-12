@@ -135,7 +135,7 @@ class MatchingFragment : Fragment(), MatchingCustomAdapter.AdapterData {
 }
 
 //We can explicitly declare objects in our constructor, so we don't have to re-assign them (e.g. guessedList = mGuessedList) within class.
-class MatchingCustomAdapter (context: Context, resource: Int, val fullCardList: ArrayList<String>, val adapterData: AdapterData
+class MatchingCustomAdapter (context: Context, resource: Int, val fullCardValueList: ArrayList<String>, val adapterData: AdapterData
 ): ArrayAdapter<String>(context, resource) {
 
     interface AdapterData {
@@ -201,12 +201,12 @@ class MatchingCustomAdapter (context: Context, resource: Int, val fullCardList: 
                 holder.cardTextViewTwo = parent[holder.secondCardSelectedPosition].findViewById(R.id.matching_card_textView) as TextView
 
                 if (holder.numberOfCardsTurnedOver == 1) {
-                    holder.cardOneString = fullCardList[holder.firstCardSelectedPosition]
+                    holder.cardOneString = fullCardValueList[holder.firstCardSelectedPosition]
                     changeBackgroundOfSelectedCard(holder.cardViewOne, holder.cardOneString)
                     holder.cardTextViewOne.text = holder.cardOneString
                 }
                 if (holder.numberOfCardsTurnedOver == 2) {
-                    holder.cardTwoString = fullCardList[holder.secondCardSelectedPosition]
+                    holder.cardTwoString = fullCardValueList[holder.secondCardSelectedPosition]
                     changeBackgroundOfSelectedCard(holder.cardViewTwo, holder.cardTwoString)
                     holder.cardTextViewTwo.text = holder.cardTwoString
 
@@ -229,7 +229,7 @@ class MatchingCustomAdapter (context: Context, resource: Int, val fullCardList: 
     }
 
     override fun getCount(): Int {
-        return fullCardList.size
+        return fullCardValueList.size
     }
 
     fun setGameIsOverToTrue() {
@@ -242,7 +242,7 @@ class MatchingCustomAdapter (context: Context, resource: Int, val fullCardList: 
     }
 
     private fun populateCardHolderListsWithSelection(position: Int) {
-        val valueBeneathSelectedCard = fullCardList[position]
+        val valueBeneathSelectedCard = fullCardValueList[position]
 
         populateTwoCardSelectedPositionList(position)
         populateTwoCardSelectedValueList(valueBeneathSelectedCard)
