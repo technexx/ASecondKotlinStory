@@ -21,6 +21,7 @@ import androidx.core.view.get
 import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import kotlin.math.max
 
 class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData{
     override fun gameIsWon() {
@@ -64,7 +65,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData{
             }
         }
 
-        Log.i("testList", "list is $fullCardIntegerList")
+//        Log.i("testList", "list is $fullCardIntegerList")
     }
 
     private fun instantiateSumsGridViewAndAdapter() {
@@ -89,7 +90,9 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardList: Arra
 
         var cardSelectedPositionsList : ArrayList<Int> = ArrayList()
         var cardSelectedValueList : ArrayList<Int> = ArrayList()
+        var targetValuesList : ArrayList<Int> = ArrayList()
 
+        var targetTotal = 0
         var totalCardsValue = 0
     }
 
@@ -103,6 +106,8 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardList: Arra
         holder.populatedCardTextView.setText(fullCardList[position].toString())
 
         rowView.setOnClickListener {
+            setTargetTotal()
+
             holder.selectedCardView = parent[position].findViewById(R.id.sums_card_cardView)
             holder.selectedCardTextView = parent[position].findViewById(R.id.sums_card_textView)
 
@@ -124,6 +129,40 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardList: Arra
 
     override fun getCount(): Int {
         return fullCardList.size
+    }
+
+    private fun setTargetTotal() {
+        val cardValueTempList = ArrayList(fullCardList)
+        var valueToAdd = 0
+
+        while (cardValueTempList.size > 0) {
+            var numberOfCardsToAdd: Int
+            var maxCardsToAdd = 0
+
+            if (cardValueTempList.size > 6) maxCardsToAdd = (2..5).random() else maxCardsToAdd = (2..3).random()
+            numberOfCardsToAdd = (2..maxCardsToAdd).random()
+
+            if (cardValueTempList.size < 5) {
+                numberOfCardsToAdd = cardValueTempList.size
+            }
+
+            repeat(numberOfCardsToAdd) {
+                valueToAdd += cardValueTempList[0]
+                cardValueTempList.removeAt(0)
+            }
+
+            holder.targetValuesList.add(valueToAdd)
+            valueToAdd = 0
+        }
+
+        Log.i("testList", "target values list is ${holder.targetValuesList}")
+
+        holder.targetValuesList.clear()
+
+    }
+
+    private fun willLessThanTwoCardsBeLeftInList(list: ArrayList<Int>, numberToSelect: Int) : Boolean {
+        return ((list.size - numberToSelect) < 2)
     }
 
     private fun addToCardPositionList(position: Int) {
