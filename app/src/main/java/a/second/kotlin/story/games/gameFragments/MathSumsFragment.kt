@@ -114,7 +114,6 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
     var cardSelectedPositionsList : ArrayList<Int> = ArrayList()
     var cardSelectedValueList : ArrayList<Int> = ArrayList()
 
-    var targetTotal = 0
     var totalSelectedCardsValue = 0
 
     interface AdapterData {
@@ -135,17 +134,25 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
             if (!isCardHighlighted(selectedCardView)){
                 highlightBackgroundOfCardView()
                 addSelectedValueToCardsValueList(fullCardIntegerList[position])
+                addToCardPositionList(position)
             } else {
                 unHighlightBackgroundOfCardView()
                 subtractSelectedValueFromCardsValueList(fullCardIntegerList[position])
+                removeFromCardPositionList(position)
             }
+
+            Log.i("testPositionList", "position list is $cardSelectedPositionsList")
 
             Log.i("testMatch", "list of target values is $targetValuesList")
             Log.i("testMatch", "selected value total is ${totalSelectedCardsValue}")
             Log.i("testMatch", "values match is ${doSelectedCardsEqualAValueFromTargetList()}")
 
             if (doSelectedCardsEqualAValueFromTargetList()) {
-
+                for (i in cardSelectedPositionsList.indices) {
+                    val cardView = parent[cardSelectedPositionsList[i]].findViewById(R.id.sums_card_cardView) as CardView
+                    changeBackgroundColorOfMatchedCards(cardView)
+                }
+                clearTotalSelectedCardsPositionList()
             }
 
         }
@@ -193,5 +200,11 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
 
     private fun subtractSelectedValueFromCardsValueList(value: Int) {
         totalSelectedCardsValue -= value
+    }
+
+    private fun clearTotalSelectedCardsPositionList() { cardSelectedPositionsList.clear() }
+
+    private fun changeBackgroundColorOfMatchedCards(cardView: CardView) {
+        cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.android_magenta))
     }
 }
