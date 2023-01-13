@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import kotlin.math.max
 
+//Todo: When match occurs, change target textview by either (A) Update targetList in adapter ir (B) Callback from adapter -> fragment.
 class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData{
     override fun gameIsWon() {
     }
@@ -41,6 +42,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData{
     private var fullCardIntegerList : ArrayList<Int> = ArrayList()
     private var targetValuesList : ArrayList<Int> = ArrayList()
 
+    private lateinit var targetAnswerTextView : TextView
     private lateinit var stateOfAnswerTextView : TextView
 
     override fun onAttach(context: Context) {
@@ -52,6 +54,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData{
                               savedInstanceState: Bundle?): View {
         rootView = inflater.inflate(R.layout.fragment_sums_layout, container, false)
 
+        instantiateXMLObjects()
         populateFullCardIntegerList()
         populateTargetValuesList()
         instantiateSumsGridViewAndAdapter()
@@ -91,8 +94,6 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData{
             targetValuesList.add(valueToAdd)
             valueToAdd = 0
         }
-
-        Log.i("testList", "target values list is $targetValuesList")
     }
 
     private fun instantiateSumsGridViewAndAdapter() {
@@ -100,6 +101,11 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData{
         sumsGridView = rootView.findViewById(R.id.sums_cards_gridView)
         sumsGridView.numColumns = 4
         sumsGridView.adapter = sumsCustomAdapter
+    }
+
+    private fun instantiateXMLObjects() {
+        targetAnswerTextView = rootView.findViewById(R.id.target_answer_textView)
+        stateOfAnswerTextView = rootView.findViewById(R.id.sums_state_of_answer_textView)
     }
 }
 
@@ -181,7 +187,8 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
     }
 
     private fun highlightBackgroundOfCardView() {
-        selectedCardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.light_teal))
+        selectedCardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.lighter_grey))
+
         selectedCardView.isSelected = true
     }
 
@@ -205,6 +212,6 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
     private fun clearTotalSelectedCardsPositionList() { cardSelectedPositionsList.clear() }
 
     private fun changeBackgroundColorOfMatchedCards(cardView: CardView) {
-        cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.android_magenta))
+        cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.light_teal))
     }
 }

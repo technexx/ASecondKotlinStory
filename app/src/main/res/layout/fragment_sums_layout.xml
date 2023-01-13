@@ -35,6 +35,16 @@
     </ProgressBar>
 
     <TextView
+        android:id="@+id/target_answer_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/sums_gridView_guideline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+    </TextView>
+
+    <TextView
         android:id="@+id/sums_state_of_answer_textView"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
