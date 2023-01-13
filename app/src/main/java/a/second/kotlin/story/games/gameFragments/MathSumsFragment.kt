@@ -39,6 +39,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData{
     private var progressValue = 0
 
     private var fullCardIntegerList : ArrayList<Int> = ArrayList()
+    private var targetValuesList : ArrayList<Int> = ArrayList()
 
     private lateinit var stateOfAnswerTextView : TextView
 
@@ -52,6 +53,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData{
         rootView = inflater.inflate(R.layout.fragment_sums_layout, container, false)
 
         populateFullCardIntegerList()
+        populateTargetValuesList()
         instantiateSumsGridViewAndAdapter()
 
         return rootView
@@ -64,75 +66,10 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData{
                 fullCardIntegerList.add(valueToAdd)
             }
         }
-
-//        Log.i("testList", "list is $fullCardIntegerList")
     }
 
-    private fun instantiateSumsGridViewAndAdapter() {
-        sumsCustomAdapter = SumsCustomAdapter(requireContext(), R.layout.sums_adapter_views, fullCardIntegerList, this)
-        sumsGridView = rootView.findViewById(R.id.sums_cards_gridView)
-        sumsGridView.numColumns = 4
-        sumsGridView.adapter = sumsCustomAdapter
-    }
-}
-
-class SumsCustomAdapter (context: Context, resource: Int, val fullCardList: ArrayList<Int>, val adapterData: AdapterData
-): ArrayAdapter<String>(context, resource) {
-
-    interface AdapterData {
-        fun gameIsWon()
-    }
-
-    class ObjectHolder() {
-        lateinit var populatedCardTextView : TextView
-        lateinit var selectedCardView : CardView
-        lateinit var selectedCardTextView : TextView
-
-        var cardSelectedPositionsList : ArrayList<Int> = ArrayList()
-        var cardSelectedValueList : ArrayList<Int> = ArrayList()
-        var targetValuesList : ArrayList<Int> = ArrayList()
-
-        var targetTotal = 0
-        var totalCardsValue = 0
-    }
-
-    private var holder = ObjectHolder()
-
-    override fun getView(position: Int, view: View?, parent: ViewGroup): View {
-        val inflater = LayoutInflater.from(context)
-        val rowView = inflater.inflate(R.layout.sums_adapter_views, null, true)
-
-        holder.populatedCardTextView = rowView.findViewById(R.id.sums_card_textView)
-        holder.populatedCardTextView.setText(fullCardList[position].toString())
-
-        rowView.setOnClickListener {
-            setTargetTotal()
-
-            holder.selectedCardView = parent[position].findViewById(R.id.sums_card_cardView)
-            holder.selectedCardTextView = parent[position].findViewById(R.id.sums_card_textView)
-
-            if (!isCardHighlighted(holder.selectedCardView)){
-                highlightBackgroundOfCardView()
-                addSelectedCardValue(fullCardList[position])
-            } else {
-                unHighlightBackgroundOfCardView()
-                subtractSelectedCardValue(fullCardList[position])
-            }
-
-            Log.i("testValue", "value total is ${holder.totalCardsValue}")
-
-            addToCardPositionList(position)
-        }
-
-        return rowView
-    }
-
-    override fun getCount(): Int {
-        return fullCardList.size
-    }
-
-    private fun setTargetTotal() {
-        val cardValueTempList = ArrayList(fullCardList)
+    private fun populateTargetValuesList() {
+        val cardValueTempList = ArrayList(fullCardIntegerList)
         var valueToAdd = 0
 
         while (cardValueTempList.size > 0) {
@@ -151,18 +88,70 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardList: Arra
                 cardValueTempList.removeAt(0)
             }
 
-            holder.targetValuesList.add(valueToAdd)
+            targetValuesList.add(valueToAdd)
             valueToAdd = 0
         }
 
-        Log.i("testList", "target values list is ${holder.targetValuesList}")
-
-        holder.targetValuesList.clear()
-
+        Log.i("testList", "target values list is $targetValuesList")
     }
 
-    private fun willLessThanTwoCardsBeLeftInList(list: ArrayList<Int>, numberToSelect: Int) : Boolean {
-        return ((list.size - numberToSelect) < 2)
+    private fun instantiateSumsGridViewAndAdapter() {
+        sumsCustomAdapter = SumsCustomAdapter(requireContext(), R.layout.sums_adapter_views, fullCardIntegerList, targetValuesList, this)
+        sumsGridView = rootView.findViewById(R.id.sums_cards_gridView)
+        sumsGridView.numColumns = 4
+        sumsGridView.adapter = sumsCustomAdapter
+    }
+}
+
+//Constructor input lists are separate objects from those in our Fragment class. We simply pass them in and name them the same.
+class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerList: ArrayList<Int>, val targetValuesList: ArrayList<Int>, val adapterData: AdapterData
+): ArrayAdapter<String>(context, resource) {
+
+    interface AdapterData {
+        fun gameIsWon()
+    }
+
+    class ObjectHolder() {
+        lateinit var populatedCardTextView : TextView
+        lateinit var selectedCardView : CardView
+        lateinit var selectedCardTextView : TextView
+
+        var cardSelectedPositionsList : ArrayList<Int> = ArrayList()
+        var cardSelectedValueList : ArrayList<Int> = ArrayList()
+
+        var targetTotal = 0
+        var totalCardsValue = 0
+    }
+
+    private var holder = ObjectHolder()
+
+    override fun getView(position: Int, view: View?, parent: ViewGroup): View {
+        val inflater = LayoutInflater.from(context)
+        val rowView = inflater.inflate(R.layout.sums_adapter_views, null, true)
+
+        holder.populatedCardTextView = rowView.findViewById(R.id.sums_card_textView)
+        holder.populatedCardTextView.setText(fullCardIntegerList[position].toString())
+
+        rowView.setOnClickListener {
+            holder.selectedCardView = parent[position].findViewById(R.id.sums_card_cardView)
+            holder.selectedCardTextView = parent[position].findViewById(R.id.sums_card_textView)
+
+            if (!isCardHighlighted(holder.selectedCardView)){
+                highlightBackgroundOfCardView()
+                addSelectedCardValue(fullCardIntegerList[position])
+            } else {
+                unHighlightBackgroundOfCardView()
+                subtractSelectedCardValue(fullCardIntegerList[position])
+            }
+
+            Log.i("testValue", "value total is ${holder.totalCardsValue}")
+        }
+
+        return rowView
+    }
+
+    override fun getCount(): Int {
+        return fullCardIntegerList.size
     }
 
     private fun addToCardPositionList(position: Int) {
