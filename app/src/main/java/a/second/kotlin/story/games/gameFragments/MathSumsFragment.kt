@@ -4,11 +4,13 @@ import a.second.kotlin.story.ItemViewModel
 import a.second.kotlin.story.R
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewStub
 import android.view.animation.LinearInterpolator
 import android.widget.ArrayAdapter
 import android.widget.GridView
@@ -21,7 +23,8 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 
-//Todo: target textview did not change after first match.
+//Todo: Target textview did not change after first match.
+//Todo: Target can be unreachable.
 class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
     override fun targetNumberHit(value: Int) {
@@ -32,9 +35,11 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
     }
 
     override fun gameIsWon() {
-        setStateOfAnswersAndTextView(true)
+        setStateOfAnswersTextView(true)
         sendEndGameLiveData()
         sendEndGameWinOrLoss(true)
+        stopObjectAnimator()
+        toggleStateOfAnswersAndTargetValueTextViews(true)
     }
 
     private fun removeMatchedTargetFromList(number: Int) {
@@ -113,8 +118,18 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
     private fun populateTargetAnswerTextView(targetValue: Int) { targetAnswerTextView.text = getString(R.string.sums_target_textView, targetValue.toString()) }
 
-    private fun setStateOfAnswersAndTextView(gameIsWon: Boolean) {
+    private fun setStateOfAnswersTextView(gameIsWon: Boolean) {
         if (gameIsWon) stateOfAnswerTextView.text = getString(R.string.sums_problem_correct) else stateOfAnswerTextView.text = getString(R.string.sums_problem_incorrect)
+    }
+
+    private fun toggleStateOfAnswersAndTargetValueTextViews(gameOver: Boolean) {
+        if (gameOver) {
+            stateOfAnswerTextView.visibility = View.VISIBLE
+            targetAnswerTextView.visibility = View.GONE
+        } else {
+            stateOfAnswerTextView.visibility = View.GONE
+            targetAnswerTextView.visibility = View.VISIBLE
+        }
     }
 
     private fun instantiateProgressBar() {
@@ -126,12 +141,13 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
     private fun instantiateObjectAnimator() {
         objectAnimator = ObjectAnimator.ofInt(timerProgressBar, "progress", progressValue, 0)
         objectAnimator.interpolator = LinearInterpolator()
-        objectAnimator.duration = 20000
+        objectAnimator.duration = 30000
 
         objectAnimator.doOnEnd {
             sendEndGameLiveData()
             sendEndGameWinOrLoss(false)
-            setStateOfAnswersAndTextView(false)
+            setStateOfAnswersTextView(false)
+            toggleStateOfAnswersAndTargetValueTextViews(true)
         }
     }
 
@@ -204,7 +220,6 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                     removeFromCardSelectedPositionList(position)
                 }
 
-//                Log.i("testMatch", "list of target values is $targetValuesList")
                 Log.i("testMatch", "target value is ${targetValuesList[0]}")
                 Log.i("testMatch", "selected value total is $totalSelectedCardsValue")
 
@@ -219,6 +234,8 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                     zeroOutTotalCardsSelectedValue()
                     clearTotalSelectedCardsPositionList()
                     Log.i("testMatch", "matched!")
+
+                    if (targetValuesList.size == 0) adapterData.gameIsWon()
                 }
             }
         }
