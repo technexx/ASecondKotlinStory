@@ -126,7 +126,7 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
     lateinit var selectedCardTextView : TextView
 
     var cardSelectedPositionsList : ArrayList<Int> = ArrayList()
-    var cardSelectedValueList : ArrayList<Int> = ArrayList()
+    var cardsMatchedPositionsList : ArrayList<Int> = ArrayList()
 
     var totalSelectedCardsValue = 0
 
@@ -149,11 +149,11 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
             if (!isCardHighlighted(selectedCardView)){
                 highlightBackgroundOfCardView()
                 addSelectedValueToCardsValueList(fullCardIntegerList[position])
-                addToCardPositionList(position)
+                addToCardSelectedPositionList(position)
             } else {
                 unHighlightBackgroundOfCardView()
                 subtractSelectedValueFromCardsValueList(fullCardIntegerList[position])
-                removeFromCardPositionList(position)
+                removeFromCardSelectedPositionList(position)
             }
 
             Log.i("testPositionList", "position list is $cardSelectedPositionsList")
@@ -166,10 +166,12 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                 for (i in cardSelectedPositionsList.indices) {
                     val cardView = parent[cardSelectedPositionsList[i]].findViewById(R.id.sums_card_cardView) as CardView
                     changeBackgroundColorOfMatchedCards(cardView)
+                    addToCardsMatchedPositionList(cardSelectedPositionsList[i])
                 }
                 adapterData.targetNumberHit(totalSelectedCardsValue)
                 removeTargetValueFromList(totalSelectedCardsValue)
                 clearTotalSelectedCardsPositionList()
+                Log.i("testMatch", "matched position list is {$cardsMatchedPositionsList}")
             }
         }
 
@@ -188,11 +190,11 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
         return booleanToReturn
     }
 
-    private fun addToCardPositionList(position: Int) {
+    private fun addToCardSelectedPositionList(position: Int) {
         cardSelectedPositionsList.add(position)
     }
 
-    private fun removeFromCardPositionList(position: Int) {
+    private fun removeFromCardSelectedPositionList(position: Int) {
         cardSelectedPositionsList.remove(position)
     }
 
@@ -207,17 +209,15 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
         selectedCardView.isSelected = false
     }
 
-    private fun isCardHighlighted(cardView: CardView) : Boolean {
-        return cardView.isSelected
-    }
+    private fun isCardHighlighted(cardView: CardView) : Boolean { return cardView.isSelected }
 
-    private fun addSelectedValueToCardsValueList(value: Int) {
-        totalSelectedCardsValue += value
-    }
+    private fun addSelectedValueToCardsValueList(value: Int) { totalSelectedCardsValue += value }
 
-    private fun subtractSelectedValueFromCardsValueList(value: Int) {
-        totalSelectedCardsValue -= value
-    }
+    private fun subtractSelectedValueFromCardsValueList(value: Int) { totalSelectedCardsValue -= value }
+
+    private fun addToCardsMatchedPositionList(value: Int) { cardsMatchedPositionsList.add(value) }
+
+    private fun clearCardsMatchedPositionList() { cardsMatchedPositionsList.clear() }
 
     private fun removeTargetValueFromList(value: Int) { targetValuesList.remove(value) }
 
