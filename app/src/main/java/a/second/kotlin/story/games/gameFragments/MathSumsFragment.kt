@@ -23,7 +23,9 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
     override fun targetNumberHit(value: Int) {
         removeMatchedTargetFromList(value)
-        Log.i("testCall", "value called back is $value")
+        populateTargetAnswerTextView(targetValuesList[0])
+        Log.i("testMatch", "value called back is $value")
+        Log.i("testMatch", "revised target list in callback is {$targetValuesList}")
     }
 
     override fun gameIsWon() {
@@ -70,7 +72,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
     private fun populateFullCardIntegerList() {
         while (fullCardIntegerList.size < 16) {
-            val valueToAdd = (2..99).random()
+            val valueToAdd = (2..20).random()
             if (!fullCardIntegerList.contains(valueToAdd)) {
                 fullCardIntegerList.add(valueToAdd)
             }
@@ -143,64 +145,63 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
         populatedCardTextView.text = fullCardIntegerList[position].toString()
 
         rowView.setOnClickListener {
-            selectedCardView = parent[position].findViewById(R.id.sums_card_cardView)
-            selectedCardTextView = parent[position].findViewById(R.id.sums_card_textView)
+            if (!cardsMatchedPositionsList.contains(position)) {
+                selectedCardView = parent[position].findViewById(R.id.sums_card_cardView)
+                selectedCardTextView = parent[position].findViewById(R.id.sums_card_textView)
 
-            if (!isCardHighlighted(selectedCardView)){
-                highlightBackgroundOfCardView()
-                addSelectedValueToCardsValueList(fullCardIntegerList[position])
-                addToCardSelectedPositionList(position)
-            } else {
-                unHighlightBackgroundOfCardView()
-                subtractSelectedValueFromCardsValueList(fullCardIntegerList[position])
-                removeFromCardSelectedPositionList(position)
-            }
-
-            Log.i("testPositionList", "position list is $cardSelectedPositionsList")
-
-            Log.i("testMatch", "list of target values is $targetValuesList")
-            Log.i("testMatch", "selected value total is $totalSelectedCardsValue")
-            Log.i("testMatch", "values match is ${doSelectedCardsEqualAValueFromTargetList()}")
-
-            if (doSelectedCardsEqualAValueFromTargetList()) {
-                for (i in cardSelectedPositionsList.indices) {
-                    val cardView = parent[cardSelectedPositionsList[i]].findViewById(R.id.sums_card_cardView) as CardView
-                    changeBackgroundColorOfMatchedCards(cardView)
-                    addToCardsMatchedPositionList(cardSelectedPositionsList[i])
+                if (!isCardHighlighted(selectedCardView)) {
+                    highlightBackgroundOfCardView()
+                    addSelectedValueToCardsValueList(fullCardIntegerList[position])
+                    addToCardSelectedPositionList(position)
+                } else {
+                    unHighlightBackgroundOfCardView()
+                    subtractSelectedValueFromCardsValueList(fullCardIntegerList[position])
+                    removeFromCardSelectedPositionList(position)
                 }
-                adapterData.targetNumberHit(totalSelectedCardsValue)
-                removeTargetValueFromList(totalSelectedCardsValue)
-                clearTotalSelectedCardsPositionList()
-                Log.i("testMatch", "matched position list is {$cardsMatchedPositionsList}")
+
+//                Log.i("testMatch", "list of target values is $targetValuesList")
+                Log.i("testMatch", "target value is ${targetValuesList[0]}")
+                Log.i("testMatch", "selected value total is $totalSelectedCardsValue")
+
+                if (doSelectedCardsEqualTargetValue(targetValuesList[0])) {
+                    for (i in cardSelectedPositionsList.indices) {
+                        val cardView = parent[cardSelectedPositionsList[i]].findViewById(R.id.sums_card_cardView) as CardView
+                        changeBackgroundColorOfMatchedCards(cardView)
+                        addToCardsMatchedPositionList(cardSelectedPositionsList[i])
+                    }
+                    adapterData.targetNumberHit(totalSelectedCardsValue)
+                    removeTargetValueFromList(totalSelectedCardsValue)
+                    clearTotalSelectedCardsPositionList()
+                }
             }
         }
-
         return rowView
     }
 
-    override fun getCount(): Int {
-        return fullCardIntegerList.size
-    }
+    override fun getCount(): Int { return fullCardIntegerList.size }
 
-    private fun doSelectedCardsEqualAValueFromTargetList() : Boolean {
-        var booleanToReturn = false
-        for (i in targetValuesList.indices) {
-            if (totalSelectedCardsValue == targetValuesList[i]) booleanToReturn = true
-        }
-        return booleanToReturn
-    }
+    private fun addToCardSelectedPositionList(position: Int) { cardSelectedPositionsList.add(position)}
 
-    private fun addToCardSelectedPositionList(position: Int) {
-        cardSelectedPositionsList.add(position)
-    }
+    private fun removeFromCardSelectedPositionList(position: Int) { cardSelectedPositionsList.remove(position) }
 
-    private fun removeFromCardSelectedPositionList(position: Int) {
-        cardSelectedPositionsList.remove(position)
-    }
+    private fun clearTotalSelectedCardsPositionList() { cardSelectedPositionsList.clear() }
+
+    private fun isCardHighlighted(cardView: CardView) : Boolean { return cardView.isSelected }
+
+    private fun addSelectedValueToCardsValueList(value: Int) { totalSelectedCardsValue += value }
+
+    private fun subtractSelectedValueFromCardsValueList(value: Int) { totalSelectedCardsValue -= value }
+
+    private fun doSelectedCardsEqualTargetValue(value: Int) : Boolean { return totalSelectedCardsValue == value }
+
+    private fun addToCardsMatchedPositionList(value: Int) { cardsMatchedPositionsList.add(value) }
+
+    private fun clearCardsMatchedPositionList() { cardsMatchedPositionsList.clear() }
+
+    private fun removeTargetValueFromList(value: Int) { targetValuesList.remove(value) }
 
     private fun highlightBackgroundOfCardView() {
         selectedCardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.lighter_grey))
-
         selectedCardView.isSelected = true
     }
 
@@ -209,19 +210,6 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
         selectedCardView.isSelected = false
     }
 
-    private fun isCardHighlighted(cardView: CardView) : Boolean { return cardView.isSelected }
-
-    private fun addSelectedValueToCardsValueList(value: Int) { totalSelectedCardsValue += value }
-
-    private fun subtractSelectedValueFromCardsValueList(value: Int) { totalSelectedCardsValue -= value }
-
-    private fun addToCardsMatchedPositionList(value: Int) { cardsMatchedPositionsList.add(value) }
-
-    private fun clearCardsMatchedPositionList() { cardsMatchedPositionsList.clear() }
-
-    private fun removeTargetValueFromList(value: Int) { targetValuesList.remove(value) }
-
-    private fun clearTotalSelectedCardsPositionList() { cardSelectedPositionsList.clear() }
 
     private fun changeBackgroundColorOfMatchedCards(cardView: CardView) {
         cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.light_teal))
