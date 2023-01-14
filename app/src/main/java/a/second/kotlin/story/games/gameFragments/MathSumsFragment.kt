@@ -72,10 +72,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
     private fun populateFullCardIntegerList() {
         while (fullCardIntegerList.size < 16) {
-            val valueToAdd = (2..20).random()
-            if (!fullCardIntegerList.contains(valueToAdd)) {
-                fullCardIntegerList.add(valueToAdd)
-            }
+            fullCardIntegerList.add((1..10).random())
         }
     }
 
@@ -171,7 +168,9 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                     }
                     adapterData.targetNumberHit(totalSelectedCardsValue)
                     removeTargetValueFromList(totalSelectedCardsValue)
+                    zeroOutTotalCardsSelectedValue()
                     clearTotalSelectedCardsPositionList()
+                    Log.i("testMatch", "matched!")
                 }
             }
         }
@@ -193,6 +192,8 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
     private fun subtractSelectedValueFromCardsValueList(value: Int) { totalSelectedCardsValue -= value }
 
     private fun doSelectedCardsEqualTargetValue(value: Int) : Boolean { return totalSelectedCardsValue == value }
+
+    private fun zeroOutTotalCardsSelectedValue() { totalSelectedCardsValue = 0 }
 
     private fun addToCardsMatchedPositionList(value: Int) { cardsMatchedPositionsList.add(value) }
 
