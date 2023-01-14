@@ -4,7 +4,6 @@ import a.second.kotlin.story.ItemViewModel
 import a.second.kotlin.story.R
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,16 +14,18 @@ import android.widget.GridView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import kotlin.math.max
 
-//Todo: When match occurs, change target textview by either (A) Update targetList in adapter ir (B) Callback from adapter -> fragment.
-class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData{
+//Todo: When match occurs, change target textview by either (A) Update targetList in adapter or (B) Callback from adapter -> fragment.
+class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
+
+    override fun targetNumberHit(value: Int) {
+        Log.i("testCall", "value called back is $value")
+    }
+
     override fun gameIsWon() {
     }
 
@@ -123,6 +124,7 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
     var totalSelectedCardsValue = 0
 
     interface AdapterData {
+        fun targetNumberHit(value: Int)
         fun gameIsWon()
     }
 
@@ -131,7 +133,7 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
         val rowView = inflater.inflate(R.layout.sums_adapter_views, null, true)
 
         populatedCardTextView = rowView.findViewById(R.id.sums_card_textView)
-        populatedCardTextView.setText(fullCardIntegerList[position].toString())
+        populatedCardTextView.text = fullCardIntegerList[position].toString()
 
         rowView.setOnClickListener {
             selectedCardView = parent[position].findViewById(R.id.sums_card_cardView)
@@ -158,6 +160,7 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                     val cardView = parent[cardSelectedPositionsList[i]].findViewById(R.id.sums_card_cardView) as CardView
                     changeBackgroundColorOfMatchedCards(cardView)
                 }
+                adapterData.targetNumberHit(totalSelectedCardsValue)
                 clearTotalSelectedCardsPositionList()
             }
 
