@@ -31,6 +31,8 @@
     <string name="game4_problem_correct">You\'re so good at math! This helps your finances</string>
     <string name="game4_problem_incorrect">You\'re so good at math! This helps your finances</string>
 
+    <string name="sums_target_textView">Target is: %1$s</string>
+
 
     <string-array name="job_events_bad">
         <item>Your boss hates you and lets you know it. Loudly.</item>

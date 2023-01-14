@@ -19,14 +19,18 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 
-//Todo: When match occurs, change target textview by either (A) Update targetList in adapter or (B) Callback from adapter -> fragment.
 class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
     override fun targetNumberHit(value: Int) {
+        removeMatchedTargetFromList(value)
         Log.i("testCall", "value called back is $value")
     }
 
     override fun gameIsWon() {
+    }
+
+    private fun removeMatchedTargetFromList(number: Int) {
+        targetValuesList.remove(number)
     }
 
     private lateinit var rootView : View
@@ -59,6 +63,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
         populateFullCardIntegerList()
         populateTargetValuesList()
         instantiateSumsGridViewAndAdapter()
+        populateTargetAnswerTextView(targetValuesList[0])
 
         return rootView
     }
@@ -96,6 +101,8 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
             valueToAdd = 0
         }
     }
+
+    private fun populateTargetAnswerTextView(targetValue: Int) { targetAnswerTextView.text = getString(R.string.sums_target_textView, targetValue.toString()) }
 
     private fun instantiateSumsGridViewAndAdapter() {
         sumsCustomAdapter = SumsCustomAdapter(requireContext(), R.layout.sums_adapter_views, fullCardIntegerList, targetValuesList, this)
@@ -152,7 +159,7 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
             Log.i("testPositionList", "position list is $cardSelectedPositionsList")
 
             Log.i("testMatch", "list of target values is $targetValuesList")
-            Log.i("testMatch", "selected value total is ${totalSelectedCardsValue}")
+            Log.i("testMatch", "selected value total is $totalSelectedCardsValue")
             Log.i("testMatch", "values match is ${doSelectedCardsEqualAValueFromTargetList()}")
 
             if (doSelectedCardsEqualAValueFromTargetList()) {
@@ -161,9 +168,9 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                     changeBackgroundColorOfMatchedCards(cardView)
                 }
                 adapterData.targetNumberHit(totalSelectedCardsValue)
+                removeTargetValueFromList(totalSelectedCardsValue)
                 clearTotalSelectedCardsPositionList()
             }
-
         }
 
         return rowView
@@ -211,6 +218,8 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
     private fun subtractSelectedValueFromCardsValueList(value: Int) {
         totalSelectedCardsValue -= value
     }
+
+    private fun removeTargetValueFromList(value: Int) { targetValuesList.remove(value) }
 
     private fun clearTotalSelectedCardsPositionList() { cardSelectedPositionsList.clear() }
 
