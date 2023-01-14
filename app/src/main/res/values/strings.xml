@@ -18,8 +18,6 @@
     <string name="time_since_spawn">Time since spawn: </string>
     <string name="zeroed_spawn_time">0:00:00</string>
 
-    <string name="correct_answer">You did good at %1$s and your %2$s gets better!</string>
-    <string name="wrong_answer">You did so very bad at %1$s and your %2$s gets worse!</string>
     <string name="submit">Submit</string>
 
     <string name="math_problem_correct">You\'re so good at math! This helps your finances.</string>
@@ -28,11 +26,10 @@
     <string name="hangman_problem_incorrect">If you can\'t string words together, who\'s going to be your friend?</string>
     <string name="matching_problem_correct">You\'re so good at matching! This helps your family relations. Why? Don\'t ask.</string>
     <string name="matching_problem_incorrect">You are a match made of mismatched mash. Your family spits at you.</string>
-    <string name="game4_problem_correct">You\'re so good at math! This helps your finances</string>
-    <string name="game4_problem_incorrect">You\'re so good at math! This helps your finances</string>
+    <string name="sums_problem_correct">You\'re so good at adding things! This props up your career.</string>
+    <string name="sums_problem_incorrect">2 + 2 = Jello, right? Who hired you, anyway?</string>
 
     <string name="sums_target_textView">Target is: %1$s</string>
-
 
     <string-array name="job_events_bad">
         <item>Your boss hates you and lets you know it. Loudly.</item>

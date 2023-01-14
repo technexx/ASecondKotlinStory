@@ -9,11 +9,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
 import android.widget.ArrayAdapter
 import android.widget.GridView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
@@ -23,7 +25,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
     override fun targetNumberHit(value: Int) {
         removeMatchedTargetFromList(value)
-        populateTargetAnswerTextView(targetValuesList[0])
+        if (targetValuesList.size >0 ) populateTargetAnswerTextView(targetValuesList[0])
         Log.i("testMatch", "value called back is $value")
         Log.i("testMatch", "revised target list in callback is {$targetValuesList}")
     }
@@ -67,6 +69,10 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
         instantiateSumsGridViewAndAdapter()
         populateTargetAnswerTextView(targetValuesList[0])
 
+        instantiateProgressBar()
+        instantiateObjectAnimator()
+        startObjectAnimator()
+
         return rootView
     }
 
@@ -102,6 +108,38 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
     }
 
     private fun populateTargetAnswerTextView(targetValue: Int) { targetAnswerTextView.text = getString(R.string.sums_target_textView, targetValue.toString()) }
+
+    private fun setStateOfAnswersAndTextView(gameIsWon: Boolean) {
+        if (gameIsWon) stateOfAnswerTextView.text = getString(R.string.sums_problem_correct) else stateOfAnswerTextView.text = getString(R.string.sums_problem_incorrect)
+    }
+
+    private fun instantiateProgressBar() {
+        timerProgressBar = rootView.findViewById(R.id.sums_cards_timer_progress_bar)
+        progressValue = 1000
+        timerProgressBar.max = progressValue
+    }
+
+    private fun instantiateObjectAnimator() {
+        objectAnimator = ObjectAnimator.ofInt(timerProgressBar, "progress", progressValue, 0)
+        objectAnimator.interpolator = LinearInterpolator()
+        objectAnimator.duration = 20000
+
+        objectAnimator.doOnEnd {
+            sendEndGameLiveData()
+        }
+    }
+
+    private fun sendEndGameLiveData() {
+        gamesViewModel.setWhichGameIsBeingPlayed("Sums")
+    }
+
+    private fun startObjectAnimator() {
+        objectAnimator.start()
+    }
+
+    private fun stopObjectAnimator() {
+        objectAnimator.cancel()
+    }
 
     private fun instantiateSumsGridViewAndAdapter() {
         sumsCustomAdapter = SumsCustomAdapter(requireContext(), R.layout.sums_adapter_views, fullCardIntegerList, targetValuesList, this)
