@@ -21,6 +21,7 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 
+//Todo: target textview did not change after first match.
 class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
     override fun targetNumberHit(value: Int) {
@@ -31,6 +32,9 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
     }
 
     override fun gameIsWon() {
+        setStateOfAnswersAndTextView(true)
+        sendEndGameLiveData()
+        sendEndGameWinOrLoss(true)
     }
 
     private fun removeMatchedTargetFromList(number: Int) {
@@ -126,11 +130,17 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
         objectAnimator.doOnEnd {
             sendEndGameLiveData()
+            sendEndGameWinOrLoss(false)
+            setStateOfAnswersAndTextView(false)
         }
     }
 
     private fun sendEndGameLiveData() {
         gamesViewModel.setWhichGameIsBeingPlayed("Sums")
+    }
+
+    private fun sendEndGameWinOrLoss(winOrLoss: Boolean) {
+        gamesViewModel.setIsAnswerCorrect(winOrLoss)
     }
 
     private fun startObjectAnimator() {
