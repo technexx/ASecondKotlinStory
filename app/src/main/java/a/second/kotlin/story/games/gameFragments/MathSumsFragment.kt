@@ -23,7 +23,6 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 
-//Todo: Target textview did not change after first match.
 class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
     override fun targetNumberHit() {
@@ -86,6 +85,8 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
         }
     }
 
+    //Todo: Card unselection highlight doesn't work w/ position conditional.
+    //Todo: Unmatched cards list should only be culled when all of those specific cards are selected to match target, otherwise it is no solution.
     private fun populateNextTargetValue() {
         var valueToAdd = 0
 
@@ -216,7 +217,7 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                     removeFromCardSelectedPositionList(position)
                 }
 
-                if (doSelectedCardsEqualTargetValue(totalSelectedCardsValue)) {
+                if (doSelectedCardsEqualTargetValue(currentIntegerTarget)) {
                     for (i in cardSelectedPositionsList.indices) {
                         val cardView = parent[cardSelectedPositionsList[i]].findViewById(R.id.sums_card_cardView) as CardView
                         changeBackgroundColorOfMatchedCards(cardView)
