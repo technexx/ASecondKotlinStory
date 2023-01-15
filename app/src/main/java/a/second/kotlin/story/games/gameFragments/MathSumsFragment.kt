@@ -101,14 +101,15 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
         repeat(numberOfCardsToAdd) {
             valueToAdd += unMatchedCardsRemainingList[0]
+            Log.i("testAdd", "single value added is $valueToAdd")
             unMatchedCardsRemainingList.removeAt(0)
         }
 
         Log.i("testAdd","total value in list is $valueToAdd")
+        Log.i("testAdd", "full list is $fullCardIntegerList")
+        Log.i("testAdd", "unMatchedList is $unMatchedCardsRemainingList")
 
         currentIntegerTarget = valueToAdd
-
-        sumsCustomAdapter.notifyDataSetChanged()
     }
 
 
@@ -209,15 +210,11 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
 
                 if (!isCardHighlighted(selectedCardView)) {
                     highlightBackgroundOfCardView()
-                    addSelectedValueToCardsValueList(fullCardIntegerList[position])
                     addToCardSelectedPositionList(position)
                 } else {
                     unHighlightBackgroundOfCardView()
-                    subtractSelectedValueFromCardsValueList(fullCardIntegerList[position])
                     removeFromCardSelectedPositionList(position)
                 }
-
-                Log.i("testMatch", "selected value total is $totalSelectedCardsValue")
 
                 if (doSelectedCardsEqualTargetValue(totalSelectedCardsValue)) {
                     for (i in cardSelectedPositionsList.indices) {
@@ -227,7 +224,7 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                     }
                     zeroOutTotalCardsSelectedValue()
                     clearTotalSelectedCardsPositionList()
-                    Log.i("testMatch", "matched!")
+                    Log.i("testAdd", "matched!")
 
                     if (cardsMatchedPositionsList.size > 0) adapterData.targetNumberHit() else adapterData.gameIsWon()
                 }
@@ -245,10 +242,6 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
     private fun clearTotalSelectedCardsPositionList() { cardSelectedPositionsList.clear() }
 
     private fun isCardHighlighted(cardView: CardView) : Boolean { return cardView.isSelected }
-
-    private fun addSelectedValueToCardsValueList(value: Int) { totalSelectedCardsValue += value }
-
-    private fun subtractSelectedValueFromCardsValueList(value: Int) { totalSelectedCardsValue -= value }
 
     private fun doSelectedCardsEqualTargetValue(value: Int) : Boolean { return totalSelectedCardsValue == value }
 
