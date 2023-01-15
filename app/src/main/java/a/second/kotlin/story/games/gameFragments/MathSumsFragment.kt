@@ -26,11 +26,7 @@ import androidx.fragment.app.activityViewModels
 //Todo: Target textview did not change after first match.
 class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
-    override fun nextTargetValue() {
-        populateNextTargetValue()
-    }
-
-    override fun targetNumberHit(value: Int) {
+    override fun targetNumberHit() {
         populateNextTargetValue()
     }
 
@@ -90,7 +86,6 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
         }
     }
 
-    //Todo: Create new target AFTER previous target is reached.
     private fun populateNextTargetValue() {
         var valueToAdd = 0
 
@@ -170,7 +165,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
     }
 
     private fun instantiateSumsGridViewAndAdapter() {
-        sumsCustomAdapter = SumsCustomAdapter(requireContext(), R.layout.sums_adapter_views, fullCardIntegerList, unMatchedCardsRemainingList, currentIntegerTarget, this)
+        sumsCustomAdapter = SumsCustomAdapter(requireContext(), R.layout.sums_adapter_views, fullCardIntegerList, currentIntegerTarget, this)
         sumsGridView = rootView.findViewById(R.id.sums_cards_gridView)
         sumsGridView.numColumns = 4
         sumsGridView.adapter = sumsCustomAdapter
@@ -183,7 +178,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 }
 
 //Constructor input lists are separate objects from those in our Fragment class. We simply pass them in and name them the same.
-class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerList: ArrayList<Int>, val unMatchedCardsRemainingList: ArrayList<Int>, val currentIntegerTarget: Int, val adapterData: AdapterData
+class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerList: ArrayList<Int>, val currentIntegerTarget: Int, val adapterData: AdapterData
 ): ArrayAdapter<String>(context, resource) {
 
     lateinit var populatedCardTextView : TextView
@@ -196,8 +191,7 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
     var totalSelectedCardsValue = 0
 
     interface AdapterData {
-        fun nextTargetValue()
-        fun targetNumberHit(value: Int)
+        fun targetNumberHit()
         fun gameIsWon()
     }
 
@@ -231,12 +225,11 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                         changeBackgroundColorOfMatchedCards(cardView)
                         addToCardsMatchedPositionList(cardSelectedPositionsList[i])
                     }
-                    adapterData.targetNumberHit(totalSelectedCardsValue)
                     zeroOutTotalCardsSelectedValue()
                     clearTotalSelectedCardsPositionList()
                     Log.i("testMatch", "matched!")
 
-                    if (unMatchedCardsRemainingList.size > 0) adapterData.nextTargetValue() else adapterData.gameIsWon()
+                    if (cardsMatchedPositionsList.size > 0) adapterData.targetNumberHit() else adapterData.gameIsWon()
                 }
             }
         }
