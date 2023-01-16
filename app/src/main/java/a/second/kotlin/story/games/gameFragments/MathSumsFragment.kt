@@ -66,8 +66,8 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
         instantiateXMLObjects()
         populateCardIntegerLists()
-        populateNextTargetValue()
         instantiateSumsGridViewAndAdapter()
+        populateNextTargetValue()
         setTargetAnswerTextView(currentIntegerTarget)
 
         instantiateProgressBar()
@@ -85,7 +85,6 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
         }
     }
 
-    //Todo: Card unselection highlight doesn't work w/ position conditional.
     //Todo: Unmatched cards list should only be culled when all of those specific cards are selected to match target, otherwise it is no solution.
     private fun populateNextTargetValue() {
         var valueToAdd = 0
@@ -102,15 +101,15 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
         repeat(numberOfCardsToAdd) {
             valueToAdd += unMatchedCardsRemainingList[0]
-            Log.i("testAdd", "single value added is $valueToAdd")
             unMatchedCardsRemainingList.removeAt(0)
         }
 
-        Log.i("testAdd","total value in list is $valueToAdd")
+        Log.i("testAdd","current target is $valueToAdd")
         Log.i("testAdd", "full list is $fullCardIntegerList")
         Log.i("testAdd", "unMatchedList is $unMatchedCardsRemainingList")
 
         currentIntegerTarget = valueToAdd
+        sumsCustomAdapter.updateIntegerTarget(valueToAdd)
     }
 
 
@@ -167,7 +166,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
     }
 
     private fun instantiateSumsGridViewAndAdapter() {
-        sumsCustomAdapter = SumsCustomAdapter(requireContext(), R.layout.sums_adapter_views, fullCardIntegerList, currentIntegerTarget, this)
+        sumsCustomAdapter = SumsCustomAdapter(requireContext(), R.layout.sums_adapter_views, fullCardIntegerList, this)
         sumsGridView = rootView.findViewById(R.id.sums_cards_gridView)
         sumsGridView.numColumns = 4
         sumsGridView.adapter = sumsCustomAdapter
@@ -180,7 +179,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 }
 
 //Constructor input lists are separate objects from those in our Fragment class. We simply pass them in and name them the same.
-class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerList: ArrayList<Int>, val currentIntegerTarget: Int, val adapterData: AdapterData
+class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerList: ArrayList<Int>, val adapterData: AdapterData
 ): ArrayAdapter<String>(context, resource) {
 
     lateinit var populatedCardTextView : TextView
@@ -190,12 +189,15 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
     var cardSelectedPositionsList : ArrayList<Int> = ArrayList()
     var cardsMatchedPositionsList : ArrayList<Int> = ArrayList()
 
+    var currentIntegerTarget = 0
     var totalSelectedCardsValue = 0
 
     interface AdapterData {
         fun targetNumberHit()
         fun gameIsWon()
     }
+
+    fun updateIntegerTarget(target: Int) { currentIntegerTarget = target }
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
@@ -212,12 +214,17 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                 if (!isCardHighlighted(selectedCardView)) {
                     highlightBackgroundOfCardView()
                     addToCardSelectedPositionList(position)
+                    addToSelectedCardsValue(fullCardIntegerList.get(position))
                 } else {
                     unHighlightBackgroundOfCardView()
                     removeFromCardSelectedPositionList(position)
+                    subtractFromCardsSelectedValue(fullCardIntegerList.get(position))
                 }
 
-                if (doSelectedCardsEqualTargetValue(currentIntegerTarget)) {
+                Log.i("testAdd", "cards selected value is $totalSelectedCardsValue")
+
+                //Todo: currentIntegerTarget not updated since it's passed in via constructor.
+                if (totalSelectedCardsValue == currentIntegerTarget) {
                     for (i in cardSelectedPositionsList.indices) {
                         val cardView = parent[cardSelectedPositionsList[i]].findViewById(R.id.sums_card_cardView) as CardView
                         changeBackgroundColorOfMatchedCards(cardView)
@@ -244,7 +251,9 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
 
     private fun isCardHighlighted(cardView: CardView) : Boolean { return cardView.isSelected }
 
-    private fun doSelectedCardsEqualTargetValue(value: Int) : Boolean { return totalSelectedCardsValue == value }
+    private fun addToSelectedCardsValue(value: Int) { totalSelectedCardsValue += value }
+
+    private fun subtractFromCardsSelectedValue(value: Int) { totalSelectedCardsValue -= value }
 
     private fun zeroOutTotalCardsSelectedValue() { totalSelectedCardsValue = 0 }
 
