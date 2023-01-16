@@ -82,13 +82,13 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
     override fun targetNumberHit(listOfMatchedNumbers: ArrayList<Int>) {
         removedMatchedCardsFromUnmatchedCardsList(listOfMatchedNumbers)
         populateNextTargetValue()
+        setTargetAnswerTextView(currentIntegerTarget)
     }
 
     private fun removedMatchedCardsFromUnmatchedCardsList(matchedCardsList: List<Int>) {
         for (i in matchedCardsList.indices) {
             unMatchedCardsRemainingList.remove(matchedCardsList[i])
         }
-        Log.i("testAdd", "unmatched list post-match is $unMatchedCardsRemainingList")
     }
 
     private fun populateNextTargetValue() {
@@ -103,12 +103,15 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
             numberOfCardsToAdd = unMatchedCardsRemainingList.size
         }
 
-        repeat(numberOfCardsToAdd) {
-            valueToAdd += unMatchedCardsRemainingList[0]
+        //"Until" excludes last number.
+        for (i in 0 until numberOfCardsToAdd) {
+            valueToAdd += unMatchedCardsRemainingList[i]
+            Log.i("testAdd","values being added are $valueToAdd")
         }
 
+        Log.i("testAdd","number of cards to add is $numberOfCardsToAdd")
+        Log.i("testAdd", "unmatched list during target population is $unMatchedCardsRemainingList")
         Log.i("testAdd","current target is $valueToAdd")
-        Log.i("testAdd", "full list is $fullCardIntegerList")
 
         currentIntegerTarget = valueToAdd
         sumsCustomAdapter.updateIntegerTarget(valueToAdd)
@@ -221,11 +224,13 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                 } else {
                     unHighlightBackgroundOfCardView()
                     removeFromCardSelectedPositionList(position)
+
                     subtractFromCardsSelectedValue(fullCardIntegerList.get(position))
                     subtractFromCardsMatchedValuesList(fullCardIntegerList.get(position))
                 }
 
-                Log.i("testAdd", "cards selected value is $totalSelectedCardsValue")
+                Log.i("testAdd", "cards selected value onClick is $totalSelectedCardsValue")
+                Log.i("testAdd", "target onClick is $currentIntegerTarget")
 
                 if (totalSelectedCardsValue == currentIntegerTarget) {
                     for (i in cardSelectedPositionsList.indices) {
@@ -236,7 +241,14 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                     zeroOutTotalCardsSelectedValue()
                     clearTotalSelectedCardsPositionList()
 
-                    if (cardsMatchedPositionsList.size > 0) adapterData.targetNumberHit(cardsMatchedValuesList) else adapterData.gameIsWon()
+//                    Log.i("testAdd", "matched position list is size ${cardsMatchedPositionsList.size}")
+
+                    if (cardsMatchedPositionsList.size < 16) {
+                        adapterData.targetNumberHit(cardsMatchedValuesList)
+                    } else {
+                        Log.i("testAdd", "game won!")
+                        adapterData.gameIsWon()
+                    }
 
                     clearCardsMatchedValuesList()
                 }
