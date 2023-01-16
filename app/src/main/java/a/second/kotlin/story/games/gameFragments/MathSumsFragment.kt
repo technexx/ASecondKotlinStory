@@ -4,13 +4,11 @@ import a.second.kotlin.story.ItemViewModel
 import a.second.kotlin.story.R
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewStub
 import android.view.animation.LinearInterpolator
 import android.widget.ArrayAdapter
 import android.widget.GridView
@@ -24,10 +22,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 
 class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
-
-    override fun targetNumberHit() {
-        populateNextTargetValue()
-    }
 
     override fun gameIsWon() {
         setStateOfAnswersTextView(true)
@@ -85,10 +79,20 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
         }
     }
 
-    //Todo: Unmatched cards list should only be culled when all of those specific cards are selected to match target, otherwise it is no solution.
+    override fun targetNumberHit(listOfMatchedNumbers: ArrayList<Int>) {
+        removedMatchedCardsFromUnmatchedCardsList(listOfMatchedNumbers)
+        populateNextTargetValue()
+    }
+
+    private fun removedMatchedCardsFromUnmatchedCardsList(matchedCardsList: List<Int>) {
+        for (i in matchedCardsList.indices) {
+            unMatchedCardsRemainingList.remove(matchedCardsList[i])
+        }
+        Log.i("testAdd", "unmatched list post-match is $unMatchedCardsRemainingList")
+    }
+
     private fun populateNextTargetValue() {
         var valueToAdd = 0
-
         var numberOfCardsToAdd: Int
         var maxCardsToAdd = 0
 
@@ -101,18 +105,14 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
         repeat(numberOfCardsToAdd) {
             valueToAdd += unMatchedCardsRemainingList[0]
-            unMatchedCardsRemainingList.removeAt(0)
         }
 
         Log.i("testAdd","current target is $valueToAdd")
         Log.i("testAdd", "full list is $fullCardIntegerList")
-        Log.i("testAdd", "unMatchedList is $unMatchedCardsRemainingList")
 
         currentIntegerTarget = valueToAdd
         sumsCustomAdapter.updateIntegerTarget(valueToAdd)
     }
-
-
 
     private fun setTargetAnswerTextView(targetValue: Int) { targetAnswerTextView.text = getString(R.string.sums_target_textView, targetValue.toString()) }
 
@@ -192,8 +192,10 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
     var currentIntegerTarget = 0
     var totalSelectedCardsValue = 0
 
+    var cardsMatchedValuesList : ArrayList<Int> = ArrayList()
+
     interface AdapterData {
-        fun targetNumberHit()
+        fun targetNumberHit(listOfMatchedNumbers : ArrayList<Int>)
         fun gameIsWon()
     }
 
@@ -215,15 +217,16 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                     highlightBackgroundOfCardView()
                     addToCardSelectedPositionList(position)
                     addToSelectedCardsValue(fullCardIntegerList.get(position))
+                    addToCardsMatchedValuesList(fullCardIntegerList.get(position))
                 } else {
                     unHighlightBackgroundOfCardView()
                     removeFromCardSelectedPositionList(position)
                     subtractFromCardsSelectedValue(fullCardIntegerList.get(position))
+                    subtractFromCardsMatchedValuesList(fullCardIntegerList.get(position))
                 }
 
                 Log.i("testAdd", "cards selected value is $totalSelectedCardsValue")
 
-                //Todo: currentIntegerTarget not updated since it's passed in via constructor.
                 if (totalSelectedCardsValue == currentIntegerTarget) {
                     for (i in cardSelectedPositionsList.indices) {
                         val cardView = parent[cardSelectedPositionsList[i]].findViewById(R.id.sums_card_cardView) as CardView
@@ -232,9 +235,10 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                     }
                     zeroOutTotalCardsSelectedValue()
                     clearTotalSelectedCardsPositionList()
-                    Log.i("testAdd", "matched!")
 
-                    if (cardsMatchedPositionsList.size > 0) adapterData.targetNumberHit() else adapterData.gameIsWon()
+                    if (cardsMatchedPositionsList.size > 0) adapterData.targetNumberHit(cardsMatchedValuesList) else adapterData.gameIsWon()
+
+                    clearCardsMatchedValuesList()
                 }
             }
         }
@@ -260,6 +264,12 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
     private fun addToCardsMatchedPositionList(value: Int) { cardsMatchedPositionsList.add(value) }
 
     private fun clearCardsMatchedPositionList() { cardsMatchedPositionsList.clear() }
+
+    private fun addToCardsMatchedValuesList(value: Int) { cardsMatchedValuesList.add(value) }
+
+    private fun subtractFromCardsMatchedValuesList(value: Int) { cardsMatchedValuesList.remove(value) }
+
+    private fun clearCardsMatchedValuesList() { cardsMatchedValuesList.clear() }
 
     private fun highlightBackgroundOfCardView() {
         selectedCardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.lighter_grey))
