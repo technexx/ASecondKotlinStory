@@ -247,7 +247,7 @@ class HangmanFragment : Fragment() {
         puzzleAdapter = Hangman.PuzzleRecyclerAdapter(revealedLetterListOfPuzzleWord)
         puzzleRecyclerView.adapter = puzzleAdapter
         puzzleRecyclerView.addItemDecoration(puzzleLetterDivider())
-        puzzleRecyclerView.layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
+        puzzleRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }
 
     private fun puzzleLetterDivider() : DividerItemDecoration {

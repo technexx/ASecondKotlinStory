@@ -18,10 +18,13 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.animation.doOnEnd
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import kotlinx.coroutines.NonDisposableHandle.parent
 
 class MathProblemsFragment : Fragment() {
@@ -66,6 +69,8 @@ class MathProblemsFragment : Fragment() {
         instantiateObjectAnimator()
         startObjectAnimator()
 
+        instantiateRecyclerViewAndAdapter()
+
         return rootView
     }
 
@@ -100,7 +105,14 @@ class MathProblemsFragment : Fragment() {
         answerAdapter = AnswerAdapter()
 
         answerRecyclerView.adapter = answerAdapter
-        answerRecyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        answerRecyclerView.addItemDecoration(answerCircleDivider())
+        answerRecyclerView.layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
+    }
+
+    private fun answerCircleDivider() : DividerItemDecoration {
+        var decoration = DividerItemDecoration(requireContext(), LinearLayoutManager.HORIZONTAL)
+        decoration.setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.horizontal_divider_blank)!!)
+        return decoration
     }
 
     private fun instantiateProgressBar() {
@@ -163,7 +175,7 @@ class AnswerAdapter() : RecyclerView.Adapter<AnswerAdapter.AnswerCountHolder>() 
     override fun onBindViewHolder(holder: AnswerCountHolder, position: Int) {
         if (position < correctAnswerCount) {
             holder.circleImage.setColorFilter(R.color.purple_200)
-            Log.i("testColor", "set for position $position")
+            Log.i("testAdapter", "set for position $position")
         }
     }
 
