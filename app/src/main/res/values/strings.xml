@@ -26,7 +26,7 @@
     <string name="hangman_problem_incorrect">If you can\'t string words together, who\'s going to be your friend?</string>
     <string name="matching_problem_correct">You\'re so good at matching! This helps your family relations. Why? Don\'t ask.</string>
     <string name="matching_problem_incorrect">You are a match made of mismatched mash. Your family spits at you.</string>
-    <string name="sums_problem_correct">You\'re so good at adding things! This props up your career.</string>
+    <string name="sums_problem_correct">You\'re so good at adding things! This helps your career.</string>
     <string name="sums_problem_incorrect">2 + 2 = Jello, right? Who hired you, anyway?</string>
 
     <string name="sums_target_textView">Target is: %1$s</string>

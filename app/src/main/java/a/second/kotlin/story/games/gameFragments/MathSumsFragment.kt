@@ -15,6 +15,7 @@ import android.widget.GridView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
@@ -24,11 +25,8 @@ import androidx.fragment.app.activityViewModels
 class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
     override fun gameIsWon() {
-        setStateOfAnswersTextView(true)
-        sendEndGameLiveData()
-        sendEndGameWinOrLoss(true)
-        stopObjectAnimator()
-        toggleStateOfAnswersAndTargetValueTextViews(true)
+        pauseObjectAnimator()
+        endOfGameFunctions(true)
     }
 
     private lateinit var rootView : View
@@ -66,6 +64,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
         instantiateProgressBar()
         instantiateObjectAnimator()
+        setEndOfObjectAnimatorListener()
         startObjectAnimator()
 
         return rootView
@@ -143,29 +142,33 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
         objectAnimator = ObjectAnimator.ofInt(timerProgressBar, "progress", progressValue, 0)
         objectAnimator.interpolator = LinearInterpolator()
         objectAnimator.duration = 30000
+    }
 
+    //Cancelling animator occurs when all sums are matched before animation duration ends.
+    private fun setEndOfObjectAnimatorListener() {
         objectAnimator.doOnEnd {
-            sendEndGameLiveData()
-            sendEndGameWinOrLoss(false)
-            setStateOfAnswersTextView(false)
-            toggleStateOfAnswersAndTargetValueTextViews(true)
+            endOfGameFunctions(false)
         }
     }
 
-    private fun sendEndGameLiveData() {
+    private fun endOfGameFunctions(gameHasBeenWon : Boolean) {
         gamesViewModel.setWhichGameIsBeingPlayed("Sums")
+        toggleStateOfAnswersAndTargetValueTextViews(true)
+
+        sendEndGameWinOrLoss(gameHasBeenWon)
+        setStateOfAnswersTextView(gameHasBeenWon)
     }
 
-    private fun sendEndGameWinOrLoss(winOrLoss: Boolean) {
-        gamesViewModel.setIsAnswerCorrect(winOrLoss)
+    private fun sendEndGameWinOrLoss(gameIsWon: Boolean) {
+        gamesViewModel.setIsAnswerCorrect(gameIsWon)
     }
 
     private fun startObjectAnimator() {
         objectAnimator.start()
     }
 
-    private fun stopObjectAnimator() {
-        objectAnimator.cancel()
+    private fun pauseObjectAnimator() {
+        objectAnimator.pause()
     }
 
     private fun instantiateSumsGridViewAndAdapter() {
