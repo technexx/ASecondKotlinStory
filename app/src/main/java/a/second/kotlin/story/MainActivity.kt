@@ -158,6 +158,8 @@ class MainActivity : AppCompatActivity() {
         if (roll == 2) fragmentToReturn = HangmanFragment
         if (roll == 3) fragmentToReturn = MatchingFragment
 
+        Log.i("testFrag", "roll is $roll")
+
         return fragmentToReturn!!
     }
 
@@ -172,7 +174,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun nonDuplicatedFragmentIntegerRoll() : Int{
         var roll = (0..3).random()
-        while (roll != previousFragmentId) { roll = (0..3).random() }
+        while (roll == previousFragmentId) { roll = (0..3).random() }
         previousFragmentId = roll
         return roll
     }
