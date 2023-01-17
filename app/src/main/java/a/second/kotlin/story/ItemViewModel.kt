@@ -7,13 +7,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 open class ItemViewModel : ViewModel() {
+    //Only object that's tied to observer. Other objects are simple set and retrieved once a correct or incorrect answer is sent.
     val mutableCorrectAnswerBoolean = MutableLiveData<Boolean>()
     val isAnswerCorrect : LiveData<Boolean> get() = mutableCorrectAnswerBoolean
 
     var gameBeingPlayed : String = ""
-
-//    val mutableWhichGameIsBeingPlayed = MutableLiveData<String>()
-//    val gameBeingPlayed : LiveData<String> get() = mutableWhichGameIsBeingPlayed
+    var switchGameFragments = false
 
     class StatsViewModel : ItemViewModel() {
 
@@ -22,20 +21,18 @@ open class ItemViewModel : ViewModel() {
     class GamesViewModel : ItemViewModel() {
         fun setIsAnswerCorrect(isCorrect : Boolean) {
             mutableCorrectAnswerBoolean.value = isCorrect
-            Log.i("testLiveDataAnswer", "livedata answer received as $isCorrect")
         }
 
         fun getIsAnswerCorrect() : Boolean? {
             return isAnswerCorrect.value
         }
 
-        fun setWhichGameIsBeingPlayed(game: String) {
-            gameBeingPlayed = game
-            Log.i("testLiveDataAnswer", "livedata game received as $game")
-        }
-
         fun getWhichIsGameBeingPlayed() : String {
             return gameBeingPlayed
+        }
+
+        fun getSwitchGameFragment() : Boolean {
+            return switchGameFragments
         }
     }
 }

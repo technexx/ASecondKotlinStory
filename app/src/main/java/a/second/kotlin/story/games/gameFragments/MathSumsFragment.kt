@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
 import android.widget.ArrayAdapter
 import android.widget.GridView
@@ -17,6 +19,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
@@ -105,22 +108,13 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
         //"Until" excludes last number.
         for (i in 0 until numberOfCardsToAdd) {
             valueToAdd += unMatchedCardsRemainingList[i]
-            Log.i("testAdd","values being added are $valueToAdd")
         }
-
-        Log.i("testAdd","number of cards to add is $numberOfCardsToAdd")
-        Log.i("testAdd", "unmatched list during target population is $unMatchedCardsRemainingList")
-        Log.i("testAdd","current target is $valueToAdd")
 
         currentIntegerTarget = valueToAdd
         sumsCustomAdapter.updateIntegerTarget(valueToAdd)
     }
 
     private fun setTargetAnswerTextView(targetValue: Int) { targetAnswerTextView.text = getString(R.string.sums_target_textView, targetValue.toString()) }
-
-    private fun setStateOfAnswersTextView(gameIsWon: Boolean) {
-        if (gameIsWon) stateOfAnswerTextView.text = getString(R.string.sums_problem_correct) else stateOfAnswerTextView.text = getString(R.string.sums_problem_incorrect)
-    }
 
     private fun toggleStateOfAnswersAndTargetValueTextViews(gameOver: Boolean) {
         if (gameOver) {
@@ -151,8 +145,9 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
         }
     }
 
+    //Todo: Animation to transition fragment + few seconds delay after game is won/lost
     private fun endOfGameFunctions(gameHasBeenWon : Boolean) {
-        gamesViewModel.setWhichGameIsBeingPlayed("Sums")
+        gamesViewModel.gameBeingPlayed = ("Sums")
         toggleStateOfAnswersAndTargetValueTextViews(true)
 
         sendEndGameWinOrLoss(gameHasBeenWon)
@@ -161,6 +156,10 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
     private fun sendEndGameWinOrLoss(gameIsWon: Boolean) {
         gamesViewModel.setIsAnswerCorrect(gameIsWon)
+    }
+
+    private fun setStateOfAnswersTextView(gameIsWon: Boolean) {
+        if (gameIsWon) stateOfAnswerTextView.text = getString(R.string.sums_problem_correct) else stateOfAnswerTextView.text = getString(R.string.sums_problem_incorrect)
     }
 
     private fun startObjectAnimator() {

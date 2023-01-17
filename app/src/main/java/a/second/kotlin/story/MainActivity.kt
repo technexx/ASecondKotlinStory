@@ -9,8 +9,12 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.service.autofill.FieldClassification.Match
+import android.util.Log
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
@@ -58,10 +62,16 @@ class MainActivity : AppCompatActivity() {
     private var FAMILY_EVENT = 2
     private var SOCIAL_EVENT = 3
 
+    private var SumsFragmentId = 0
+    private var MathFragmentId = 1
+    private var HangmanFragmentId = 2
+    private var MatchingFragmentId = 3;
+
     private var BAD_ROLL = 0
     private var GOOD_ROLL = 1
 
-    //Todo: Match Game, Unscramble,
+    private var previousFragmentId = -1
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,16 +126,55 @@ class MainActivity : AppCompatActivity() {
             var statChangeValue = statChangeValueForGame()
 
             if (answerState != null) {
+                //If answer is negative, stat change value becomes negative as well.
                 if (!answerState) statChangeValue = -statChangeValue
             }
 
             changeStatValueFromGame(gameBeingPlayed, statChangeValue)
             changeStatTextViewFromGame(gameBeingPlayed, statChangeValue)
+
+            switchFragmentForNextGame(getFragmentBasedOnRoll(nonDuplicatedFragmentIntegerRoll()))
+
         })
     }
 
-    private fun switchFragmentForNextGame() {
+    private fun attachGameFragment() {
+        assignPreviousFragmentIdBasedOnRoll()
+
         supportFragmentManager.beginTransaction()
+            .add(R.id.game_frame_layout, getFragmentBasedOnRoll(nonDuplicatedFragmentIntegerRoll()))
+            .commit()
+    }
+
+    private fun assignPreviousFragmentIdBasedOnRoll() {
+        previousFragmentId = (0..3).random()
+    }
+
+    private fun getFragmentBasedOnRoll(roll: Int) : Fragment {
+        var fragmentToReturn : Fragment? = null
+
+        if (roll == 0) fragmentToReturn = SumsFragment
+        if (roll == 1) fragmentToReturn = MathFragment
+        if (roll == 2) fragmentToReturn = HangmanFragment
+        if (roll == 3) fragmentToReturn = MatchingFragment
+
+        return fragmentToReturn!!
+    }
+
+    private fun switchFragmentForNextGame(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(0, R.anim.fade_out_animation)
+            .replace(R.id.game_frame_layout, getFragmentBasedOnRoll(nonDuplicatedFragmentIntegerRoll()))
+            .commit()
+
+        assignPreviousFragmentIdBasedOnRoll()
+    }
+
+    private fun nonDuplicatedFragmentIntegerRoll() : Int{
+        var roll = (0..3).random()
+        while (roll != previousFragmentId) { roll = (0..3).random() }
+        previousFragmentId = roll
+        return roll
     }
 
     private fun changeStatValueFromGame(game: String?, value: Int) {
@@ -144,12 +193,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun statChangeValueForGame() : Int {
         return (3..6).random()
-    }
-
-    private fun attachGameFragment() {
-        supportFragmentManager.beginTransaction()
-            .add(R.id.game_frame_layout, SumsFragment)
-            .commit()
     }
 
     private fun setRandomMillisValueForEventTrigger() {
@@ -181,7 +224,7 @@ class MainActivity : AppCompatActivity() {
         val startTime = System.currentTimeMillis()
         delay(50)
 
-        var timeToAdd = System.currentTimeMillis() - startTime
+        val timeToAdd = System.currentTimeMillis() - startTime
 
         temporaryEventTime += timeToAdd
         totalSpawnTimeInMilliseconds += timeToAdd
@@ -320,7 +363,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun statThreeZeroCheckAndLogic() {
         if (Stats.statThreeCritical) {
-            if (Stats.statTwoValue <= 0) {
+            if (Stats.statThreeValue <= 0) {
                 statWarningTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsThreeString()), getString(R.string.end_game_append_three))
             }  else {
                 Stats.statThreeCritical = false

@@ -87,6 +87,6 @@ class MathProblemsFragment : Fragment() {
     }
 
     private fun sendGameBeingPlayedToViewModel() {
-        gamesViewModel.setWhichGameIsBeingPlayed("Math")
+        gamesViewModel.gameBeingPlayed = ("Math")
     }
 }

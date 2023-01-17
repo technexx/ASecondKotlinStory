@@ -89,7 +89,7 @@ class MatchingFragment : Fragment(), MatchingCustomAdapter.AdapterData {
     }
 
     private fun sendEndGameLiveData() {
-        gamesViewModel.setWhichGameIsBeingPlayed("Matching")
+        gamesViewModel.gameBeingPlayed = ("Matching")
         gamesViewModel.setIsAnswerCorrect(gameHasBeenWon)
     }
 

@@ -228,7 +228,7 @@ class HangmanFragment : Fragment() {
     }
 
     private fun sendGameBeingPlayedToViewModel() {
-        gamesViewModel.setWhichGameIsBeingPlayed("Hangman")
+        gamesViewModel.gameBeingPlayed = ("Hangman")
     }
 
     /////////////////////////////////////////////////////////////////////////////////////
