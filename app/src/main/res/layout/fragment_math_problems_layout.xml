@@ -4,14 +4,23 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/problem_textView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/math_problems_answers_recyclerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/problem_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/math_problems_answers_recyclerView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="12dp"
         android:textColor="@color/black"
         android:textSize="28sp">
     </TextView>
@@ -23,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@id/problem_textView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
         android:textSize="28sp"
         android:inputType="number"
         android:backgroundTint="@color/black"

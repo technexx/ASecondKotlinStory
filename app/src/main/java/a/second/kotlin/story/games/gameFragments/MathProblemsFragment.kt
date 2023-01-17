@@ -2,21 +2,27 @@ package a.second.kotlin.story.games.gameFragments
 
 import a.second.kotlin.story.ItemViewModel
 import a.second.kotlin.story.R
+import a.second.kotlin.story.games.Hangman
 import a.second.kotlin.story.games.MathProblems
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.animation.doOnEnd
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.NonDisposableHandle.parent
 
 class MathProblemsFragment : Fragment() {
 
@@ -33,6 +39,9 @@ class MathProblemsFragment : Fragment() {
     lateinit var answerEditText : EditText
     lateinit var submitButton : Button
     lateinit var mathAnswerStateTextView : TextView
+
+    private lateinit var answerRecyclerView : RecyclerView
+    private lateinit var answerAdapter : AnswerAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -82,7 +91,16 @@ class MathProblemsFragment : Fragment() {
             //Observed data (i.e. State of Answer) must be called after all intended values to change are set.
             setStateOfAnswerTextView()
             sendAnswerStateToViewModel()
+            iterateAdapterAnswerCountAndCallNotifyIfCorrect()
         }
+    }
+
+    private fun instantiateRecyclerViewAndAdapter() {
+        answerRecyclerView = rootView.findViewById(R.id.math_problems_answers_recyclerView)
+        answerAdapter = AnswerAdapter()
+
+        answerRecyclerView.adapter = answerAdapter
+        answerRecyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
     }
 
     private fun instantiateProgressBar() {
@@ -112,6 +130,11 @@ class MathProblemsFragment : Fragment() {
         }
     }
 
+    private fun iterateAdapterAnswerCountAndCallNotifyIfCorrect() { if (doesUserInputMatchAnswer())
+        answerAdapter.iterateCorrectAnswerCount()
+        answerAdapter.notifyDataSetChanged()
+    }
+
     private fun setStateOfAnswerTextView() {
         if (doesUserInputMatchAnswer()) mathAnswerStateTextView.text = getString(R.string.math_problem_correct) else mathAnswerStateTextView.text = getString(R.string.math_problem_incorrect)
     }
@@ -127,4 +150,30 @@ class MathProblemsFragment : Fragment() {
     private fun sendGameBeingPlayedToViewModel() {
         gamesViewModel.gameBeingPlayed = ("Math")
     }
+}
+
+class AnswerAdapter() : RecyclerView.Adapter<AnswerAdapter.AnswerCountHolder>() {
+    private var correctAnswerCount = 0
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerCountHolder {
+        val letterItem = LayoutInflater.from(parent.context).inflate(R.layout.math_problems_adapter_views, parent, false)
+        return AnswerCountHolder(letterItem)
+    }
+
+    override fun onBindViewHolder(holder: AnswerCountHolder, position: Int) {
+        if (position < correctAnswerCount) {
+            holder.circleImage.setColorFilter(R.color.purple_200)
+            Log.i("testColor", "set for position $position")
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return 5
+    }
+
+    class AnswerCountHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
+        val circleImage : ImageView = itemView.findViewById(R.id.math_problems_circle_imageView)
+    }
+
+    fun iterateCorrectAnswerCount() { correctAnswerCount++ }
 }
