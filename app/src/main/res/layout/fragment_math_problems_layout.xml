@@ -55,4 +55,16 @@
         android:layout_marginTop="16dp">
     </TextView>
 
+    <ProgressBar
+        android:id="@+id/sums_cards_timer_progress_bar"
+        android:layout_width="300dp"
+        android:layout_height="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="12dp"
+        android:progressBackgroundTint="@color/teal_200"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal">
+    </ProgressBar>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

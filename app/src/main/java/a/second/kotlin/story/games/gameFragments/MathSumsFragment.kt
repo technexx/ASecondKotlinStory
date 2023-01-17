@@ -33,7 +33,6 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
     }
 
     private lateinit var rootView : View
-
     private val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
 
     private lateinit var sumsGridView : GridView
@@ -138,6 +137,14 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
         objectAnimator.duration = 30000
     }
 
+    private fun startObjectAnimator() {
+        objectAnimator.start()
+    }
+
+    private fun pauseObjectAnimator() {
+        objectAnimator.pause()
+    }
+
     //Cancelling animator occurs when all sums are matched before animation duration ends.
     private fun setEndOfObjectAnimatorListener() {
         objectAnimator.doOnEnd {
@@ -160,14 +167,6 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
 
     private fun setStateOfAnswersTextView(gameIsWon: Boolean) {
         if (gameIsWon) stateOfAnswerTextView.text = getString(R.string.sums_problem_correct) else stateOfAnswerTextView.text = getString(R.string.sums_problem_incorrect)
-    }
-
-    private fun startObjectAnimator() {
-        objectAnimator.start()
-    }
-
-    private fun pauseObjectAnimator() {
-        objectAnimator.pause()
     }
 
     private fun instantiateSumsGridViewAndAdapter() {

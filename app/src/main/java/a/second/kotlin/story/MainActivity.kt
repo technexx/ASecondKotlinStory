@@ -142,7 +142,8 @@ class MainActivity : AppCompatActivity() {
         assignPreviousFragmentIdBasedOnRoll()
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.game_frame_layout, getFragmentBasedOnRoll(nonDuplicatedFragmentIntegerRoll()))
+            .add(R.id.game_frame_layout, getFragmentBasedOnRoll(1))
+//            .add(R.id.game_frame_layout, getFragmentBasedOnRoll(nonDuplicatedFragmentIntegerRoll()))
             .commit()
     }
 
@@ -165,7 +166,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun switchFragmentForNextGame(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(0, R.anim.fade_out_animation)
+            .setCustomAnimations(R.anim.fade_in_animation, R.anim.fade_out_animation)
             .replace(R.id.game_frame_layout, getFragmentBasedOnRoll(nonDuplicatedFragmentIntegerRoll()))
             .commit()
 
