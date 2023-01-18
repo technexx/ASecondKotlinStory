@@ -30,8 +30,8 @@ import kotlinx.coroutines.NonDisposableHandle.parent
 class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
 
     override fun gameIsWon() {
-        setStateOfAnswerTextViewToEndGame()
-        sendAnswerStateToViewModel()
+        endOfGameFunctions(true)
+        pauseObjectAnimator()
     }
 
     lateinit var rootView : View
@@ -67,7 +67,6 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
         setTypeOfProblem()
         setInputsToTextView()
         setSubmitButtonListener()
-        sendGameBeingPlayedToViewModel()
 
         instantiateProgressBar()
         instantiateObjectAnimator()
@@ -111,8 +110,8 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
         if (doesUserInputMatchAnswer()) mathAnswerStateTextView.text = getString(R.string.math_problems_answer_correct) else mathAnswerStateTextView.text = getString(R.string.math_problems_answer_incorrect)
     }
 
-    private fun setStateOfAnswerTextViewToEndGame() {
-        if (doesUserInputMatchAnswer()) mathAnswerStateTextView.text = getString(R.string.math_problems_game_won) else mathAnswerStateTextView.text = getString(R.string.math_problems_game_lost)
+    private fun setStateOfAnswerTextViewToEndGame(isGameWon: Boolean) {
+        if (isGameWon) mathAnswerStateTextView.text = getString(R.string.math_problems_game_won) else mathAnswerStateTextView.text = getString(R.string.math_problems_game_lost)
     }
 
     private fun doesUserInputMatchAnswer() : Boolean {
@@ -157,16 +156,14 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
     //Cancelling animator occurs when all sums are matched before animation duration ends.
     private fun setEndOfObjectAnimatorListener() {
         objectAnimator.doOnEnd {
-
+            endOfGameFunctions(false)
         }
     }
 
-    private fun sendAnswerStateToViewModel() {
-//        gamesViewModel.setIsAnswerCorrect(doesUserInputMatchAnswer())
-    }
-
-    private fun sendGameBeingPlayedToViewModel() {
-        gamesViewModel.gameBeingPlayed = ("Math")
+    private fun endOfGameFunctions(gameIsWon: Boolean) {
+        gamesViewModel.gameBeingPlayed = ("MathProblems")
+        gamesViewModel.setIsAnswerCorrect(gameIsWon)
+        setStateOfAnswerTextViewToEndGame(gameIsWon)
     }
 }
 
@@ -188,6 +185,8 @@ class AnswerAdapter(val adapterData: AdapterData) : RecyclerView.Adapter<AnswerA
         } else {
             holder.circleImage.setImageResource(R.drawable.sphere_filled)
         }
+
+        if (correctAnswerCount == 5) adapterData.gameIsWon()
     }
 
     override fun getItemCount(): Int {

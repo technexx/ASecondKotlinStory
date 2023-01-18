@@ -152,7 +152,6 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
         }
     }
 
-    //Todo: Animation to transition fragment + few seconds delay after game is won/lost
     private fun endOfGameFunctions(gameHasBeenWon : Boolean) {
         gamesViewModel.gameBeingPlayed = ("Sums")
         toggleStateOfAnswersAndTargetValueTextViews(true)
@@ -229,9 +228,6 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                     subtractFromCardsSelectedValue(fullCardIntegerList.get(position))
                     subtractFromCardsMatchedValuesList(fullCardIntegerList.get(position))
                 }
-
-                Log.i("testAdd", "cards selected value onClick is $totalSelectedCardsValue")
-                Log.i("testAdd", "target onClick is $currentIntegerTarget")
 
                 if (totalSelectedCardsValue == currentIntegerTarget) {
                     for (i in cardSelectedPositionsList.indices) {

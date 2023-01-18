@@ -182,14 +182,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun changeStatValueFromGame(game: String?, value: Int) {
         if (game == "Sums") Stats.statOneValue += value
-        if (game == "Math") Stats.statTwoValue += value
+        if (game == "MathProblems") Stats.statTwoValue += value
         if (game == "Matching") Stats.statThreeValue += value
         if (game == "Hangman") Stats.statFourValue += value
     }
 
     private fun changeStatTextViewFromGame(game: String?, value: Int) {
         if (game == "Sums") statOneTextView.text = getString(R.string.two_item_concat, Stats.statOneValue.toString(), intToPlusOrMinusString(value))
-        if (game == "Math") statTwoTextView.text = getString(R.string.two_item_concat, Stats.statTwoValue.toString(), intToPlusOrMinusString(value))
+        if (game == "MathProblems") statTwoTextView.text = getString(R.string.two_item_concat, Stats.statTwoValue.toString(), intToPlusOrMinusString(value))
         if (game == "Matching") statThreeTextView.text = getString(R.string.two_item_concat, Stats.statThreeValue.toString(), intToPlusOrMinusString(value))
         if (game == "Hangman") statFourTextView.text = getString(R.string.two_item_concat, Stats.statFourValue.toString(), intToPlusOrMinusString(value))
     }
