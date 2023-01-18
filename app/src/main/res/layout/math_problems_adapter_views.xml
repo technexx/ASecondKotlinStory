@@ -11,7 +11,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/circle_vector_asset">
+        android:src="@drawable/hollow_circle_vector_asset">
     </ImageView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

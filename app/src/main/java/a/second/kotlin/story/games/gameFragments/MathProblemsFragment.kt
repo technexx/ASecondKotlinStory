@@ -27,9 +27,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import kotlinx.coroutines.NonDisposableHandle.parent
 
-class MathProblemsFragment : Fragment() {
+class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
 
-    //Todo: Should be a succession of problems.
+    override fun gameIsWon() {
+        setStateOfAnswerTextView()
+        sendAnswerStateToViewModel()
+        iterateAdapterAnswerCountAndCallNotifyIfCorrect()
+    }
+
     lateinit var rootView : View
     val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
     var MathProblems : MathProblems = MathProblems()
@@ -93,16 +98,12 @@ class MathProblemsFragment : Fragment() {
 
     private fun setSubmitButtonListener() {
         submitButton.setOnClickListener {
-            //Observed data (i.e. State of Answer) must be called after all intended values to change are set.
-            setStateOfAnswerTextView()
-            sendAnswerStateToViewModel()
-            iterateAdapterAnswerCountAndCallNotifyIfCorrect()
-        }
+            iterateAdapterAnswerCountAndCallNotifyIfCorrect()        }
     }
 
     private fun instantiateRecyclerViewAndAdapter() {
         answerRecyclerView = rootView.findViewById(R.id.math_problems_answers_recyclerView)
-        answerAdapter = AnswerAdapter()
+        answerAdapter = AnswerAdapter(this)
 
         answerRecyclerView.adapter = answerAdapter
         answerRecyclerView.addItemDecoration(answerCircleDivider())
@@ -164,7 +165,11 @@ class MathProblemsFragment : Fragment() {
     }
 }
 
-class AnswerAdapter() : RecyclerView.Adapter<AnswerAdapter.AnswerCountHolder>() {
+class AnswerAdapter(val adapterData: AdapterData) : RecyclerView.Adapter<AnswerAdapter.AnswerCountHolder>() {
+    interface AdapterData {
+        fun gameIsWon()
+    }
+
     private var correctAnswerCount = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerCountHolder {
@@ -173,9 +178,10 @@ class AnswerAdapter() : RecyclerView.Adapter<AnswerAdapter.AnswerCountHolder>() 
     }
 
     override fun onBindViewHolder(holder: AnswerCountHolder, position: Int) {
-        if (position < correctAnswerCount) {
-            holder.circleImage.setColorFilter(R.color.purple_200)
-            Log.i("testAdapter", "set for position $position")
+        if (position >= correctAnswerCount) {
+            holder.circleImage.setImageResource(R.drawable.sphere_hollow)
+        } else {
+            holder.circleImage.setImageResource(R.drawable.sphere_filled)
         }
     }
 
