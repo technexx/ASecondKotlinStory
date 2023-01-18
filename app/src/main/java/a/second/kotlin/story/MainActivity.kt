@@ -135,6 +135,9 @@ class MainActivity : AppCompatActivity() {
 
             switchFragmentForNextGame(getFragmentBasedOnRoll(nonDuplicatedFragmentIntegerRoll()))
 
+            Handler().postDelayed( {
+            }, 3000)
+
         })
     }
 
@@ -143,7 +146,6 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction()
             .add(R.id.game_frame_layout, getFragmentBasedOnRoll(1))
-//            .add(R.id.game_frame_layout, getFragmentBasedOnRoll(nonDuplicatedFragmentIntegerRoll()))
             .commit()
     }
 
