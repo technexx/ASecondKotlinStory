@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var DecimalToStringConversions: DecimalToStringConversions
 
     private lateinit var SumsFragment : MathSumsFragment
-    private lateinit var MathFragment : MathProblemsFragment
+    private lateinit var MathProblemsFragment : MathProblemsFragment
     private lateinit var HangmanFragment : HangmanFragment
     private lateinit var MatchingFragment : MatchingFragment
 
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
     private var BAD_ROLL = 0
     private var GOOD_ROLL = 1
 
-    private var previousFragmentId = -1
+    private var previousFragmentId = 1
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         DecimalToStringConversions = DecimalToStringConversions()
 
         SumsFragment = MathSumsFragment()
-        MathFragment = MathProblemsFragment()
+        MathProblemsFragment = MathProblemsFragment()
         HangmanFragment = HangmanFragment()
         MatchingFragment = MatchingFragment()
 
@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
 
         existenceTimerTextView.text = getString(R.string.two_item_concat, getString(R.string.time_since_spawn), "0:00")
 
-        attachGameFragment()
+        attachInitialGameFragment()
         setDefaultStatHeadersOnTextViews()
         setValuesToStatsTextViews()
         setViewModelObserver()
@@ -133,35 +133,39 @@ class MainActivity : AppCompatActivity() {
             changeStatValueFromGame(gameBeingPlayed, statChangeValue)
             changeStatTextViewFromGame(gameBeingPlayed, statChangeValue)
 
-            switchFragmentForNextGame(getFragmentBasedOnRoll(nonDuplicatedFragmentIntegerRoll()))
+
+            switchFragmentForNextGame(getFragmentBasedOnRoll())
 
             Handler().postDelayed( {
+//                switchFragmentForNextGame(getFragmentBasedOnRoll())
             }, 3000)
 
         })
     }
 
-    private fun attachGameFragment() {
-        assignPreviousFragmentIdBasedOnRoll()
-
+    private fun attachInitialGameFragment() {
         supportFragmentManager.beginTransaction()
-            .add(R.id.game_frame_layout, getFragmentBasedOnRoll(1))
+//            .add(R.id.game_frame_layout, getFragmentBasedOnRoll())
+            .add(R.id.game_frame_layout, MathProblemsFragment)
             .commit()
     }
 
-    private fun assignPreviousFragmentIdBasedOnRoll() {
-        previousFragmentId = (0..3).random()
-    }
-
-    private fun getFragmentBasedOnRoll(roll: Int) : Fragment {
+    private fun getFragmentBasedOnRoll() : Fragment {
         var fragmentToReturn : Fragment? = null
 
+        var roll = (0..3).random()
+        while (roll == previousFragmentId) {
+            roll = (0..3).random()
+            Log.i("testRoll", "rolling $roll in loop")}
+        previousFragmentId = roll
+        Log.i("testRoll", "id setting to $previousFragmentId")
+
         if (roll == 0) fragmentToReturn = SumsFragment
-        if (roll == 1) fragmentToReturn = MathFragment
+        if (roll == 1) fragmentToReturn = MathProblemsFragment
         if (roll == 2) fragmentToReturn = HangmanFragment
         if (roll == 3) fragmentToReturn = MatchingFragment
 
-        Log.i("testFrag", "roll is $roll")
+        Log.i("testRoll", "post-loop roll is $roll")
 
         return fragmentToReturn!!
     }
@@ -169,17 +173,8 @@ class MainActivity : AppCompatActivity() {
     private fun switchFragmentForNextGame(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.fade_in_animation, R.anim.fade_out_animation)
-            .replace(R.id.game_frame_layout, getFragmentBasedOnRoll(nonDuplicatedFragmentIntegerRoll()))
+            .replace(R.id.game_frame_layout, fragment)
             .commit()
-
-        assignPreviousFragmentIdBasedOnRoll()
-    }
-
-    private fun nonDuplicatedFragmentIntegerRoll() : Int{
-        var roll = (0..3).random()
-        while (roll == previousFragmentId) { roll = (0..3).random() }
-        previousFragmentId = roll
-        return roll
     }
 
     private fun changeStatValueFromGame(game: String?, value: Int) {
