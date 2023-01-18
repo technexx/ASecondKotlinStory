@@ -203,10 +203,10 @@ class HangmanFragment : Fragment() {
 
     private fun setStateOfAnswersTextView() {
         if (gameHasBeenWon()) {
-            hangmanStateOfAnswerTextView.text = getString(R.string.hangman_problem_correct)
+            hangmanStateOfAnswerTextView.text = getString(R.string.hangman_game_won)
         }
         if (gameHasBeenLost()) {
-            hangmanStateOfAnswerTextView.text = getString(R.string.hangman_problem_incorrect)
+            hangmanStateOfAnswerTextView.text = getString(R.string.hangman_game_lost)
         }
     }
 

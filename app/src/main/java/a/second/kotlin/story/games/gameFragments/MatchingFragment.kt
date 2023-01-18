@@ -102,11 +102,11 @@ class MatchingFragment : Fragment(), MatchingCustomAdapter.AdapterData {
     }
 
     private fun setWinningTextView() {
-        stateOfAnswerTextView.setText(R.string.matching_problem_correct)
+        stateOfAnswerTextView.setText(R.string.matching_game_won)
     }
 
     private fun setLosingTextView() {
-        stateOfAnswerTextView.setText(R.string.matching_problem_incorrect)
+        stateOfAnswerTextView.setText(R.string.matching_game_lost)
     }
 
     private fun populateFullCardLetterList() {

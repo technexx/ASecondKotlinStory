@@ -30,9 +30,8 @@ import kotlinx.coroutines.NonDisposableHandle.parent
 class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
 
     override fun gameIsWon() {
-        setStateOfAnswerTextView()
+        setStateOfAnswerTextViewToEndGame()
         sendAnswerStateToViewModel()
-        iterateAdapterAnswerCountAndCallNotifyIfCorrect()
     }
 
     lateinit var rootView : View
@@ -98,7 +97,26 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
 
     private fun setSubmitButtonListener() {
         submitButton.setOnClickListener {
-            iterateAdapterAnswerCountAndCallNotifyIfCorrect()        }
+            iterateAdapterAnswerCountAndCallNotifyIfCorrect()
+            setStateOfAnswerTextViewToProblemAnswered()
+        }
+    }
+
+    private fun iterateAdapterAnswerCountAndCallNotifyIfCorrect() { if (doesUserInputMatchAnswer())
+        answerAdapter.iterateCorrectAnswerCount()
+        answerAdapter.notifyDataSetChanged()
+    }
+
+    private fun setStateOfAnswerTextViewToProblemAnswered() {
+        if (doesUserInputMatchAnswer()) mathAnswerStateTextView.text = getString(R.string.math_problems_answer_correct) else mathAnswerStateTextView.text = getString(R.string.math_problems_answer_incorrect)
+    }
+
+    private fun setStateOfAnswerTextViewToEndGame() {
+        if (doesUserInputMatchAnswer()) mathAnswerStateTextView.text = getString(R.string.math_problems_game_won) else mathAnswerStateTextView.text = getString(R.string.math_problems_game_lost)
+    }
+
+    private fun doesUserInputMatchAnswer() : Boolean {
+        return answerEditText.text.toString() == MathProblems.answer.toString()
     }
 
     private fun instantiateRecyclerViewAndAdapter() {
@@ -143,21 +161,8 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
         }
     }
 
-    private fun iterateAdapterAnswerCountAndCallNotifyIfCorrect() { if (doesUserInputMatchAnswer())
-        answerAdapter.iterateCorrectAnswerCount()
-        answerAdapter.notifyDataSetChanged()
-    }
-
-    private fun setStateOfAnswerTextView() {
-        if (doesUserInputMatchAnswer()) mathAnswerStateTextView.text = getString(R.string.math_problem_correct) else mathAnswerStateTextView.text = getString(R.string.math_problem_incorrect)
-    }
-
-    private fun doesUserInputMatchAnswer() : Boolean {
-        return answerEditText.text.toString() == MathProblems.answer.toString()
-    }
-
     private fun sendAnswerStateToViewModel() {
-        gamesViewModel.setIsAnswerCorrect(doesUserInputMatchAnswer())
+//        gamesViewModel.setIsAnswerCorrect(doesUserInputMatchAnswer())
     }
 
     private fun sendGameBeingPlayedToViewModel() {

@@ -20,14 +20,16 @@
 
     <string name="submit">Submit</string>
 
-    <string name="math_problem_correct">You\'re so good at math! This helps your finances.</string>
-    <string name="math_problem_incorrect">Bzzt! Wrong. Bad math equals bad finances.</string>
-    <string name="hangman_problem_correct">You\'re so good at wordsmithing! This helps your social life.</string>
-    <string name="hangman_problem_incorrect">If you can\'t string words together, who\'s going to be your friend?</string>
-    <string name="matching_problem_correct">You\'re so good at matching! This helps your family relations. Why? Don\'t ask.</string>
-    <string name="matching_problem_incorrect">You are a match made of mismatched mash. Your family spits at you.</string>
-    <string name="sums_problem_correct">You\'re so good at adding things! This helps your career.</string>
-    <string name="sums_problem_incorrect">2 + 2 = Jello, right? Who hired you, anyway?</string>
+    <string name="math_problems_answer_correct">Yes!</string>
+    <string name="math_problems_answer_incorrect">No!</string>
+    <string name="math_problems_game_won">You\'re so good at math! This helps your finances.</string>
+    <string name="math_problems_game_lost">Bzzt! Wrong. Bad math equals bad finances.</string>
+    <string name="hangman_game_won">You\'re so good at wordsmithing! This helps your social life.</string>
+    <string name="hangman_game_lost">If you can\'t string words together, who\'s going to be your friend?</string>
+    <string name="matching_game_won">You\'re so good at matching! This helps your family relations. Why? Don\'t ask.</string>
+    <string name="matching_game_lost">You are a match made of mismatched mash. Your family spits at you.</string>
+    <string name="sums_game_won">You\'re so good at adding things! This helps your career.</string>
+    <string name="sums_game_lost">2 + 2 = Jello, right? Who hired you, anyway?</string>
 
     <string name="sums_target_textView">Target is: %1$s</string>
 

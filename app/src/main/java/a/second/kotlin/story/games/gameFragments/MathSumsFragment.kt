@@ -166,7 +166,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
     }
 
     private fun setStateOfAnswersTextView(gameIsWon: Boolean) {
-        if (gameIsWon) stateOfAnswerTextView.text = getString(R.string.sums_problem_correct) else stateOfAnswerTextView.text = getString(R.string.sums_problem_incorrect)
+        if (gameIsWon) stateOfAnswerTextView.text = getString(R.string.sums_game_won) else stateOfAnswerTextView.text = getString(R.string.sums_game_lost)
     }
 
     private fun instantiateSumsGridViewAndAdapter() {
