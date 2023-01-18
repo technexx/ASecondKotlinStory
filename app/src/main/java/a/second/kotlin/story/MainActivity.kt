@@ -133,19 +133,15 @@ class MainActivity : AppCompatActivity() {
             changeStatValueFromGame(gameBeingPlayed, statChangeValue)
             changeStatTextViewFromGame(gameBeingPlayed, statChangeValue)
 
-
-            switchFragmentForNextGame(getFragmentBasedOnRoll())
-
             Handler().postDelayed( {
-//                switchFragmentForNextGame(getFragmentBasedOnRoll())
-            }, 3000)
+                switchFragmentForNextGame(getFragmentBasedOnRoll())
+            }, 500)
 
         })
     }
 
     private fun attachInitialGameFragment() {
         supportFragmentManager.beginTransaction()
-//            .add(R.id.game_frame_layout, getFragmentBasedOnRoll())
             .add(R.id.game_frame_layout, MathProblemsFragment)
             .commit()
     }
@@ -154,6 +150,7 @@ class MainActivity : AppCompatActivity() {
         var fragmentToReturn : Fragment? = null
 
         var roll = (0..3).random()
+
         while (roll == previousFragmentId) {
             roll = (0..3).random()
             Log.i("testRoll", "rolling $roll in loop")}
