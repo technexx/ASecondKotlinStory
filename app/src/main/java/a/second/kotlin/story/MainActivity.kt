@@ -1,10 +1,10 @@
 
 package a.second.kotlin.story
 
-import a.second.kotlin.story.games.gameFragments.HangmanFragment
-import a.second.kotlin.story.games.gameFragments.MatchingFragment
-import a.second.kotlin.story.games.gameFragments.MathProblemsFragment
-import a.second.kotlin.story.games.gameFragments.MathSumsFragment
+import a.second.kotlin.story.gameFragments.HangmanFragment
+import a.second.kotlin.story.gameFragments.MatchingFragment
+import a.second.kotlin.story.gameFragments.MathProblemsFragment
+import a.second.kotlin.story.gameFragments.MathSumsFragment
 import android.annotation.SuppressLint
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -135,6 +135,7 @@ class MainActivity : AppCompatActivity() {
 
             Handler().postDelayed( {
                 switchFragmentForNextGame(getFragmentBasedOnRoll())
+                Log.i("testFrag", "switching fragment!")
             }, 3000)
 
         })

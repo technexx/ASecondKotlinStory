@@ -1,4 +1,4 @@
-package a.second.kotlin.story.games
+package a.second.kotlin.story.gameFragments.gameData
 
 import a.second.kotlin.story.R
 import android.content.Context
@@ -7,6 +7,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,7 @@ class Hangman {
         }
 
         override fun getItemCount(): Int {
+            Log.i("testHang", "alphabetArray size return is ${alphabetArray.size}")
             return alphabetArray.size
         }
 

@@ -1,9 +1,8 @@
-package a.second.kotlin.story.games.gameFragments
+package a.second.kotlin.story.gameFragments
 
 import a.second.kotlin.story.ItemViewModel
 import a.second.kotlin.story.R
-import a.second.kotlin.story.games.Hangman
-import a.second.kotlin.story.games.MathProblems
+import a.second.kotlin.story.gameFragments.gameData.MathProblems
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Bundle
@@ -25,7 +24,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
-import kotlinx.coroutines.NonDisposableHandle.parent
 
 class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
 
@@ -36,7 +34,7 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
 
     lateinit var rootView : View
     val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
-    var MathProblems : MathProblems = MathProblems()
+    var MathProblemsData : MathProblems = MathProblems()
 
     private lateinit var timerProgressBar : ProgressBar
     private lateinit var objectAnimator : ObjectAnimator
@@ -54,10 +52,22 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
         super.onAttach(context)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.i("testFrag", "MathProblems onDestroyView called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("testFrag", "MathProblems onDestroy called")
+    }
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         rootView = inflater.inflate(R.layout.fragment_math_problems_layout, container, false)
+
+        Log.i("testFrag", "MathProblems onCreate called")
 
         problemTextView = rootView.findViewById(R.id.problem_textView)
         answerEditText = rootView.findViewById(R.id.math_answer_editText)
@@ -80,10 +90,10 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
 
     private fun setTypeOfProblem() {
         when (problemRoll()) {
-            0 -> MathProblems.assignAdditionInputs()
-            1 -> MathProblems.assignSubtractionInputs()
-            2 -> MathProblems.assignMultiplicationInputs()
-            3 -> MathProblems.assignDivisionInputs()
+            0 -> MathProblemsData.assignAdditionInputs()
+            1 -> MathProblemsData.assignSubtractionInputs()
+            2 -> MathProblemsData.assignMultiplicationInputs()
+            3 -> MathProblemsData.assignDivisionInputs()
         }
     }
 
@@ -92,7 +102,7 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
     }
 
     private fun setInputsToTextView() {
-        problemTextView.text = MathProblems.createProblemString()
+        problemTextView.text = MathProblemsData.createProblemString()
     }
 
     private fun setSubmitButtonListener() {
@@ -125,7 +135,7 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
     }
 
     private fun doesUserInputMatchAnswer() : Boolean {
-        return answerEditText.text.toString() == MathProblems.answer.toString()
+        return answerEditText.text.toString() == MathProblemsData.answer.toString()
     }
 
     private fun instantiateRecyclerViewAndAdapter() {

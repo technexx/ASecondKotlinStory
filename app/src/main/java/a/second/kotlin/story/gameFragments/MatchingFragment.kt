@@ -1,4 +1,4 @@
-package a.second.kotlin.story.games.gameFragments
+package a.second.kotlin.story.gameFragments
 
 import a.second.kotlin.story.ItemViewModel
 import a.second.kotlin.story.R

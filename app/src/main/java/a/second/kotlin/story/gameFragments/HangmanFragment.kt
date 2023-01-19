@@ -1,8 +1,8 @@
-package a.second.kotlin.story.games.gameFragments
+package a.second.kotlin.story.gameFragments
 
 import a.second.kotlin.story.ItemViewModel
 import a.second.kotlin.story.R
-import a.second.kotlin.story.games.Hangman
+import a.second.kotlin.story.gameFragments.gameData.Hangman
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -17,13 +17,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 
 class HangmanFragment : Fragment() {
 
     //Todo: Use ViewModel to change stats on win/loss.
-    private var HangmanClass = Hangman()
-    private lateinit var GallowsClass : Hangman.GallowsCanvas
+    private lateinit var HangmanData : Hangman
+    private lateinit var GallowsData : Hangman.GallowsCanvas
     private val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
     private lateinit var rootView : View
 
@@ -52,14 +51,26 @@ class HangmanFragment : Fragment() {
         super.onAttach(context)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.i("testFrag", "Hangman onDestroyView called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("testFrag", "Hangman onDestroy called")
+    }
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
 
+        Log.i("testFrag", "Hangman onCreate called")
+
         rootView = inflater.inflate(R.layout.fragment_hangman_layout, container, false)
 
-        HangmanClass = Hangman()
-        GallowsClass = rootView.findViewById(R.id.hangman_canvas)
+        HangmanData = Hangman()
+        GallowsData = rootView.findViewById(R.id.hangman_canvas)
 
         hangmanStateOfAnswerTextView = rootView.findViewById(R.id.hangman_state_of_answer_textView)
 
@@ -81,7 +92,7 @@ class HangmanFragment : Fragment() {
         sendGameBeingPlayedToViewModel()
 
         keyboardGridView.setOnItemClickListener { parent, view, position, id ->
-            val letterClicked = HangmanClass.alphabetStringArray()[position]
+            val letterClicked = HangmanData.alphabetStringArray()[position]
             val letterTextView : TextView = parent[position].findViewById(R.id.hangman_alphabet_letter)
 
             drawLetterOnBoardOrDrawHangman(letterClicked)
@@ -137,11 +148,11 @@ class HangmanFragment : Fragment() {
     }
 
     private fun populateFullAlphabetLetterList() {
-        fullAlphabetLetterList.addAll(HangmanClass.alphabetStringArray())
+        fullAlphabetLetterList.addAll(HangmanData.alphabetStringArray())
     }
 
     private fun populateUnselectedLetterList() {
-        listOfLetterNotYetGuessed.addAll(HangmanClass.alphabetStringArray())
+        listOfLetterNotYetGuessed.addAll(HangmanData.alphabetStringArray())
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -168,8 +179,8 @@ class HangmanFragment : Fragment() {
                 replaceBlankWithLetterInRevealedLetterList(letter)
                 refreshEntirePuzzleLetterAdapter()
             } else {
-                GallowsClass.iterateProgress()
-                GallowsClass.reDrawCanvas()
+                GallowsData.iterateProgress()
+                GallowsData.reDrawCanvas()
             }
         }
     }
@@ -219,7 +230,7 @@ class HangmanFragment : Fragment() {
     }
 
     private fun gameHasBeenLost() : Boolean {
-        return GallowsClass.progress > 6
+        return GallowsData.progress > 6
     }
 
     private fun sendAnswerStateToViewModel() {

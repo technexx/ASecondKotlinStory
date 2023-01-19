@@ -1,4 +1,4 @@
-package a.second.kotlin.story.games
+package a.second.kotlin.story.gameFragments.gameData
 
 import android.util.Log
 
@@ -20,7 +20,7 @@ class MathProblems {
 
     fun assignSubtractionInputs() {
         //inputOne - inputTwo = answer
-        inputOne = (answer..100).random()
+       inputOne = (answer..100).random()
         inputTwo = inputOne - answer
         sign = "-"
 
