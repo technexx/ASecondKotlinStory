@@ -195,8 +195,10 @@ class MainActivity : AppCompatActivity() {
             //Post-while code.
             rollEvent()
             resetTemporaryEventTime()
-            resetRandomMillisDelayForEventTime()
-            resetButtonClickability()
+            setRandomMillisDelayForEventTrigger()
+//            resetButtonClickability()
+
+            startTimeIterationCoRoutine()
         }
     }
 
