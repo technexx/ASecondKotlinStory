@@ -135,14 +135,14 @@ class MainActivity : AppCompatActivity() {
 
             Handler().postDelayed( {
                 switchFragmentForNextGame(getFragmentBasedOnRoll())
-            }, 500)
+            }, 3000)
 
         })
     }
 
     private fun attachInitialGameFragment() {
         supportFragmentManager.beginTransaction()
-            .add(R.id.game_frame_layout, MathProblemsFragment)
+            .add(R.id.game_frame_layout, HangmanFragment)
             .commit()
     }
 

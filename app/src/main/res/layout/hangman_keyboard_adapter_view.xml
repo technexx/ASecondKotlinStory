@@ -15,9 +15,7 @@
         app:cardCornerRadius="0dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true">
+        android:background="?android:attr/selectableItemBackgroundBorderless">
 
         <TextView
             android:id="@+id/hangman_alphabet_letter"

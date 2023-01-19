@@ -152,7 +152,7 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
     private fun instantiateObjectAnimator() {
         objectAnimator = ObjectAnimator.ofInt(timerProgressBar, "progress", progressValue, 0)
         objectAnimator.interpolator = LinearInterpolator()
-        objectAnimator.duration = 5000
+        objectAnimator.duration = 15000
     }
 
     private fun startObjectAnimator() {
