@@ -51,21 +51,9 @@ class HangmanFragment : Fragment() {
         super.onAttach(context)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.i("testFrag", "Hangman onDestroyView called")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i("testFrag", "Hangman onDestroy called")
-    }
-
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-
-        Log.i("testFrag", "Hangman onCreate called")
 
         rootView = inflater.inflate(R.layout.fragment_hangman_layout, container, false)
 

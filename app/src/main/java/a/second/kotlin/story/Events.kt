@@ -58,7 +58,7 @@ class Events(context: Context) {
     }
 
     fun setRandomEventValue() {
-        if (rolledBadOrGood == BAD_ROLL) eventValue = randomValueForBadEvents() else eventValue = randomValueForGoodEvents()
+        if (rolledBadOrGood == BAD_ROLL) eventValue = -randomValueForBadEvents() else eventValue = randomValueForGoodEvents()
     }
 
     fun categoryOfEvent() : Int {

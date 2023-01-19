@@ -55,7 +55,6 @@ class MainActivity : AppCompatActivity() {
     private var randomMillisDelayForEvent : Long = 0
 
     private var eventString : String = ""
-    private var eventValue : Int = 0
 
     private var JOB_EVENT = 0
     private var FINANCES_EVENT = 1
@@ -133,7 +132,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun attachInitialGameFragment() {
         supportFragmentManager.beginTransaction()
-            .add(R.id.game_frame_layout, HangmanFragment)
+            .add(R.id.game_frame_layout, getFragmentBasedOnRoll())
             .commit()
     }
 
@@ -183,9 +182,7 @@ class MainActivity : AppCompatActivity() {
         randomMillisDelayForEvent = randomStop.toLong()
     }
 
-    private fun toggleStartStopButton(enabled: Boolean) {
-        startStopButton.isClickable = enabled
-    }
+    private fun toggleStartStopButton(enabled: Boolean) { startStopButton.isClickable = enabled }
 
     //Only executes once so changing boolean doesn't stop it.
     private fun startTimeIterationCoRoutine() {
@@ -198,7 +195,7 @@ class MainActivity : AppCompatActivity() {
             //Post-while code.
             rollEvent()
             resetTemporaryEventTime()
-            resetrandomMillisDelayForEventTime()
+            resetRandomMillisDelayForEventTime()
             resetButtonClickability()
         }
     }
@@ -214,17 +211,11 @@ class MainActivity : AppCompatActivity() {
         existenceTimerTextView.text = getString(R.string.two_item_concat, getString(R.string.time_since_spawn), DecimalToStringConversions.timeWithMillis(totalSpawnTimeInMilliseconds))
     }
 
-    private fun resetrandomMillisDelayForEventTime() {
-        randomMillisDelayForEvent = 0
-    }
+    private fun resetRandomMillisDelayForEventTime() { randomMillisDelayForEvent = 0 }
 
-    private fun resetTemporaryEventTime() {
-        temporaryEventTime = 0
-    }
+    private fun resetTemporaryEventTime() { temporaryEventTime = 0 }
 
-    private fun resetButtonClickability() {
-        toggleStartStopButton(true)
-    }
+    private fun resetButtonClickability() { toggleStartStopButton(true) }
 
     private fun rollEvent() {
         Events.aggregatedRoll()
@@ -232,7 +223,6 @@ class MainActivity : AppCompatActivity() {
         getAndAssignEventString()
         setEventStringToTextView()
 
-        getAndAssignEventValue()
         setValuesToStatsVariables()
         setValuesToStatsTextViews()
 
@@ -252,16 +242,12 @@ class MainActivity : AppCompatActivity() {
         eventTextView.text = eventString
     }
 
-    private fun getAndAssignEventValue() {
-        if (Events.rolledBadOrGood == BAD_ROLL) eventValue = -Events.eventValue else eventValue = Events.eventValue
-    }
-
     private fun setValuesToStatsVariables() {
         when (Events.rolledEvent) {
-            JOB_EVENT -> Stats.statOneValue += eventValue
-            FINANCES_EVENT -> Stats.statTwoValue += eventValue
-            FAMILY_EVENT -> Stats.statThreeValue += eventValue
-            SOCIAL_EVENT -> Stats.statFourValue += eventValue
+            JOB_EVENT -> Stats.statOneValue += Events.eventValue
+            FINANCES_EVENT -> Stats.statTwoValue += Events.eventValue
+            FAMILY_EVENT -> Stats.statThreeValue += Events.eventValue
+            SOCIAL_EVENT -> Stats.statFourValue += Events.eventValue
         }
     }
 
@@ -278,6 +264,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun changeStatValueFromEvent() {
         val valueModifier = Events.eventValue
+        Log.i("testEvent", "valueMod is $valueModifier")
         val valueString = intToPlusOrMinusString(valueModifier)
 
         when (Events.rolledEvent) {

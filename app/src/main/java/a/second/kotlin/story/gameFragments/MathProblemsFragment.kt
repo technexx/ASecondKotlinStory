@@ -52,22 +52,10 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
         super.onAttach(context)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.i("testFrag", "MathProblems onDestroyView called")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i("testFrag", "MathProblems onDestroy called")
-    }
-
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         rootView = inflater.inflate(R.layout.fragment_math_problems_layout, container, false)
-
-        Log.i("testFrag", "MathProblems onCreate called")
 
         problemTextView = rootView.findViewById(R.id.problem_textView)
         answerEditText = rootView.findViewById(R.id.math_answer_editText)
