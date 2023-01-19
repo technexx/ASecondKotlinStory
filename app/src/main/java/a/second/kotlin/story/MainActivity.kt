@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     private var totalSpawnTimeInMilliseconds : Long = 0
     private var temporaryEventTime : Long = 0
-    private var randomMillisValueForEvent : Long = 0
+    private var randomMillisDelayForEvent : Long = 0
 
     private var eventString : String = ""
     private var eventValue : Int = 0
@@ -61,11 +61,6 @@ class MainActivity : AppCompatActivity() {
     private var FINANCES_EVENT = 1
     private var FAMILY_EVENT = 2
     private var SOCIAL_EVENT = 3
-
-    private var SumsFragmentId = 0
-    private var MathFragmentId = 1
-    private var HangmanFragmentId = 2
-    private var MatchingFragmentId = 3;
 
     private var BAD_ROLL = 0
     private var GOOD_ROLL = 1
@@ -80,11 +75,6 @@ class MainActivity : AppCompatActivity() {
         Events = Events(applicationContext)
         Stats = Stats(applicationContext)
         DecimalToStringConversions = DecimalToStringConversions()
-
-        SumsFragment = MathSumsFragment()
-        MathProblemsFragment = MathProblemsFragment()
-        HangmanFragment = HangmanFragment()
-        MatchingFragment = MatchingFragment()
 
         statOneHeader = findViewById(R.id.stat_one_header_textView)
         statTwoHeader = findViewById(R.id.stat_two_header_textView)
@@ -112,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         setViewModelObserver()
 
         startStopButton.setOnClickListener {
-            setRandomMillisValueForEventTrigger()
+            setRandomMillisDelayForEventTrigger()
             startTimeIterationCoRoutine()
             setValuesToStatsTextViews()
         }
@@ -152,18 +142,13 @@ class MainActivity : AppCompatActivity() {
 
         var roll = (0..3).random()
 
-        while (roll == previousFragmentId) {
-            roll = (0..3).random()
-            Log.i("testRoll", "rolling $roll in loop")}
+        while (roll == previousFragmentId) { roll = (0..3).random() }
         previousFragmentId = roll
-        Log.i("testRoll", "id setting to $previousFragmentId")
 
-        if (roll == 0) fragmentToReturn = SumsFragment
-        if (roll == 1) fragmentToReturn = MathProblemsFragment
-        if (roll == 2) fragmentToReturn = HangmanFragment
-        if (roll == 3) fragmentToReturn = MatchingFragment
-
-        Log.i("testRoll", "post-loop roll is $roll")
+        if (roll == 0) fragmentToReturn = MathSumsFragment()
+        if (roll == 1) fragmentToReturn = MathProblemsFragment()
+        if (roll == 2) fragmentToReturn = HangmanFragment()
+        if (roll == 3) fragmentToReturn = MatchingFragment()
 
         return fragmentToReturn!!
     }
@@ -193,9 +178,9 @@ class MainActivity : AppCompatActivity() {
         return (3..6).random()
     }
 
-    private fun setRandomMillisValueForEventTrigger() {
+    private fun setRandomMillisDelayForEventTrigger() {
         val randomStop = (3000..5000).random()
-        randomMillisValueForEvent = randomStop.toLong()
+        randomMillisDelayForEvent = randomStop.toLong()
     }
 
     private fun toggleStartStopButton(enabled: Boolean) {
@@ -207,13 +192,13 @@ class MainActivity : AppCompatActivity() {
         toggleStartStopButton(false)
 
         job = GlobalScope.launch(Dispatchers.Main) {
-            while (temporaryEventTime <= randomMillisValueForEvent) {
+            while (temporaryEventTime <= randomMillisDelayForEvent) {
                 spawnTimeIteration()
             }
             //Post-while code.
             rollEvent()
             resetTemporaryEventTime()
-            resetRandomMillisValueForEventTime()
+            resetrandomMillisDelayForEventTime()
             resetButtonClickability()
         }
     }
@@ -229,8 +214,8 @@ class MainActivity : AppCompatActivity() {
         existenceTimerTextView.text = getString(R.string.two_item_concat, getString(R.string.time_since_spawn), DecimalToStringConversions.timeWithMillis(totalSpawnTimeInMilliseconds))
     }
 
-    private fun resetRandomMillisValueForEventTime() {
-        randomMillisValueForEvent = 0
+    private fun resetrandomMillisDelayForEventTime() {
+        randomMillisDelayForEvent = 0
     }
 
     private fun resetTemporaryEventTime() {
