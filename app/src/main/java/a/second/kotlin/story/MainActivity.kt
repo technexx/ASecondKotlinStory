@@ -1,4 +1,3 @@
-
 package a.second.kotlin.story
 
 import a.second.kotlin.story.gameFragments.HangmanFragment
@@ -31,11 +30,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var Stats : Stats
     private lateinit var DecimalToStringConversions: DecimalToStringConversions
 
-    private lateinit var SumsFragment : MathSumsFragment
-    private lateinit var MathProblemsFragment : MathProblemsFragment
-    private lateinit var HangmanFragment : HangmanFragment
-    private lateinit var MatchingFragment : MatchingFragment
-
     private lateinit var statOneHeader : TextView
     private lateinit var statOneTextView : TextView
     private lateinit var statTwoHeader : TextView
@@ -55,11 +49,13 @@ class MainActivity : AppCompatActivity() {
     private var randomMillisDelayForEvent : Long = 0
 
     private var eventString : String = ""
+    private var eventValueModifierString = ""
 
     private var JOB_EVENT = 0
     private var FINANCES_EVENT = 1
     private var FAMILY_EVENT = 2
     private var SOCIAL_EVENT = 3
+    private var LAST_EVENT = -1
 
     private var BAD_ROLL = 0
     private var GOOD_ROLL = 1
@@ -184,7 +180,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun toggleStartStopButton(enabled: Boolean) { startStopButton.isClickable = enabled }
 
-    //Only executes once so changing boolean doesn't stop it.
     private fun startTimeIterationCoRoutine() {
         toggleStartStopButton(false)
 
@@ -196,7 +191,6 @@ class MainActivity : AppCompatActivity() {
             rollEvent()
             resetTemporaryEventTime()
             setRandomMillisDelayForEventTrigger()
-//            resetButtonClickability()
 
             startTimeIterationCoRoutine()
         }
@@ -217,14 +211,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun resetTemporaryEventTime() { temporaryEventTime = 0 }
 
-    private fun resetButtonClickability() { toggleStartStopButton(true) }
-
     private fun rollEvent() {
         Events.aggregatedRoll()
 
         getAndAssignEventString()
         setEventStringToTextView()
 
+        setLastTriggeredEventVariable()
         setValuesToStatsVariables()
         setValuesToStatsTextViews()
 
@@ -242,6 +235,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun setEventStringToTextView() {
         eventTextView.text = eventString
+    }
+
+    private fun setLastTriggeredEventVariable() {
+        when (Events.rolledEvent) {
+            JOB_EVENT -> LAST_EVENT == JOB_EVENT
+            FINANCES_EVENT -> LAST_EVENT == FINANCES_EVENT
+            FAMILY_EVENT -> LAST_EVENT == FAMILY_EVENT
+            SOCIAL_EVENT -> LAST_EVENT == SOCIAL_EVENT
+        }
     }
 
     private fun setValuesToStatsVariables() {
@@ -266,14 +268,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun changeStatValueFromEvent() {
         val valueModifier = Events.eventValue
-        Log.i("testEvent", "valueMod is $valueModifier")
-        val valueString = intToPlusOrMinusString(valueModifier)
 
         when (Events.rolledEvent) {
-            JOB_EVENT -> statOneTextView.text = getString(R.string.two_item_concat, Stats.statOneValue.toString(), valueString)
-            FINANCES_EVENT -> statTwoTextView.text =getString(R.string.two_item_concat, Stats.statTwoValue.toString(), valueString)
-            FAMILY_EVENT -> statThreeTextView.text = getString(R.string.two_item_concat, Stats.statThreeValue.toString(), valueString)
-            SOCIAL_EVENT -> statFourTextView.text = getString(R.string.two_item_concat, Stats.statFourValue.toString(), valueString)
+            JOB_EVENT -> statOneTextView.text = getString(R.string.two_item_concat, Stats.statOneValue.toString(), intToPlusOrMinusString(valueModifier))
+            FINANCES_EVENT -> statTwoTextView.text = getString(R.string.two_item_concat, Stats.statTwoValue.toString(), intToPlusOrMinusString(valueModifier))
+            FAMILY_EVENT -> statThreeTextView.text = getString(R.string.two_item_concat, Stats.statThreeValue.toString(), intToPlusOrMinusString(valueModifier))
+            SOCIAL_EVENT -> statFourTextView.text = getString(R.string.two_item_concat, Stats.statFourValue.toString(), intToPlusOrMinusString(valueModifier))
+        }
+
+        when (LAST_EVENT) {
+            JOB_EVENT -> statOneTextView.text = getString(R.string.two_item_concat, Stats.statOneValue.toString(), "")
+            FINANCES_EVENT -> statTwoTextView.text = getString(R.string.two_item_concat, Stats.statTwoValue.toString(), "")
+            FAMILY_EVENT -> statThreeTextView.text = getString(R.string.two_item_concat, Stats.statThreeValue.toString(), "")
+            SOCIAL_EVENT -> statFourTextView.text = getString(R.string.two_item_concat, Stats.statFourValue.toString(), "")
         }
     }
 

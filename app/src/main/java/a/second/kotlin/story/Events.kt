@@ -5,22 +5,22 @@ import android.util.Log
 
 class Events(context: Context) {
 
-    var jobEventsBadArrayList = context.resources.getStringArray(R.array.job_events_bad)
-    var jobEventsGoodArrayList = context.resources.getStringArray(R.array.job_events_good)
-    var financesEventsBadArrayList = context.resources.getStringArray(R.array.finance_events_bad)
-    var financesEventsGoodArrayList = context.resources.getStringArray(R.array.finance_events_good)
-    var familyEventsBadArrayList = context.resources.getStringArray(R.array.family_events_bad)
-    var familyEventsGoodArrayList = context.resources.getStringArray(R.array.family_events_good)
-    var socialEventsBadArrayList = context.resources.getStringArray(R.array.social_life_bad)
-    var socialEventsGoodArrayList = context.resources.getStringArray(R.array.social_life_good)
+    private var jobEventsBadArrayList = context.resources.getStringArray(R.array.job_events_bad)
+    private var jobEventsGoodArrayList = context.resources.getStringArray(R.array.job_events_good)
+    private var financesEventsBadArrayList = context.resources.getStringArray(R.array.finance_events_bad)
+    private var financesEventsGoodArrayList = context.resources.getStringArray(R.array.finance_events_good)
+    private var familyEventsBadArrayList = context.resources.getStringArray(R.array.family_events_bad)
+    private var familyEventsGoodArrayList = context.resources.getStringArray(R.array.family_events_good)
+    private var socialEventsBadArrayList = context.resources.getStringArray(R.array.social_life_bad)
+    private var socialEventsGoodArrayList = context.resources.getStringArray(R.array.social_life_good)
 
-    var JOB_EVENT = 0
-    var FINANCES_EVENT = 1
-    var FAMILY_EVENT = 2
-    var SOCIAL_EVENT = 3
+    private var JOB_EVENT = 0
+    private var FINANCES_EVENT = 1
+    private var FAMILY_EVENT = 2
+    private var SOCIAL_EVENT = 3
 
-    var BAD_ROLL = 0
-    var GOOD_ROLL = 1
+    private var BAD_ROLL = 0
+    private var GOOD_ROLL = 1
 
     var rolledEvent = 0;
     var rolledBadOrGood = 0
@@ -35,11 +35,11 @@ class Events(context: Context) {
         setRandomEventValue()
     }
 
-    fun rollEventCategory() {
+    private fun rollEventCategory() {
         rolledEvent = categoryOfEvent()
     }
 
-    fun setRandomEventString() {
+    private fun setRandomEventString() {
         if (rolledEvent == JOB_EVENT) {
             if (rolledBadOrGood == BAD_ROLL) eventString = randomBadJobEvent() else eventString = randomGoodJobEvent()
 
@@ -57,70 +57,66 @@ class Events(context: Context) {
         }
     }
 
-    fun setRandomEventValue() {
+    private fun setRandomEventValue() {
         if (rolledBadOrGood == BAD_ROLL) eventValue = -randomValueForBadEvents() else eventValue = randomValueForGoodEvents()
     }
 
-    fun categoryOfEvent() : Int {
-        return (0..3).random()
-    }
+    private fun categoryOfEvent() : Int { return (0..3).random() }
 
-    fun setGoodOrBadModifier() {
+    private fun setGoodOrBadModifier() {
         val roll = (0..4).random()
         rolledBadOrGood = if (roll < 4) BAD_ROLL else GOOD_ROLL
     }
 
-    fun randomValueForBadEvents() : Int {
-        return (5..15).random()
-    }
+    private fun randomValueForBadEvents() : Int { return (5..15).random() }
 
-    fun randomValueForGoodEvents() : Int {
+    private fun randomValueForGoodEvents() : Int {
         return (3..10).random()
     }
 
-    fun randomBadJobEvent() : String {
+    private fun randomBadJobEvent() : String {
         //until is X to Y, excluding Y.
         val eventRoll = (jobEventsBadArrayList.indices).random()
         return jobEventsBadArrayList[eventRoll]
     }
 
-    fun randomGoodJobEvent() : String {
+    private fun randomGoodJobEvent() : String {
         //until is X to Y, excluding Y.
         val eventRoll = (jobEventsGoodArrayList.indices).random()
         return jobEventsGoodArrayList[eventRoll]
     }
 
-    fun randomBadFinancesEvent() : String {
+    private fun randomBadFinancesEvent() : String {
         //until is X to Y, excluding Y.
         val eventRoll = (financesEventsBadArrayList.indices).random()
         return financesEventsBadArrayList[eventRoll]
     }
 
-    fun randomGoodFinancesEvent() : String {
+    private fun randomGoodFinancesEvent() : String {
         //until is X to Y, excluding Y.
         val eventRoll = (financesEventsGoodArrayList.indices).random()
         return financesEventsGoodArrayList[eventRoll]
     }
 
-    fun randomBadFamilyEvent() : String {
+    private fun randomBadFamilyEvent() : String {
         //until is X to Y, excluding Y.
         val eventRoll = (familyEventsBadArrayList.indices).random()
         return familyEventsBadArrayList[eventRoll]
     }
 
-    fun randomGoodFamilyEvent() : String {
+    private fun randomGoodFamilyEvent() : String {
         //until is X to Y, excluding Y.
         val eventRoll = (familyEventsGoodArrayList.indices).random()
         return familyEventsGoodArrayList[eventRoll]
     }
 
-    fun randomBadSocialEvent() : String {
+    private fun randomBadSocialEvent() : String {
         //until is X to Y, excluding Y.
         val eventRoll = (socialEventsBadArrayList.indices).random()
         return socialEventsBadArrayList[eventRoll]
     }
 
-    fun randomGoodSocialEvent() : String {
+    private fun randomGoodSocialEvent() : String {
         //until is X to Y, excluding Y.
         val eventRoll = (socialEventsGoodArrayList.indices).random()
         return socialEventsGoodArrayList[eventRoll]
