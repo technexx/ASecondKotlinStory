@@ -30,17 +30,17 @@
         app:layout_constraintBottom_toTopOf="@id/stats_guideline"
         android:theme="@style/StatsTheme">
 
-            <TextView
-                android:id="@+id/zero_stat_warning"
-                android:layout_width="350dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/stat_four_header_textView"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="2dp"
-                android:textColor="@color/teal_200"
-                android:textSize="14sp">
-            </TextView>
+        <TextView
+            android:id="@+id/zero_stat_warning"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/stat_four_header_textView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="2dp"
+            android:textColor="@color/teal_200"
+            android:textSize="14sp">
+        </TextView>
 
         <TextView
             android:id="@+id/stat_one_header_textView"

@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity() {
     private var randomMillisDelayForEvent : Long = 0
 
     private var eventString : String = ""
-    private var eventValueModifierString = ""
 
     private var JOB_EVENT = 0
     private var FINANCES_EVENT = 1
@@ -57,10 +56,9 @@ class MainActivity : AppCompatActivity() {
     private var SOCIAL_EVENT = 3
     private var LAST_EVENT = -1
 
-    private var BAD_ROLL = 0
-    private var GOOD_ROLL = 1
-
     private var previousFragmentId = 1
+
+    private var eventTimerRunnable : java.lang.Runnable = Runnable {  }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,9 +94,11 @@ class MainActivity : AppCompatActivity() {
         setValuesToStatsTextViews()
         setViewModelObserver()
 
+        instantiateEventTimerRunnable()
+
         startStopButton.setOnClickListener {
             setRandomMillisDelayForEventTrigger()
-            startTimeIterationCoRoutine()
+            testRoutine()
             setValuesToStatsTextViews()
         }
     }
@@ -178,36 +178,44 @@ class MainActivity : AppCompatActivity() {
         randomMillisDelayForEvent = randomStop.toLong()
     }
 
-    private fun toggleStartStopButton(enabled: Boolean) { startStopButton.isClickable = enabled }
+    private fun testRoutine() = runBlocking {
+        launch {
+            //Todo: This is likely blocking the main thread.
+            delay(randomMillisDelayForEvent)
+            Handler().removeCallbacks(eventTimerRunnable)
+            eventActions()
+//            testRoutine()
+            Log.i("testRoutine", "blocked thread executed!")
+        }
 
-    private fun startTimeIterationCoRoutine() {
-        toggleStartStopButton(false)
+        postEventTimerRunnable()
+        Log.i("testRoutine", "main routine executed!")
+    }
 
-        job = GlobalScope.launch(Dispatchers.Main) {
-            while (temporaryEventTime <= randomMillisDelayForEvent) {
-                spawnTimeIteration()
-            }
-            //Post-while code.
-            rollEvent()
-            resetTemporaryEventTime()
-            setRandomMillisDelayForEventTrigger()
+    private fun eventActions() {
+        rollEvent()
+        resetTemporaryEventTime()
+        setRandomMillisDelayForEventTrigger()
+    }
 
-            startTimeIterationCoRoutine()
+    private fun postEventTimerRunnable() {
+        Handler().post(eventTimerRunnable)
+    }
+
+    private fun instantiateEventTimerRunnable() {
+        eventTimerRunnable = java.lang.Runnable {
+            val startTime = System.currentTimeMillis()
+            val timeToAdd = System.currentTimeMillis() - startTime
+
+            temporaryEventTime += timeToAdd
+            totalSpawnTimeInMilliseconds += timeToAdd
+            existenceTimerTextView.text = getString(R.string.two_item_concat, getString(R.string.time_since_spawn), DecimalToStringConversions.timeWithMillis(totalSpawnTimeInMilliseconds))
+
+            Log.i("testRoutine", "timer runnable iterating!")
+
+            Handler().postDelayed(eventTimerRunnable, 50)
         }
     }
-
-    private suspend fun spawnTimeIteration() {
-        val startTime = System.currentTimeMillis()
-        delay(50)
-
-        val timeToAdd = System.currentTimeMillis() - startTime
-
-        temporaryEventTime += timeToAdd
-        totalSpawnTimeInMilliseconds += timeToAdd
-        existenceTimerTextView.text = getString(R.string.two_item_concat, getString(R.string.time_since_spawn), DecimalToStringConversions.timeWithMillis(totalSpawnTimeInMilliseconds))
-    }
-
-    private fun resetRandomMillisDelayForEventTime() { randomMillisDelayForEvent = 0 }
 
     private fun resetTemporaryEventTime() { temporaryEventTime = 0 }
 
@@ -225,8 +233,6 @@ class MainActivity : AppCompatActivity() {
 
         setStatTextViewToRedIfAtZeroAndBlackIfNot()
         checkAffectedStatAgainstZeroSum()
-
-        blankOutCriticalScoreTextView()
     }
 
     private fun getAndAssignEventString() {
@@ -260,10 +266,6 @@ class MainActivity : AppCompatActivity() {
         statTwoTextView.text = Stats.statTwoValue.toString()
         statThreeTextView.text = Stats.statThreeValue.toString()
         statFourTextView.text = Stats.statFourValue.toString()
-    }
-
-    private fun blankOutCriticalScoreTextView() {
-        statWarningTextView.text = ""
     }
 
     private fun changeStatValueFromEvent() {
@@ -309,7 +311,7 @@ class MainActivity : AppCompatActivity() {
     private fun statOneZeroCheckAndLogic() {
         if (Stats.statOneCritical) {
             if (Stats.statOneValue <= 0) {
-                statWarningTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsOneString()), getString(R.string.end_game_append_one))
+                eventTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsOneString()), getString(R.string.end_game_append_one))
             }  else {
                 Stats.statOneCritical = false
             }
@@ -318,7 +320,7 @@ class MainActivity : AppCompatActivity() {
                 Stats.statOneValue = 0
                 Stats.statOneCritical = true
                 statOneTextView.text = "0"
-                statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsOneString()))
+                eventTextView.text = (getString(R.string.zero_stat_warning, Stats.statsOneString()))
             }
         }
     }
@@ -326,7 +328,7 @@ class MainActivity : AppCompatActivity() {
     private fun statTwoZeroCheckAndLogic() {
         if (Stats.statTwoCritical) {
             if (Stats.statTwoValue <= 0) {
-                statWarningTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsTwoString()), getString(R.string.end_game_append_two))
+                eventTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsTwoString()), getString(R.string.end_game_append_two))
             }  else {
                 Stats.statTwoCritical = false
             }
@@ -335,7 +337,7 @@ class MainActivity : AppCompatActivity() {
                 Stats.statTwoValue = 0
                 Stats.statTwoCritical = true
                 statTwoTextView.text = "0"
-                statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsTwoString()))
+                eventTextView.text = (getString(R.string.zero_stat_warning, Stats.statsTwoString()))
             }
         }
     }
@@ -343,7 +345,7 @@ class MainActivity : AppCompatActivity() {
     private fun statThreeZeroCheckAndLogic() {
         if (Stats.statThreeCritical) {
             if (Stats.statThreeValue <= 0) {
-                statWarningTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsThreeString()), getString(R.string.end_game_append_three))
+                eventTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsThreeString()), getString(R.string.end_game_append_three))
             }  else {
                 Stats.statThreeCritical = false
             }
@@ -352,7 +354,7 @@ class MainActivity : AppCompatActivity() {
                 Stats.statThreeValue = 0
                 Stats.statThreeCritical = true
                 statThreeTextView.text = "0"
-                statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsThreeString()))
+                eventTextView.text = (getString(R.string.zero_stat_warning, Stats.statsThreeString()))
             }
         }
     }
@@ -360,7 +362,7 @@ class MainActivity : AppCompatActivity() {
     private fun statFourZeroCheckAndLogic() {
         if (Stats.statFourCritical) {
             if (Stats.statFourValue <= 0) {
-                statWarningTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsFourString()), getString(R.string.end_game_append_four))
+                eventTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsFourString()), getString(R.string.end_game_append_four))
             }  else {
                 Stats.statFourCritical = false
             }
@@ -369,7 +371,7 @@ class MainActivity : AppCompatActivity() {
                 Stats.statFourValue = 0
                 Stats.statFourCritical = true
                 statFourTextView.text = "0"
-                statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsFourString()))
+                eventTextView.text = (getString(R.string.zero_stat_warning, Stats.statsFourString()))
             }
         }
     }
