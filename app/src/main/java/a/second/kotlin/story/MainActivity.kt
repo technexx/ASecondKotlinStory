@@ -45,20 +45,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var statWarningTextView : TextView
 
     private var totalSpawnTimeInMilliseconds : Long = 0
-    private var temporaryEventTime : Long = 0
     private var randomMillisDelayForEvent : Long = 0
 
     private var eventString : String = ""
-    private var eventValueModifierString = ""
 
     private var JOB_EVENT = 0
     private var FINANCES_EVENT = 1
     private var FAMILY_EVENT = 2
     private var SOCIAL_EVENT = 3
     private var LAST_EVENT = -1
-
-    private var BAD_ROLL = 0
-    private var GOOD_ROLL = 1
 
     private var previousFragmentId = 1
 
@@ -182,8 +177,6 @@ class MainActivity : AppCompatActivity() {
         randomMillisDelayForEvent = randomStop.toLong()
     }
 
-    private fun toggleStartStopButton(enabled: Boolean) { startStopButton.isClickable = enabled }
-
     private fun startTimeIterationCoRoutine() {
         job = GlobalScope.launch(Dispatchers.Main) {
             Log.i("testRoutine", "Job launched w/ runnable and suspend function")
@@ -201,32 +194,37 @@ class MainActivity : AppCompatActivity() {
 
     private fun eventActions() {
         rollEvent()
-        resetTemporaryEventTime()
         setRandomMillisDelayForEventTrigger()
 
         startTimeIterationCoRoutine()
     }
 
-    private fun postEventTimerRunnable() {
-        Handler().post(eventTimerRunnable)
-    }
+    private fun postEventTimerRunnable() { Handler().post(eventTimerRunnable) }
 
     private fun instantiateEventTimerRunnable() {
-        eventTimerRunnable = java.lang.Runnable {
-            val startTime = System.currentTimeMillis()
-            val timeToAdd = System.currentTimeMillis() - startTime
+        val eventTimes = EventTimes()
 
-            temporaryEventTime += timeToAdd
-            totalSpawnTimeInMilliseconds += timeToAdd
+        eventTimes.stableTime = System.currentTimeMillis()
+
+        eventTimerRunnable = java.lang.Runnable {
+            eventTimes.currentTime = System.currentTimeMillis()
+            totalSpawnTimeInMilliseconds = eventTimes.iteratedTime()
+
             existenceTimerTextView.text = getString(R.string.two_item_concat, getString(R.string.time_since_spawn), DecimalToStringConversions.timeWithMillis(totalSpawnTimeInMilliseconds))
 
-//            Log.i("testRoutine", "timer runnable iterating!")
+            Log.i("testRoutine", "total spawn time is $totalSpawnTimeInMilliseconds")
 
             Handler().postDelayed(eventTimerRunnable, 50)
         }
     }
 
-    private fun resetTemporaryEventTime() { temporaryEventTime = 0 }
+    class EventTimes {
+        var stableTime : Long = 0
+        var currentTime : Long = 0
+
+        fun iteratedTime() : Long { return currentTime - stableTime}
+    }
+
 
     private fun rollEvent() {
         Events.aggregatedRoll()
