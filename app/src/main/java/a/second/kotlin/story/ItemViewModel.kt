@@ -11,6 +11,9 @@ open class ItemViewModel : ViewModel() {
     val mutableCorrectAnswerBoolean = MutableLiveData<Boolean>()
     val isAnswerCorrect : LiveData<Boolean> get() = mutableCorrectAnswerBoolean
 
+    val mutableTypeOfEventTriggered = MutableLiveData<Int>()
+    val typeOfEventTriggered : LiveData<Int> get() = mutableTypeOfEventTriggered
+
     var gameBeingPlayed : String = ""
     var switchGameFragments = false
 
@@ -19,6 +22,7 @@ open class ItemViewModel : ViewModel() {
     }
 
     class GamesViewModel : ItemViewModel() {
+
         fun setIsAnswerCorrect(isCorrect : Boolean) {
             mutableCorrectAnswerBoolean.value = isCorrect
         }
@@ -31,8 +35,8 @@ open class ItemViewModel : ViewModel() {
             return gameBeingPlayed
         }
 
-        fun getSwitchGameFragment() : Boolean {
-            return switchGameFragments
+        fun setTypeOfEventTriggered(event: Int) {
+            mutableTypeOfEventTriggered.value = event
         }
     }
 }

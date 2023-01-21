@@ -106,6 +106,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //Todo: We only have observer set on boolean mutable!
     private fun setViewModelObserver() {
         gamesViewModel.mutableCorrectAnswerBoolean.observe(this, Observer {
 
@@ -131,11 +132,15 @@ class MainActivity : AppCompatActivity() {
                 switchFragmentForNextGame(getFragmentBasedOnRoll())
             }, 3000)
         })
+
+        gamesViewModel.mutableTypeOfEventTriggered.observe(this) {
+            Log.i("testStat", "type of event observer called")
+        }
     }
 
     private fun cancelEventTimerCoroutine() { job.cancel() }
 
-    private fun cancelHandlerRunnables() { handler.removeCallbacksAndMessages(null) }
+    private fun cancelHandlerRunnables() { handler.removeCallbacks(eventTimerRunnable) }
 
     private fun hasAStatReachedNegativeValue() : Boolean {
         return Stats.statOneValue < 0 || Stats.statTwoValue < 0 || Stats.statThreeValue < 0 || Stats.statFourValue < 4
@@ -239,6 +244,8 @@ class MainActivity : AppCompatActivity() {
     private fun rollEvent() {
         Events.aggregatedRoll()
 
+        sendStatChangeToLiveDataViewModel()
+
         getAndAssignEventString()
         setEventStringToTextView()
 
@@ -250,6 +257,10 @@ class MainActivity : AppCompatActivity() {
 
         setStatTextViewToRedIfAtZeroAndBlackIfNot()
         checkAffectedStatAgainstZeroSum()
+    }
+
+    private fun sendStatChangeToLiveDataViewModel() {
+        gamesViewModel.setTypeOfEventTriggered(Events.rolledEvent)
     }
 
     private fun getAndAssignEventString() {
