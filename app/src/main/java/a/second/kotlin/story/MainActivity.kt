@@ -30,6 +30,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var Stats : Stats
     private lateinit var DecimalToStringConversions: DecimalToStringConversions
 
+    var handler : Handler = Handler()
+    var eventTimerRunnable : Runnable = Runnable { }
+
     private lateinit var statOneHeader : TextView
     private lateinit var statOneTextView : TextView
     private lateinit var statTwoHeader : TextView
@@ -44,7 +47,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var eventTextView : TextView
     private lateinit var statWarningTextView : TextView
 
-    private var totalSpawnTimeInMilliseconds : Long = 0
     private var randomMillisDelayForEvent : Long = 0
 
     private var eventString : String = ""
@@ -58,7 +60,6 @@ class MainActivity : AppCompatActivity() {
     private var previousFragmentId = 1
 
     val eventTimes = EventTimes()
-    var eventTimerRunnable : java.lang.Runnable = Runnable {  }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,6 +95,8 @@ class MainActivity : AppCompatActivity() {
         setValuesToStatsTextViews()
         setViewModelObserver()
 
+        instantiateEventTimerRunnable()
+
         startStopButton.setOnClickListener {
             setRandomMillisDelayForEventTrigger()
             setValuesToStatsTextViews()
@@ -116,16 +119,26 @@ class MainActivity : AppCompatActivity() {
             }
 
             changeStatValueFromGame(gameBeingPlayed, statChangeValue)
-
             clearStatModificationTextViews()
             changeStatTextViewFromGame(gameBeingPlayed, statChangeValue)
 
-            Handler().postDelayed( {
-                switchFragmentForNextGame(getFragmentBasedOnRoll())
-                Log.i("testFrag", "switching fragment!")
-            }, 3000)
+            if (hasAStatReachedNegativeValue()) {
+                cancelEventTimerCoroutine()
+                cancelHandlerRunnables()
+            }
 
+            handler.postDelayed( {
+                switchFragmentForNextGame(getFragmentBasedOnRoll())
+            }, 3000)
         })
+    }
+
+    private fun cancelEventTimerCoroutine() { job.cancel() }
+
+    private fun cancelHandlerRunnables() { handler.removeCallbacksAndMessages(null) }
+
+    private fun hasAStatReachedNegativeValue() : Boolean {
+        return Stats.statOneValue < 0 || Stats.statTwoValue < 0 || Stats.statThreeValue < 0 || Stats.statFourValue < 4
     }
 
     private fun attachInitialGameFragment() {
@@ -202,16 +215,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun setStableTimeForEventTimer() { eventTimes.stableTime = System.currentTimeMillis() }
 
-    private fun postEventTimerRunnable() { Handler().post(eventTimerRunnable()) }
+    private fun postEventTimerRunnable() { handler.post(eventTimerRunnable) }
 
-    private fun eventTimerRunnable() : java.lang.Runnable {
-        return Runnable {
+    private fun instantiateEventTimerRunnable() {
+        eventTimerRunnable = Runnable {
             eventTimes.currentTime = System.currentTimeMillis()
             eventTimes.totalSpawnTimeInMilliseconds = eventTimes.iteratedTime()
 
             existenceTimerTextView.text = getString(R.string.two_item_concat, getString(R.string.time_since_spawn), DecimalToStringConversions.timeWithMillis(eventTimes.totalSpawnTimeInMilliseconds))
 
-            Handler().postDelayed(eventTimerRunnable(), 50)
+            handler.postDelayed(eventTimerRunnable, 50)
         }
     }
 
