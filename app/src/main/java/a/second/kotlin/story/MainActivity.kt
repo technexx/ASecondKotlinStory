@@ -116,6 +116,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             changeStatValueFromGame(gameBeingPlayed, statChangeValue)
+
+            clearStatModificationTextViews()
             changeStatTextViewFromGame(gameBeingPlayed, statChangeValue)
 
             Handler().postDelayed( {
@@ -277,21 +279,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun changeStatValueFromEvent() {
-        val valueModifier = Events.eventValue
+        clearStatModificationTextViews()
 
+        val valueModifier = Events.eventValue
         when (Events.rolledEvent) {
             JOB_EVENT -> statOneTextView.text = getString(R.string.two_item_concat, Stats.statOneValue.toString(), intToPlusOrMinusString(valueModifier))
             FINANCES_EVENT -> statTwoTextView.text = getString(R.string.two_item_concat, Stats.statTwoValue.toString(), intToPlusOrMinusString(valueModifier))
             FAMILY_EVENT -> statThreeTextView.text = getString(R.string.two_item_concat, Stats.statThreeValue.toString(), intToPlusOrMinusString(valueModifier))
             SOCIAL_EVENT -> statFourTextView.text = getString(R.string.two_item_concat, Stats.statFourValue.toString(), intToPlusOrMinusString(valueModifier))
         }
+    }
 
-        when (LAST_EVENT) {
-            JOB_EVENT -> statOneTextView.text = getString(R.string.two_item_concat, Stats.statOneValue.toString(), "")
-            FINANCES_EVENT -> statTwoTextView.text = getString(R.string.two_item_concat, Stats.statTwoValue.toString(), "")
-            FAMILY_EVENT -> statThreeTextView.text = getString(R.string.two_item_concat, Stats.statThreeValue.toString(), "")
-            SOCIAL_EVENT -> statFourTextView.text = getString(R.string.two_item_concat, Stats.statFourValue.toString(), "")
-        }
+    private fun clearStatModificationTextViews() {
+        statOneTextView.text = getString(R.string.two_item_concat, Stats.statOneValue.toString(), "")
+        statTwoTextView.text = getString(R.string.two_item_concat, Stats.statTwoValue.toString(), "")
+        statThreeTextView.text = getString(R.string.two_item_concat, Stats.statThreeValue.toString(), "")
+        statFourTextView.text = getString(R.string.two_item_concat, Stats.statFourValue.toString(), "")
     }
 
     private fun intToPlusOrMinusString(intValue: Int) : String {
