@@ -237,8 +237,6 @@ class MainActivity : AppCompatActivity() {
 
         setStatTextViewToRedIfAtZeroAndBlackIfNot()
         checkAffectedStatAgainstZeroSum()
-
-        blankOutCriticalScoreTextView()
     }
 
     private fun getAndAssignEventString() {
@@ -272,10 +270,6 @@ class MainActivity : AppCompatActivity() {
         statTwoTextView.text = Stats.statTwoValue.toString()
         statThreeTextView.text = Stats.statThreeValue.toString()
         statFourTextView.text = Stats.statFourValue.toString()
-    }
-
-    private fun blankOutCriticalScoreTextView() {
-        statWarningTextView.text = ""
     }
 
     private fun changeStatValueFromEvent() {
