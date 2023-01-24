@@ -19,15 +19,17 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
 
 //Todo: Remember to SUSPEND and not BLOCK if using UI thread. runBlocking is a default CoroutineScope.
+//Todo: Stop object animator of active fragment when stats < 0
 
 @OptIn(DelicateCoroutinesApi::class)
 class MainActivity : AppCompatActivity() {
 
     val gamesViewModel : ItemViewModel.GamesViewModel by viewModels()
 
-    var job: Job = Job()
+    private var job: Job = Job()
     private lateinit var Events : Events
     private lateinit var Stats : Stats
+    private val eventTimes = EventTimes()
     private lateinit var DecimalToStringConversions: DecimalToStringConversions
 
     var handler : Handler = Handler()
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
     private var previousFragmentId = 1
 
-    val eventTimes = EventTimes()
+    private var gameIsActive = true
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,6 +128,7 @@ class MainActivity : AppCompatActivity() {
             if (hasAStatReachedNegativeValue()) {
                 cancelEventTimerCoroutine()
                 cancelEventTimerRunnable()
+                gameIsActive = false
             } else {
                 handler.postDelayed( {
                     switchFragmentForNextGame(getFragmentBasedOnRoll())
@@ -136,15 +139,16 @@ class MainActivity : AppCompatActivity() {
         gamesViewModel.mutableTypeOfEventTriggered.observe(this) {
             Log.i("testEnd", "stat negative boolean is ${hasAStatReachedNegativeValue()}")
 
-            Log.i("testEnd", "stat one is ${Stats.statOneValue}")
-            Log.i("testEnd", "stat two is ${Stats.statTwoValue}")
-            Log.i("testEnd", "stat three is ${Stats.statThreeValue}")
-            Log.i("testEnd", "stat four is ${Stats.statFourValue}")
+//            Log.i("testEnd", "stat one is ${Stats.statOneValue}")
+//            Log.i("testEnd", "stat two is ${Stats.statTwoValue}")
+//            Log.i("testEnd", "stat three is ${Stats.statThreeValue}")
+//            Log.i("testEnd", "stat four is ${Stats.statFourValue}")
 
-            //Todo: Timer not stopping + stat list shows pre-event numbers.
             if (hasAStatReachedNegativeValue()) {
                 cancelEventTimerCoroutine()
                 cancelEventTimerRunnable()
+
+                gameIsActive = false
                 Log.i("testEnd", "Stuff cancelled!")
             }
         }
@@ -209,8 +213,10 @@ class MainActivity : AppCompatActivity() {
     private fun startTimeIterationCoRoutine() {
         job = GlobalScope.launch(Dispatchers.Main) {
             Log.i("testRoutine", "Job launched w/ runnable and suspend function")
-            postEventTimerRunnable()
-            spawnTimeIteration()
+            if (gameIsActive) {
+                postEventTimerRunnable()
+                spawnTimeIteration()
+            }
         }
     }
 
@@ -222,13 +228,23 @@ class MainActivity : AppCompatActivity() {
         Log.i("testRoutine", "suspend function w/ event executed")
     }
 
-    private fun setStableTimeForEventTimer() { eventTimes.stableTime = System.currentTimeMillis() }
+    //Todo: Event hitting 0 passes as a negative value (thus stopping stuff) before it can be set to 0.
+    private fun rollEvent() {
+        Events.aggregatedRoll()
 
-    private fun postEventTimerRunnable() { handler.post(eventTimerRunnable) }
+        getAndAssignEventString()
+        setEventStringToTextView()
 
-    private fun cancelEventTimerRunnable() { handler.removeCallbacks(eventTimerRunnable) }
+        setLastTriggeredEventVariable()
+        changeStatValuesFromEvent()
+        setValuesToStatsTextViews()
 
-    private fun cancelEventTimerCoroutine() { job.cancel() }
+        changeStatValueFromEvent()
+
+        sendEventStatChangeToLiveDataViewModel()
+        checkAffectedStatAgainstZeroSum()
+        setStatTextViewToRedIfAtZeroAndBlackIfNot()
+    }
 
     private fun instantiateEventTimerRunnable() {
         eventTimerRunnable = Runnable {
@@ -249,26 +265,17 @@ class MainActivity : AppCompatActivity() {
         fun iteratedTime() : Long { return currentTime - stableTime}
     }
 
-    private fun rollEvent() {
-        Events.aggregatedRoll()
-
-        getAndAssignEventString()
-        setEventStringToTextView()
-
-        setLastTriggeredEventVariable()
-        changeStatValuesFromEvent()
-        setValuesToStatsTextViews()
-
-        changeStatValueFromEvent()
-
-        sendStatChangeToLiveDataViewModel()
-        checkAffectedStatAgainstZeroSum()
-        setStatTextViewToRedIfAtZeroAndBlackIfNot()
-    }
-
-    private fun sendStatChangeToLiveDataViewModel() {
+    private fun sendEventStatChangeToLiveDataViewModel() {
         gamesViewModel.setTypeOfEventTriggered(Events.rolledEvent)
     }
+
+    private fun setStableTimeForEventTimer() { eventTimes.stableTime = System.currentTimeMillis() }
+
+    private fun postEventTimerRunnable() { handler.post(eventTimerRunnable) }
+
+    private fun cancelEventTimerRunnable() { handler.removeCallbacks(eventTimerRunnable) }
+
+    private fun cancelEventTimerCoroutine() { job.cancel() }
 
     private fun getAndAssignEventString() {
         eventString = Events.eventString
