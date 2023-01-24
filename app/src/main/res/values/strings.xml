@@ -6,7 +6,7 @@
     <string name="stat_three">Family:</string>
     <string name="stat_four">Social:</string>
     <string name="two_item_concat">%1$s %2$s</string>
-    <string name="two_line_concat">%1$s\n%2$s </string>
+    <string name="two_line_concat">%1$s %2$s </string>
 
     <string name="zero_stat_warning">Warning! Your %1$s score has reached 0! Any further loss will mean DEATH BY PAIN.</string>
     <string name="end_game_string">Your %1$s score has suffered a critical blow!</string>

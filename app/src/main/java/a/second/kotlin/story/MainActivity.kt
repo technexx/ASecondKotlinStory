@@ -228,7 +228,6 @@ class MainActivity : AppCompatActivity() {
         Log.i("testRoutine", "suspend function w/ event executed")
     }
 
-    //Todo: Event hitting 0 passes as a negative value (thus stopping stuff) before it can be set to 0.
     private fun rollEvent() {
         Events.aggregatedRoll()
 
@@ -238,12 +237,12 @@ class MainActivity : AppCompatActivity() {
         setLastTriggeredEventVariable()
 
         changeStatValuesFromEvent()
-        setValuesToStatsTextViews()
-        changeStatValueTextViewsFromEvent()
 
         checkAffectedStatAgainstZeroSum()
         sendEventStatChangeToLiveDataViewModel()
 
+        setValuesToStatsTextViews()
+        changeStatValueTextViewsFromEvent()
         setStatTextViewToRedIfAtZeroAndBlackIfNot()
     }
 
@@ -365,7 +364,6 @@ class MainActivity : AppCompatActivity() {
             if (Stats.statOneValue <= 0) {
                 Stats.statOneValue = 0
                 Stats.statOneCritical = true
-                statOneTextView.text = "0"
                 statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsOneString()))
                 Log.i("testStat", "stat just hit zero and warning issued")
             }
@@ -383,7 +381,6 @@ class MainActivity : AppCompatActivity() {
             if (Stats.statTwoValue <= 0) {
                 Stats.statTwoValue = 0
                 Stats.statTwoCritical = true
-                statTwoTextView.text = "0"
                 statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsTwoString()))
             }
         }
@@ -400,7 +397,6 @@ class MainActivity : AppCompatActivity() {
             if (Stats.statThreeValue <= 0) {
                 Stats.statThreeValue = 0
                 Stats.statThreeCritical = true
-                statThreeTextView.text = "0"
                 statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsThreeString()))
             }
         }
@@ -417,7 +413,6 @@ class MainActivity : AppCompatActivity() {
             if (Stats.statFourValue <= 0) {
                 Stats.statFourValue = 0
                 Stats.statFourCritical = true
-                statFourTextView.text = "0"
                 statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsFourString()))
             }
         }
