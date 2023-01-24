@@ -137,19 +137,11 @@ class MainActivity : AppCompatActivity() {
         })
 
         gamesViewModel.mutableTypeOfEventTriggered.observe(this) {
-            Log.i("testEnd", "stat negative boolean is ${hasAStatReachedNegativeValue()}")
-
-//            Log.i("testEnd", "stat one is ${Stats.statOneValue}")
-//            Log.i("testEnd", "stat two is ${Stats.statTwoValue}")
-//            Log.i("testEnd", "stat three is ${Stats.statThreeValue}")
-//            Log.i("testEnd", "stat four is ${Stats.statFourValue}")
-
             if (hasAStatReachedNegativeValue()) {
                 cancelEventTimerCoroutine()
                 cancelEventTimerRunnable()
 
                 gameIsActive = false
-                Log.i("testEnd", "Stuff cancelled!")
             }
         }
     }
@@ -355,17 +347,14 @@ class MainActivity : AppCompatActivity() {
         if (Stats.statOneCritical) {
             if (Stats.statOneValue <= 0) {
                 statWarningTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsOneString()), getString(R.string.end_game_append_one))
-                Log.i("testStat", "critical stat hit and game over")
             }  else {
                 Stats.statOneCritical = false
-                Log.i("testStat", "crit stat revived and value is ${Stats.statOneValue}")
             }
         } else {
             if (Stats.statOneValue <= 0) {
                 Stats.statOneValue = 0
                 Stats.statOneCritical = true
                 statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsOneString()))
-                Log.i("testStat", "stat just hit zero and warning issued")
             }
         }
     }

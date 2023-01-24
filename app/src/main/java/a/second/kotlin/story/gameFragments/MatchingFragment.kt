@@ -41,9 +41,8 @@ class MatchingFragment : Fragment(), MatchingCustomAdapter.AdapterData {
     private var gameHasBeenWon = false
 
     override fun gameIsWon() {
-        gameHasBeenWon = true
-        setWinningTextView()
-        stopObjectAnimator()
+        endOfGameFunction(true)
+        pauseObjectAnimator()
     }
 
     override fun onAttach(context: Context) {
@@ -81,32 +80,26 @@ class MatchingFragment : Fragment(), MatchingCustomAdapter.AdapterData {
         objectAnimator.duration = 50000
 
         objectAnimator.doOnEnd {
-            sendEndGameLiveData()
-
-            if (!gameHasBeenWon) setLosingTextView() else setWinningTextView()
-            gameHasBeenWon = false
+            endOfGameFunction(false)
         }
     }
 
-    private fun sendEndGameLiveData() {
+    private fun endOfGameFunction(gameIsWon: Boolean) {
         gamesViewModel.gameBeingPlayed = ("Matching")
-        gamesViewModel.setIsAnswerCorrect(gameHasBeenWon)
+        gamesViewModel.setIsAnswerCorrect(gameIsWon)
+        setStateOfAnswerTextViewToEndGame(gameIsWon)
+    }
+
+    private fun setStateOfAnswerTextViewToEndGame(isGameWon: Boolean) {
+        if (isGameWon) stateOfAnswerTextView.text = getString(R.string.matching_game_won) else stateOfAnswerTextView.text = getString(R.string.matching_game_lost)
     }
 
     private fun startObjectAnimator() {
         objectAnimator.start()
     }
 
-    private fun stopObjectAnimator() {
-        objectAnimator.cancel()
-    }
-
-    private fun setWinningTextView() {
-        stateOfAnswerTextView.setText(R.string.matching_game_won)
-    }
-
-    private fun setLosingTextView() {
-        stateOfAnswerTextView.setText(R.string.matching_game_lost)
+    fun pauseObjectAnimator() {
+        objectAnimator.pause()
     }
 
     private fun populateFullCardLetterList() {

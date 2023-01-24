@@ -61,7 +61,7 @@ class Events(context: Context) {
         if (rolledBadOrGood == BAD_ROLL) eventValue = -randomValueForBadEvents() else eventValue = randomValueForGoodEvents()
     }
 
-    private fun categoryOfEvent() : Int { return (0..3).random() }
+    private fun categoryOfEvent() : Int { return (0..0).random() }
 
     private fun setGoodOrBadModifier() {
         val roll = (0..4).random()
