@@ -236,13 +236,14 @@ class MainActivity : AppCompatActivity() {
         setEventStringToTextView()
 
         setLastTriggeredEventVariable()
+
         changeStatValuesFromEvent()
         setValuesToStatsTextViews()
-
         changeStatValueTextViewsFromEvent()
 
-        sendEventStatChangeToLiveDataViewModel()
         checkAffectedStatAgainstZeroSum()
+        sendEventStatChangeToLiveDataViewModel()
+
         setStatTextViewToRedIfAtZeroAndBlackIfNot()
     }
 
@@ -322,6 +323,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun intToPlusOrMinusString(intValue: Int) : String {
+        var valueToReturn = "0"
+        if (intValue > 0) valueToReturn = "(+$intValue)" else valueToReturn = "($intValue)"
+        return valueToReturn
+    }
+
     private fun clearStatModificationTextViews() {
         statOneTextView.text = getString(R.string.two_item_concat, Stats.statOneValue.toString(), "")
         statTwoTextView.text = getString(R.string.two_item_concat, Stats.statTwoValue.toString(), "")
@@ -329,17 +336,11 @@ class MainActivity : AppCompatActivity() {
         statFourTextView.text = getString(R.string.two_item_concat, Stats.statFourValue.toString(), "")
     }
 
-    private fun intToPlusOrMinusString(intValue: Int) : String {
-        var valueToReturn = "0"
-        if (intValue > 0) valueToReturn = "(+$intValue)" else valueToReturn = "($intValue)"
-        return valueToReturn
-    }
-
     private fun setStatTextViewToRedIfAtZeroAndBlackIfNot() {
-        if (Stats.statOneValue <= 0) statOneHeader.setTextColor(Color.RED) else statOneTextView.setTextColor(Color.BLACK)
-        if (Stats.statTwoValue <= 0) statTwoHeader.setTextColor(Color.RED) else statTwoTextView.setTextColor(Color.BLACK)
-        if (Stats.statThreeValue <= 0) statThreeHeader.setTextColor(Color.RED) else statThreeTextView.setTextColor(Color.BLACK)
-        if (Stats.statFourValue <= 0) statFourHeader.setTextColor(Color.RED) else statFourTextView.setTextColor(Color.BLACK)
+        if (Stats.statOneValue <= 0) statOneHeader.setTextColor(Color.RED) else statOneHeader.setTextColor(Color.BLACK)
+        if (Stats.statTwoValue <= 0) statTwoHeader.setTextColor(Color.RED) else statTwoHeader.setTextColor(Color.BLACK)
+        if (Stats.statThreeValue <= 0) statThreeHeader.setTextColor(Color.RED) else statThreeHeader.setTextColor(Color.BLACK)
+        if (Stats.statFourValue <= 0) statFourHeader.setTextColor(Color.RED) else statFourHeader.setTextColor(Color.BLACK)
     }
 
     private fun checkAffectedStatAgainstZeroSum() {
@@ -355,8 +356,10 @@ class MainActivity : AppCompatActivity() {
         if (Stats.statOneCritical) {
             if (Stats.statOneValue <= 0) {
                 statWarningTextView.text = getString(R.string.two_line_concat, getString(R.string.end_game_string, Stats.statsOneString()), getString(R.string.end_game_append_one))
+                Log.i("testStat", "critical stat hit and game over")
             }  else {
                 Stats.statOneCritical = false
+                Log.i("testStat", "crit stat revived and value is ${Stats.statOneValue}")
             }
         } else {
             if (Stats.statOneValue <= 0) {
@@ -364,6 +367,7 @@ class MainActivity : AppCompatActivity() {
                 Stats.statOneCritical = true
                 statOneTextView.text = "0"
                 statWarningTextView.text = (getString(R.string.zero_stat_warning, Stats.statsOneString()))
+                Log.i("testStat", "stat just hit zero and warning issued")
             }
         }
     }
