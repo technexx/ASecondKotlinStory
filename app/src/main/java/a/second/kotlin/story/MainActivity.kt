@@ -106,9 +106,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //Todo: We only have observer set on boolean mutable!
     private fun setViewModelObserver() {
         gamesViewModel.mutableCorrectAnswerBoolean.observe(this, Observer {
+            Log.i("testEnd", "game observer called")
 
             val answerState = gamesViewModel.getIsAnswerCorrect()
             val gameBeingPlayed = gamesViewModel.getWhichIsGameBeingPlayed()
@@ -125,25 +125,33 @@ class MainActivity : AppCompatActivity() {
 
             if (hasAStatReachedNegativeValue()) {
                 cancelEventTimerCoroutine()
-                cancelHandlerRunnables()
+                cancelEventTimerRunnable()
+            } else {
+                handler.postDelayed( {
+                    switchFragmentForNextGame(getFragmentBasedOnRoll())
+                }, 3000)
             }
-
-            handler.postDelayed( {
-                switchFragmentForNextGame(getFragmentBasedOnRoll())
-            }, 3000)
         })
 
         gamesViewModel.mutableTypeOfEventTriggered.observe(this) {
-            Log.i("testStat", "type of event observer called")
+            Log.i("testEnd", "stat negative boolean is ${hasAStatReachedNegativeValue()}")
+
+            Log.i("testEnd", "stat one is ${Stats.statOneValue}")
+            Log.i("testEnd", "stat two is ${Stats.statTwoValue}")
+            Log.i("testEnd", "stat three is ${Stats.statThreeValue}")
+            Log.i("testEnd", "stat four is ${Stats.statFourValue}")
+
+            //Todo: Timer not stopping + stat list shows pre-event numbers.
+            if (hasAStatReachedNegativeValue()) {
+                cancelEventTimerCoroutine()
+                cancelEventTimerRunnable()
+                Log.i("testEnd", "Stuff cancelled!")
+            }
         }
     }
 
-    private fun cancelEventTimerCoroutine() { job.cancel() }
-
-    private fun cancelHandlerRunnables() { handler.removeCallbacks(eventTimerRunnable) }
-
     private fun hasAStatReachedNegativeValue() : Boolean {
-        return Stats.statOneValue < 0 || Stats.statTwoValue < 0 || Stats.statThreeValue < 0 || Stats.statFourValue < 4
+        return Stats.statOneValue < 0 || Stats.statTwoValue < 0 || Stats.statThreeValue < 0 || Stats.statFourValue < 0
     }
 
     private fun attachInitialGameFragment() {
@@ -208,19 +216,19 @@ class MainActivity : AppCompatActivity() {
 
     private suspend fun spawnTimeIteration() {
         delay(randomMillisDelayForEvent)
-        eventActions()
-        Log.i("testRoutine", "suspend function w/ event executed")
-    }
-
-    private fun eventActions() {
         rollEvent()
         setRandomMillisDelayForEventTrigger()
         startTimeIterationCoRoutine()
+        Log.i("testRoutine", "suspend function w/ event executed")
     }
 
     private fun setStableTimeForEventTimer() { eventTimes.stableTime = System.currentTimeMillis() }
 
     private fun postEventTimerRunnable() { handler.post(eventTimerRunnable) }
+
+    private fun cancelEventTimerRunnable() { handler.removeCallbacks(eventTimerRunnable) }
+
+    private fun cancelEventTimerCoroutine() { job.cancel() }
 
     private fun instantiateEventTimerRunnable() {
         eventTimerRunnable = Runnable {
@@ -244,19 +252,18 @@ class MainActivity : AppCompatActivity() {
     private fun rollEvent() {
         Events.aggregatedRoll()
 
-        sendStatChangeToLiveDataViewModel()
-
         getAndAssignEventString()
         setEventStringToTextView()
 
         setLastTriggeredEventVariable()
-        setValuesToStatsVariables()
+        changeStatValuesFromEvent()
         setValuesToStatsTextViews()
 
         changeStatValueFromEvent()
 
-        setStatTextViewToRedIfAtZeroAndBlackIfNot()
+        sendStatChangeToLiveDataViewModel()
         checkAffectedStatAgainstZeroSum()
+        setStatTextViewToRedIfAtZeroAndBlackIfNot()
     }
 
     private fun sendStatChangeToLiveDataViewModel() {
@@ -280,7 +287,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setValuesToStatsVariables() {
+    private fun changeStatValuesFromEvent() {
         when (Events.rolledEvent) {
             JOB_EVENT -> Stats.statOneValue += Events.eventValue
             FINANCES_EVENT -> Stats.statTwoValue += Events.eventValue
