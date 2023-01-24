@@ -239,7 +239,7 @@ class MainActivity : AppCompatActivity() {
         changeStatValuesFromEvent()
         setValuesToStatsTextViews()
 
-        changeStatValueFromEvent()
+        changeStatValueTextViewsFromEvent()
 
         sendEventStatChangeToLiveDataViewModel()
         checkAffectedStatAgainstZeroSum()
@@ -310,7 +310,7 @@ class MainActivity : AppCompatActivity() {
         statFourTextView.text = Stats.statFourValue.toString()
     }
 
-    private fun changeStatValueFromEvent() {
+    private fun changeStatValueTextViewsFromEvent() {
         clearStatModificationTextViews()
 
         val valueModifier = Events.eventValue
