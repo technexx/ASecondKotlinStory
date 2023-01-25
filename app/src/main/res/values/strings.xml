@@ -34,7 +34,7 @@
     <string name="sums_target_textView">Target is: %1$s</string>
 
     <string-array name="job_events_bad">
-        <item>Your boss hates you and lets you know it. Loudly.</item>
+        <item>Your boss hates you and lets you know it.</item>
         <item>Todd from Accounting pees in your coffee again.</item>
         <item>The office receptionist forgets your name. You\'ve both been there for 32 years.</item>
         <item>One of your clients is unhappy. He\'s a wolf, and you\'re the fattest one there.</item>
@@ -51,7 +51,7 @@
         <item>Your desk is on fire.</item>
         <item>Your hair is on fire.</item>
         <item>You\'ve been demoted. You find out from a Snapple bottle cap.</item>
-        <item>The whole office got together and build a life-sized effigy of you to laugh at when you\'re not around.</item>
+        <item>The whole office got together and built a life-sized effigy of you to laugh at when you\'re not around.</item>
         <item>Your salary has been inversely tied to inflation.</item>
         <item>You are assigned the role of foot stool at the next office party.</item>
         <item>Your last zoom meeting ended in vomiting.</item>

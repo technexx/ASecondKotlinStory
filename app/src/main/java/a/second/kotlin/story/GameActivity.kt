@@ -20,8 +20,8 @@ import kotlinx.coroutines.launch
 
 //Todo: Remember to SUSPEND and not BLOCK if using UI thread. runBlocking is a default CoroutineScope.
 
-//Todo: Delay handler when transitioning fragments will launch fragment post-end-game
-//Todo: Critical warning doesn't get removed if stat is revived.
+//Todo: Delay handler when transitioning fragments will launch fragment post-end-game.
+//Todo: Need to also disable/unfocus fragment when event causes loss.
 
 @OptIn(DelicateCoroutinesApi::class)
 class GameActivity : AppCompatActivity() {
@@ -130,10 +130,12 @@ class GameActivity : AppCompatActivity() {
             clearStatModificationTextViews()
             changeStatTextViewFromGame(gameBeingPlayed, statChangeValue)
 
+            //Todo: Use "end game" conditional inside post-delay handler to avoid switching fragments
             if (hasAStatReachedNegativeValue()) {
                 cancelEventTimerCoroutine()
                 cancelEventTimerRunnable()
                 pauseObjectAnimatorOfCurrentFragment()
+                disableFragmentClicks()
                 gameIsActive = false
             } else {
                 handler.postDelayed( {
@@ -147,13 +149,23 @@ class GameActivity : AppCompatActivity() {
                 cancelEventTimerCoroutine()
                 cancelEventTimerRunnable()
                 pauseObjectAnimatorOfCurrentFragment()
+                disableFragmentClicks()
                 gameIsActive = false
+
             }
         }
     }
 
     private fun hasAStatReachedNegativeValue() : Boolean {
         return Stats.statOneValue < 0 || Stats.statTwoValue < 0 || Stats.statThreeValue < 0 || Stats.statFourValue < 0
+    }
+
+    private fun disableFragmentClicks() {
+        when (lastLoadedFragmentId) {
+            0 -> mathSumsFragment.disableAdapterClicks()
+            1 -> hangmanFragment.disableAdapterClicks()
+            3 -> matchingFragment.disableAdapterClicks()
+        }
     }
 
     private fun attachInitialGameFragment() {
@@ -254,6 +266,7 @@ class GameActivity : AppCompatActivity() {
 
         changeStatValuesFromEvent()
 
+        removeCriticalStatWarning()
         checkAffectedStatAgainstZeroSum()
         sendEventStatChangeToLiveDataViewModel()
 
@@ -366,6 +379,8 @@ class GameActivity : AppCompatActivity() {
             SOCIAL_EVENT -> statFourZeroCheckAndLogic()
         }
     }
+
+    private fun removeCriticalStatWarning() { statWarningTextView.text = "" }
 
     private fun statOneZeroCheckAndLogic() {
         if (Stats.statOneCritical) {

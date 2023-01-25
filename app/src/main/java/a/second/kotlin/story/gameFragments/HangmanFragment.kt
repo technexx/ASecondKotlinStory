@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class HangmanFragment : Fragment() {
 
+    fun disableAdapterClicks() { keyboardGridView.isEnabled = false }
+
     private lateinit var HangmanData : Hangman
     private lateinit var GallowsData : Hangman.GallowsCanvas
     private val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
@@ -60,8 +62,6 @@ class HangmanFragment : Fragment() {
         normalWordList = convertStringListToArrayList(getString(R.string.normal_words_string).split(" "))
         hardWordStringList = convertStringListToArrayList(getString(R.string.hard_words_string).split(" "))
 
-//        Log.i("testFrag", "onCreate called in Hangman")
-
         instantiatePuzzleRecyclerView()
         instantiateKeyboardGridViewAndAdapter()
         populateFullAlphabetLetterList()
@@ -74,8 +74,6 @@ class HangmanFragment : Fragment() {
         refreshEntirePuzzleLetterAdapter()
 
         sendGameBeingPlayedToViewModel()
-
-        Log.i("testFrag", "list of letters guessed are $listOfLettersGuessed")
 
         keyboardGridView.setOnItemClickListener { parent, view, position, id ->
             val letterClicked = HangmanData.alphabetStringArray()[position]
@@ -222,8 +220,6 @@ class HangmanFragment : Fragment() {
     private fun sendGameBeingPlayedToViewModel() {
         gamesViewModel.gameBeingPlayed = ("Hangman")
     }
-
-    /////////////////////////////////////////////////////////////////////////////////////
 
     private fun instantiateKeyboardGridViewAndAdapter() {
         keyboardGridView = rootView.findViewById(R.id.hangman_keyboard_gridView)
