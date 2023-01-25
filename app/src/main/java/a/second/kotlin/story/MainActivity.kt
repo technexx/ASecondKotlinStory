@@ -20,8 +20,6 @@ import kotlinx.coroutines.launch
 
 //Todo: Remember to SUSPEND and not BLOCK if using UI thread. runBlocking is a default CoroutineScope.
 
-//Todo: Math problems always have same answer + prompts for 6th question even after all 5 are answered.
-
 @OptIn(DelicateCoroutinesApi::class)
 class MainActivity : AppCompatActivity() {
 
@@ -116,8 +114,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setViewModelObserver() {
         gamesViewModel.mutableCorrectAnswerBoolean.observe(this, Observer {
-            Log.i("testEnd", "game observer called")
-
             val answerState = gamesViewModel.getIsAnswerCorrect()
             val gameBeingPlayed = gamesViewModel.getWhichIsGameBeingPlayed()
             var statChangeValue = statChangeValueForGame()

@@ -72,6 +72,15 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
         return rootView
     }
 
+    private fun setSubmitButtonListener() {
+        submitButton.setOnClickListener {
+            iterateAdapterAnswerCountAndCallNotifyIfCorrect()
+            setStateOfAnswerTextViewToProblemAnswered()
+            Log.i("testCount", "count is ${answerAdapter.correctAnswerCount}")
+            if (answerAdapter.correctAnswerCount < 5) showNextProblemAndSetEditTextToNullIfAnswerIsCorrect()
+        }
+    }
+
     private fun setTypeOfProblem() {
         when (problemRoll()) {
             0 -> MathProblemsData.assignAdditionInputs()
@@ -81,21 +90,7 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
         }
     }
 
-    private fun problemRoll() : Int {
-        return (0..3).random()
-    }
-
-    private fun setInputsToTextView() {
-        problemTextView.text = MathProblemsData.createProblemString()
-    }
-
-    private fun setSubmitButtonListener() {
-        submitButton.setOnClickListener {
-            iterateAdapterAnswerCountAndCallNotifyIfCorrect()
-            setStateOfAnswerTextViewToProblemAnswered()
-            showNextProblemAndSetEditTextToNullIfAnswerIsCorrect()
-        }
-    }
+    private fun problemRoll() : Int { return (0..3).random() }
 
     private fun showNextProblemAndSetEditTextToNullIfAnswerIsCorrect() {
         if (doesUserInputMatchAnswer()) {
@@ -104,6 +99,8 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
             answerEditText.text = null
         }
     }
+
+    private fun setInputsToTextView() { problemTextView.text = MathProblemsData.createProblemString() }
 
     private fun iterateAdapterAnswerCountAndCallNotifyIfCorrect() { if (doesUserInputMatchAnswer())
         answerAdapter.iterateCorrectAnswerCount()
@@ -118,9 +115,11 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
         if (isGameWon) mathAnswerStateTextView.text = getString(R.string.math_problems_game_won) else mathAnswerStateTextView.text = getString(R.string.math_problems_game_lost)
     }
 
-    private fun doesUserInputMatchAnswer() : Boolean {
-        return answerEditText.text.toString() == MathProblemsData.answer.toString()
-    }
+    private fun doesUserInputMatchAnswer() : Boolean { return answerEditText.text.toString() == MathProblemsData.answer.toString() }
+
+    private fun disableAnswerEditText() { answerEditText.isEnabled = false }
+
+    private fun disableSubmitButton() { submitButton.isEnabled = false }
 
     private fun instantiateRecyclerViewAndAdapter() {
         answerRecyclerView = rootView.findViewById(R.id.math_problems_answers_recyclerView)
@@ -132,7 +131,7 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
     }
 
     private fun answerCircleDivider() : DividerItemDecoration {
-        var decoration = DividerItemDecoration(requireContext(), LinearLayoutManager.HORIZONTAL)
+        val decoration = DividerItemDecoration(requireContext(), LinearLayoutManager.HORIZONTAL)
         decoration.setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.horizontal_divider_blank)!!)
         return decoration
     }
@@ -146,16 +145,12 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
     private fun instantiateObjectAnimator() {
         objectAnimator = ObjectAnimator.ofInt(timerProgressBar, "progress", progressValue, 0)
         objectAnimator.interpolator = LinearInterpolator()
-        objectAnimator.duration = 15000
+        objectAnimator.duration = 30000
     }
 
-    private fun startObjectAnimator() {
-        objectAnimator.start()
-    }
+    private fun startObjectAnimator() { objectAnimator.start() }
 
-    fun pauseObjectAnimator() {
-        objectAnimator.pause()
-    }
+    fun pauseObjectAnimator() { objectAnimator.pause() }
 
     //Cancelling animator occurs when all sums are matched before animation duration ends.
     private fun setEndOfObjectAnimatorListener() {
@@ -168,6 +163,9 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
         gamesViewModel.gameBeingPlayed = ("MathProblems")
         gamesViewModel.setIsAnswerCorrect(gameIsWon)
         setStateOfAnswerTextViewToEndGame(gameIsWon)
+
+        disableAnswerEditText()
+        disableSubmitButton()
     }
 }
 
@@ -176,7 +174,7 @@ class AnswerAdapter(val adapterData: AdapterData) : RecyclerView.Adapter<AnswerA
         fun gameIsWon()
     }
 
-    private var correctAnswerCount = 0
+    var correctAnswerCount = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerCountHolder {
         val letterItem = LayoutInflater.from(parent.context).inflate(R.layout.math_problems_adapter_views, parent, false)
