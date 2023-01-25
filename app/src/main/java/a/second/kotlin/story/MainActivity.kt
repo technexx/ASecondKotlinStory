@@ -20,7 +20,6 @@ import kotlinx.coroutines.launch
 
 //Todo: Remember to SUSPEND and not BLOCK if using UI thread. runBlocking is a default CoroutineScope.
 
-//Todo: Stop object animator of active fragment when stats < 0
 //Todo: Math problems always have same answer + prompts for 6th question even after all 5 are answered.
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -135,6 +134,7 @@ class MainActivity : AppCompatActivity() {
             if (hasAStatReachedNegativeValue()) {
                 cancelEventTimerCoroutine()
                 cancelEventTimerRunnable()
+                pauseObjectAnimatorOfCurrentFragment()
                 gameIsActive = false
             } else {
                 handler.postDelayed( {
@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
             if (hasAStatReachedNegativeValue()) {
                 cancelEventTimerCoroutine()
                 cancelEventTimerRunnable()
-
+                pauseObjectAnimatorOfCurrentFragment()
                 gameIsActive = false
             }
         }
@@ -194,6 +194,14 @@ class MainActivity : AppCompatActivity() {
             .setCustomAnimations(R.anim.fade_in_animation, R.anim.fade_out_animation)
             .replace(R.id.game_frame_layout, fragment)
             .commit()
+    }
+
+    private fun pauseObjectAnimatorOfCurrentFragment() {
+        when (lastLoadedFragmentId) {
+            0 -> mathSumsFragment.pauseObjectAnimator()
+            1 -> mathProblemsFragment.pauseObjectAnimator()
+            3 -> matchingFragment.pauseObjectAnimator()
+        }
     }
 
     private fun changeStatValueFromGame(game: String?, value: Int) {
@@ -423,17 +431,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-//    private fun pauseObjectAnimatorOfCurrentFragment() {
-//        when (lastLoadedFragmentId) {
-//            1 ->
-//        }
-//    }
-
-//    if (roll == 0) fragmentToReturn = MathSumsFragment()
-//    if (roll == 1) fragmentToReturn = MathProblemsFragment()
-//    if (roll == 2) fragmentToReturn = HangmanFragment()
-//    if (roll == 3) fragmentToReturn = MatchingFragment()
 
     private fun setDefaultStatHeadersOnTextViews(nameOne: String = getString(R.string.stat_one), nameTwo: String = getString(R.string.stat_two), nameThree: String = getString(R.string.stat_three), nameFour: String = getString(R.string.stat_four)) {
         statOneHeader.text = nameOne
