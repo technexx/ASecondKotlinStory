@@ -33,13 +33,14 @@ class Hangman {
         }
 
         override fun getItemCount(): Int {
-            Log.i("testHang", "alphabetArray size return is ${alphabetArray.size}")
             return alphabetArray.size
         }
 
         class LetterHolder(itemView : View) : ViewHolder(itemView) {
             val letterView : TextView = itemView.findViewById(R.id.hangman_puzzle_letter)
         }
+
+        fun clearPuzzleLetterList() { alphabetArray.clear() }
     }
 
     fun alphabetStringArray(): List<String>{
@@ -71,13 +72,7 @@ class Hangman {
             mPaint.strokeWidth = (pxToDp(6))
         }
 
-        fun setPaintTextColor() {
-            mPaintText.textSize = pxToDp(23)
-            mPaintText.color = Color.BLACK
-        }
-
         fun iterateProgress() { progress++ }
-        fun resetProgress() { progress = 0 }
 
         fun drawGallows() {
             setPaintColor()

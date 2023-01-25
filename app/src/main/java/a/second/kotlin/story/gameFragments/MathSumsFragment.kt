@@ -49,10 +49,6 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
     private lateinit var targetAnswerTextView : TextView
     private lateinit var stateOfAnswerTextView : TextView
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -141,7 +137,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
         objectAnimator.start()
     }
 
-    private fun pauseObjectAnimator() {
+    fun pauseObjectAnimator() {
         objectAnimator.pause()
     }
 
@@ -202,6 +198,8 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
         fun gameIsWon()
     }
 
+    fun clearCardList() { fullCardIntegerList.clear() }
+
     fun updateIntegerTarget(target: Int) { currentIntegerTarget = target }
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
@@ -238,12 +236,9 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
                     zeroOutTotalCardsSelectedValue()
                     clearTotalSelectedCardsPositionList()
 
-//                    Log.i("testAdd", "matched position list is size ${cardsMatchedPositionsList.size}")
-
                     if (cardsMatchedPositionsList.size < 16) {
                         adapterData.targetNumberHit(cardsMatchedValuesList)
                     } else {
-                        Log.i("testAdd", "game won!")
                         adapterData.gameIsWon()
                     }
 
@@ -289,7 +284,6 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
         selectedCardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))
         selectedCardView.isSelected = false
     }
-
 
     private fun changeBackgroundColorOfMatchedCards(cardView: CardView) {
         cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.light_teal))

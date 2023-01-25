@@ -19,10 +19,17 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
 
 //Todo: Remember to SUSPEND and not BLOCK if using UI thread. runBlocking is a default CoroutineScope.
+
 //Todo: Stop object animator of active fragment when stats < 0
+//Todo: Math problems always have same answer + prompts for 6th question even after all 5 are answered.
 
 @OptIn(DelicateCoroutinesApi::class)
 class MainActivity : AppCompatActivity() {
+
+    var mathSumsFragment : MathSumsFragment = MathSumsFragment()
+    var mathProblemsFragment : MathProblemsFragment = MathProblemsFragment()
+    var hangmanFragment : HangmanFragment = HangmanFragment()
+    var matchingFragment : MatchingFragment = MatchingFragment()
 
     val gamesViewModel : ItemViewModel.GamesViewModel by viewModels()
 
@@ -59,7 +66,7 @@ class MainActivity : AppCompatActivity() {
     private var SOCIAL_EVENT = 3
     private var LAST_EVENT = -1
 
-    private var previousFragmentId = 1
+    private var lastLoadedFragmentId = -1
 
     private var gameIsActive = true
 
@@ -160,16 +167,26 @@ class MainActivity : AppCompatActivity() {
         var fragmentToReturn : Fragment? = null
 
         var roll = (0..3).random()
+        while (roll == lastLoadedFragmentId) { roll = (0..3).random() }
+        lastLoadedFragmentId = roll
 
-        while (roll == previousFragmentId) { roll = (0..3).random() }
-        previousFragmentId = roll
+        reInstantiateFragment(roll)
 
-        if (roll == 0) fragmentToReturn = MathSumsFragment()
-        if (roll == 1) fragmentToReturn = MathProblemsFragment()
-        if (roll == 2) fragmentToReturn = HangmanFragment()
-        if (roll == 3) fragmentToReturn = MatchingFragment()
+        if (roll == 0) fragmentToReturn = mathSumsFragment
+        if (roll == 1) fragmentToReturn = mathProblemsFragment
+        if (roll == 2) fragmentToReturn = hangmanFragment
+        if (roll == 3) fragmentToReturn = matchingFragment
 
         return fragmentToReturn!!
+    }
+
+    private fun reInstantiateFragment(fragmentRoll : Int) {
+        when (fragmentRoll)  {
+            0 -> mathSumsFragment = MathSumsFragment()
+            1 -> mathProblemsFragment = MathProblemsFragment()
+            2 -> hangmanFragment = HangmanFragment()
+            3 -> matchingFragment = MatchingFragment()
+        }
     }
 
     private fun switchFragmentForNextGame(fragment: Fragment) {
@@ -406,6 +423,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+//    private fun pauseObjectAnimatorOfCurrentFragment() {
+//        when (lastLoadedFragmentId) {
+//            1 ->
+//        }
+//    }
+
+//    if (roll == 0) fragmentToReturn = MathSumsFragment()
+//    if (roll == 1) fragmentToReturn = MathProblemsFragment()
+//    if (roll == 2) fragmentToReturn = HangmanFragment()
+//    if (roll == 3) fragmentToReturn = MatchingFragment()
 
     private fun setDefaultStatHeadersOnTextViews(nameOne: String = getString(R.string.stat_one), nameTwo: String = getString(R.string.stat_two), nameThree: String = getString(R.string.stat_three), nameFour: String = getString(R.string.stat_four)) {
         statOneHeader.text = nameOne

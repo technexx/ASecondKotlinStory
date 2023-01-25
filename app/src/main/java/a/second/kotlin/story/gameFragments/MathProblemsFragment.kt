@@ -48,10 +48,6 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
     private lateinit var answerRecyclerView : RecyclerView
     private lateinit var answerAdapter : AnswerAdapter
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -157,7 +153,7 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
         objectAnimator.start()
     }
 
-    private fun pauseObjectAnimator() {
+    fun pauseObjectAnimator() {
         objectAnimator.pause()
     }
 

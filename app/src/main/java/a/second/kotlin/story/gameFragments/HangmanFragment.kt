@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class HangmanFragment : Fragment() {
 
-    //Todo: Use ViewModel to change stats on win/loss.
     private lateinit var HangmanData : Hangman
     private lateinit var GallowsData : Hangman.GallowsCanvas
     private val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
@@ -47,10 +46,6 @@ class HangmanFragment : Fragment() {
 
     private lateinit var hangmanStateOfAnswerTextView : TextView
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -65,6 +60,7 @@ class HangmanFragment : Fragment() {
         normalWordList = convertStringListToArrayList(getString(R.string.normal_words_string).split(" "))
         hardWordStringList = convertStringListToArrayList(getString(R.string.hard_words_string).split(" "))
 
+//        Log.i("testFrag", "onCreate called in Hangman")
 
         instantiatePuzzleRecyclerView()
         instantiateKeyboardGridViewAndAdapter()
@@ -78,6 +74,8 @@ class HangmanFragment : Fragment() {
         refreshEntirePuzzleLetterAdapter()
 
         sendGameBeingPlayedToViewModel()
+
+        Log.i("testFrag", "list of letters guessed are $listOfLettersGuessed")
 
         keyboardGridView.setOnItemClickListener { parent, view, position, id ->
             val letterClicked = HangmanData.alphabetStringArray()[position]
@@ -111,7 +109,6 @@ class HangmanFragment : Fragment() {
 
     private fun populatePuzzleSelectedWordList(array: ArrayList<String>) {
         selectedWordLetterListForPuzzle.addAll(array)
-        Log.i("testSelect", "selected word list after copied to array is " + selectedWordLetterListForPuzzle)
     }
 
     private fun randomWordAsArrayListOfLetters() : ArrayList<String> {
@@ -192,10 +189,6 @@ class HangmanFragment : Fragment() {
         }
     }
 
-    private fun refreshSinglePositionOfPuzzleLetterAdapter(position : Int) {
-        puzzleAdapter.notifyItemChanged(position)
-    }
-
     private fun refreshEntirePuzzleLetterAdapter() {
         puzzleAdapter.notifyDataSetChanged()
     }
@@ -253,11 +246,5 @@ class HangmanFragment : Fragment() {
         var decoration = DividerItemDecoration(requireContext(), LinearLayoutManager.HORIZONTAL)
         decoration.setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.horizontal_divider_blank)!!)
         return decoration
-    }
-
-    private fun letterListLogs() {
-        Log.i("testList", "total list is $fullAlphabetLetterList")
-        Log.i("testList", "unSelected list is $listOfLetterNotYetGuessed")
-        Log.i("testList", "selected list is $listOfLettersGuessed")
     }
 }

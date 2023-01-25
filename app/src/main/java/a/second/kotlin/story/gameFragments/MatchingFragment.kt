@@ -45,10 +45,6 @@ class MatchingFragment : Fragment(), MatchingCustomAdapter.AdapterData {
         pauseObjectAnimator()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -77,7 +73,7 @@ class MatchingFragment : Fragment(), MatchingCustomAdapter.AdapterData {
     private fun instantiateObjectAnimator() {
         objectAnimator = ObjectAnimator.ofInt(timerProgressBar, "progress", progressValue, 0)
         objectAnimator.interpolator = LinearInterpolator()
-        objectAnimator.duration = 50000
+        objectAnimator.duration = 5000
 
         objectAnimator.doOnEnd {
             endOfGameFunction(false)
@@ -131,11 +127,16 @@ class MatchingFragment : Fragment(), MatchingCustomAdapter.AdapterData {
 class MatchingCustomAdapter (context: Context, resource: Int, val fullCardValueList: ArrayList<String>, val adapterData: AdapterData
 ): ArrayAdapter<String>(context, resource) {
 
+    fun clearCardList() {
+        fullCardValueList.clear()
+    }
+
     interface AdapterData {
         fun gameIsWon()
     }
 
     class ObjectHolder() {
+
         lateinit var cardViewOne : CardView
         lateinit var cardViewTwo : CardView
         lateinit var cardTextViewOne : TextView
@@ -161,6 +162,7 @@ class MatchingCustomAdapter (context: Context, resource: Int, val fullCardValueL
     private var holder = ObjectHolder()
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
+
         val inflater = LayoutInflater.from(context)
         val rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
 
@@ -222,16 +224,9 @@ class MatchingCustomAdapter (context: Context, resource: Int, val fullCardValueL
     }
 
     override fun getCount(): Int {
+        Log.i("testFrag", "matching adapter list size is ${fullCardValueList.size}")
+
         return fullCardValueList.size
-    }
-
-    fun setGameIsOverToTrue() {
-        holder.gameIsOver = true
-    }
-
-    fun resetBoard() {
-        holder = ObjectHolder()
-        notifyDataSetChanged()
     }
 
     private fun populateCardHolderListsWithSelection(position: Int) {
