@@ -26,11 +26,11 @@
     <ProgressBar
         android:id="@+id/matching_cards_timer_progress_bar"
         android:layout_width="300dp"
-        android:layout_height="8dp"
+        android:layout_height="4dp"
         app:layout_constraintTop_toBottomOf="@id/matching_cards_gridView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
         android:progressBackgroundTint="@color/teal_200"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal">
     </ProgressBar>
@@ -42,7 +42,8 @@
         app:layout_constraintTop_toBottomOf="@id/matching_gridView_guideline"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center_horizontal">
     </TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

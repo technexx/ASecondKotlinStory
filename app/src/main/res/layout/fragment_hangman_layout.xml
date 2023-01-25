@@ -28,6 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/hangman_canvas"
         app:layout_constraintBottom_toTopOf="@id/hangman_puzzle_recyclerView"
+        android:gravity="center_horizontal"
         android:textColor="@color/black">
     </TextView>
 

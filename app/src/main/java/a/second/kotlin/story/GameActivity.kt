@@ -20,6 +20,9 @@ import kotlinx.coroutines.launch
 
 //Todo: Remember to SUSPEND and not BLOCK if using UI thread. runBlocking is a default CoroutineScope.
 
+//Todo: Delay handler when transitioning fragments will launch fragment post-end-game
+//Todo: Critical warning doesn't get removed if stat is revived.
+
 @OptIn(DelicateCoroutinesApi::class)
 class GameActivity : AppCompatActivity() {
 
