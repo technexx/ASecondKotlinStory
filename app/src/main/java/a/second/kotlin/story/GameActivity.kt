@@ -49,7 +49,6 @@ class GameActivity : AppCompatActivity() {
     private lateinit var statFourTextView : TextView
 
     private lateinit var existenceTimerTextView : TextView
-    private lateinit var startStopButton : TextView
     private lateinit var eventTextView : TextView
     private lateinit var statWarningTextView : TextView
 
@@ -102,13 +101,15 @@ class GameActivity : AppCompatActivity() {
 
         instantiateEventTimerRunnable()
 
-        startStopButton.setOnClickListener {
-            setRandomMillisDelayForEventTrigger()
-            setValuesToStatsTextViews()
+        newGameFunctions()
+    }
 
-            setStableTimeForEventTimer()
-            startTimeIterationCoRoutine()
-        }
+    private fun newGameFunctions() {
+        setRandomMillisDelayForEventTrigger()
+        setValuesToStatsTextViews()
+
+        setStableTimeForEventTimer()
+        startTimeIterationCoRoutine()
     }
 
     private fun setViewModelObserver() {
