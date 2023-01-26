@@ -20,8 +20,7 @@ import kotlinx.coroutines.launch
 
 //Todo: Remember to SUSPEND and not BLOCK if using UI thread. runBlocking is a default CoroutineScope.
 
-//Todo: Delay handler when transitioning fragments will launch fragment post-end-game.
-//Todo: Need to also disable/unfocus fragment when event causes loss.
+//Todo: Fragment disappeared and kicked out to Main after an event loss
 
 @OptIn(DelicateCoroutinesApi::class)
 class GameActivity : AppCompatActivity() {
@@ -163,7 +162,7 @@ class GameActivity : AppCompatActivity() {
     private fun disableFragmentClicks() {
         when (lastLoadedFragmentId) {
             0 -> mathSumsFragment.disableAdapterClicks()
-            1 -> hangmanFragment.disableAdapterClicks()
+            2 -> hangmanFragment.disableAdapterClicks()
             3 -> matchingFragment.disableAdapterClicks()
         }
     }

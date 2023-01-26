@@ -5,6 +5,7 @@ import a.second.kotlin.story.R
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Bundle
+import android.service.autofill.FieldClassification.Match
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -43,7 +44,7 @@ class MatchingFragment : Fragment(), MatchingCustomAdapter.AdapterData {
         pauseObjectAnimator()
     }
 
-    fun disableAdapterClicks() { matchingGridView.isEnabled = false }
+    fun disableAdapterClicks() { MatchingCustomAdapter.disableClicksIfGameOver() }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -73,7 +74,7 @@ class MatchingFragment : Fragment(), MatchingCustomAdapter.AdapterData {
     private fun instantiateObjectAnimator() {
         objectAnimator = ObjectAnimator.ofInt(timerProgressBar, "progress", progressValue, 0)
         objectAnimator.interpolator = LinearInterpolator()
-        objectAnimator.duration = 15000
+        objectAnimator.duration = 50000
 
         objectAnimator.doOnEnd {
             endOfGameFunction(false)
@@ -116,6 +117,9 @@ class MatchingFragment : Fragment(), MatchingCustomAdapter.AdapterData {
         matchingGridView.numColumns = 4
 
         matchingGridView.adapter = MatchingCustomAdapter
+
+        matchingGridView.isEnabled = false
+
     }
 
     private fun instantiateXmlViews() {
@@ -146,22 +150,23 @@ class MatchingCustomAdapter (context: Context, resource: Int, val fullCardValueL
     var firstCardSelectedPosition = 0
     var secondCardSelectedPosition = 0
 
-    var clicksAreDisabled = false
-
-    fun clearCardList() {
-        fullCardValueList.clear()
-    }
+    var rowView = View(context)
 
     interface AdapterData {
         fun gameIsWon()
     }
 
+    fun disableClicksIfGameOver() {
+        rowView.isClickable = false
+        rowView.isEnabled = false
+    }
+
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
 
         val inflater = LayoutInflater.from(context)
-        val rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
+        rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
 
-        if (clicksAreDisabled) rowView.isEnabled = false
+        disableClicksIfGameOver()
 
         rowView.setOnClickListener {
             if (position != previousCardSelectedPosition && !matchedPositionsList.contains(position)) {

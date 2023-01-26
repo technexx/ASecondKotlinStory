@@ -32,7 +32,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
         endOfGameFunctions(true)
     }
 
-    fun disableAdapterClicks() { sumsGridView.isEnabled = false }
+    fun disableAdapterClicks() { sumsCustomAdapter.disableClicksIfGameOver() }
 
     private lateinit var rootView : View
     private val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
@@ -195,7 +195,12 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
 
     var cardsMatchedValuesList : ArrayList<Int> = ArrayList()
 
-    var clicksAreDisabled = false
+    var rowView = View(context)
+
+    fun disableClicksIfGameOver() {
+        rowView.isClickable = false
+        rowView.isEnabled = false
+    }
 
     interface AdapterData {
         fun targetNumberHit(listOfMatchedNumbers : ArrayList<Int>)
@@ -206,12 +211,12 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
-        val rowView = inflater.inflate(R.layout.sums_adapter_views, null, true)
+        rowView = inflater.inflate(R.layout.sums_adapter_views, null, true)
 
         populatedCardTextView = rowView.findViewById(R.id.sums_card_textView)
         populatedCardTextView.text = fullCardIntegerList[position].toString()
 
-        if (clicksAreDisabled) rowView.isEnabled = false
+        disableClicksIfGameOver()
 
         rowView.setOnClickListener {
             if (!cardsMatchedPositionsList.contains(position)) {
@@ -272,7 +277,6 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
 
     private fun addToCardsMatchedPositionList(value: Int) { cardsMatchedPositionsList.add(value) }
 
-    private fun clearCardsMatchedPositionList() { cardsMatchedPositionsList.clear() }
 
     private fun addToCardsMatchedValuesList(value: Int) { cardsMatchedValuesList.add(value) }
 
