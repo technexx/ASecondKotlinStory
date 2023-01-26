@@ -5,6 +5,7 @@ import a.second.kotlin.story.gameFragments.MatchingFragment
 import a.second.kotlin.story.gameFragments.MathProblemsFragment
 import a.second.kotlin.story.gameFragments.MathSumsFragment
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -75,6 +76,18 @@ class GameActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .remove(getLastLoadedFragment())
             .commit()
+    }
+
+    private fun saveHighScore() {
+        val sharedPref = getSharedPreferences("sharedPref", 0)
+        val sharedPrefEditor = sharedPref.edit()
+        val currentHighScore = sharedPref.getLong("highScore", 0)
+
+        if (eventTimes.totalSpawnTimeInMilliseconds > currentHighScore) {
+            sharedPrefEditor.putLong("highScore", eventTimes.totalSpawnTimeInMilliseconds)
+            sharedPrefEditor.apply()
+        }
+
     }
 
     @SuppressLint("MissingInflatedId")
