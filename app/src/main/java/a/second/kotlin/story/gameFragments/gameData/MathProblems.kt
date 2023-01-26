@@ -5,10 +5,12 @@ import android.util.Log
 class MathProblems {
     var inputOne : Int = 0
     var inputTwo : Int = 0
-    var answer = (0..100).random()
+    var answer = 0
     var sign = ""
 
     fun assignAdditionInputs() {
+        answer = (0..100).random()
+
         inputOne = (0..answer).random()
         inputTwo = answer - inputOne
         sign = "+"
@@ -19,6 +21,8 @@ class MathProblems {
     }
 
     fun assignSubtractionInputs() {
+        answer = (0..100).random()
+
         //inputOne - inputTwo = answer
        inputOne = (answer..100).random()
         inputTwo = inputOne - answer

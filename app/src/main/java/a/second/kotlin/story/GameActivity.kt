@@ -19,7 +19,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
 
 //Todo: Remember to SUSPEND and not BLOCK if using UI thread. runBlocking is a default CoroutineScope.
-//Todo: Second math problems answer exited fragment
+//Todo: Sometimes MathProblems exits fragment to Main.
 
 @OptIn(DelicateCoroutinesApi::class)
 class GameActivity : AppCompatActivity() {
