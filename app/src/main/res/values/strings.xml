@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">A Second Kotlin Story</string>
-    <string name="high_score">Longest Run: %1$s</string>
+    <string name="high_score">Longest Run: </string>
 
     <string name="stat_one">Career:</string>
     <string name="stat_two">Money:</string>

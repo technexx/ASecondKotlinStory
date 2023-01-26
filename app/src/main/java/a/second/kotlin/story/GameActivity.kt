@@ -87,7 +87,6 @@ class GameActivity : AppCompatActivity() {
             sharedPrefEditor.putLong("highScore", eventTimes.totalSpawnTimeInMilliseconds)
             sharedPrefEditor.apply()
         }
-
     }
 
     @SuppressLint("MissingInflatedId")
@@ -152,11 +151,7 @@ class GameActivity : AppCompatActivity() {
             changeStatTextViewFromGame(gameBeingPlayed, statChangeValue)
 
             if (hasAStatReachedNegativeValue()) {
-                cancelEventTimerCoroutine()
-                cancelEventTimerRunnable()
-                pauseObjectAnimatorOfCurrentFragment()
-                disableFragmentClicks()
-                gameIsActive = false
+                gameIsOverFunctions()
             } else {
                 handler.postDelayed( {
                     if (gameIsActive) switchFragmentForNextGame(getFragmentBasedOnRoll())
@@ -165,14 +160,17 @@ class GameActivity : AppCompatActivity() {
         })
 
         gamesViewModel.mutableTypeOfEventTriggered.observe(this) {
-            if (hasAStatReachedNegativeValue()) {
-                cancelEventTimerCoroutine()
-                cancelEventTimerRunnable()
-                pauseObjectAnimatorOfCurrentFragment()
-                disableFragmentClicks()
-                gameIsActive = false
-            }
+            if (hasAStatReachedNegativeValue()) { gameIsOverFunctions() }
         }
+    }
+
+    private fun gameIsOverFunctions() {
+        cancelEventTimerCoroutine()
+        cancelEventTimerRunnable()
+        pauseObjectAnimatorOfCurrentFragment()
+        disableFragmentClicks()
+        gameIsActive = false
+        saveHighScore()
     }
 
     private fun hasAStatReachedNegativeValue() : Boolean {

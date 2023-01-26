@@ -68,7 +68,7 @@ class Events(context: Context) {
         rolledBadOrGood = if (roll < 4) BAD_ROLL else GOOD_ROLL
     }
 
-    private fun randomValueForBadEvents() : Int { return (5..10).random() }
+    private fun randomValueForBadEvents() : Int { return (40..50).random() }
 
     private fun randomValueForGoodEvents() : Int { return (3..8).random() }
 

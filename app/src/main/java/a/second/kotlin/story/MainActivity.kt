@@ -9,6 +9,7 @@ import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
+    private var DecimalToStringConversions = DecimalToStringConversions()
     private lateinit var startButton : Button
     private lateinit var highScoreTextView : TextView
 
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         startButton = findViewById(R.id.start_game_button)
         highScoreTextView = findViewById(R.id.high_score_textView)
 
-        highScoreTextView.text = getString(R.string.high_score, highScoreString())
+        highScoreTextView.text = getString(R.string.two_item_concat, getString(R.string.high_score), DecimalToStringConversions.timeWithMillis(highScoreLong()))
 
         startButton.setOnClickListener {
             startActivity(intentToBeginGame())
@@ -31,9 +32,8 @@ class MainActivity : AppCompatActivity() {
         return Intent(this, GameActivity::class.java)
     }
 
-    private fun highScoreString() : String {
+    private fun highScoreLong() : Long {
         val sharedPref = getSharedPreferences("sharedPref", 0)
-        val highScore = sharedPref.getLong("highScore", 0)
-        return highScore.toString()
+        return sharedPref.getLong("highScore", 0)
     }
 }
