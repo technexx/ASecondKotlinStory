@@ -66,6 +66,17 @@ class GameActivity : AppCompatActivity() {
 
     private var gameIsActive = true
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        removeCurrentFragment()
+    }
+
+    private fun removeCurrentFragment() {
+        supportFragmentManager.beginTransaction()
+            .remove(getLastLoadedFragment())
+            .commit()
+    }
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -176,8 +187,6 @@ class GameActivity : AppCompatActivity() {
         while (roll == lastLoadedFragmentId) { roll = (0..3).random() }
         lastLoadedFragmentId = roll
 
-        roll = 1
-
         reInstantiateFragment(roll)
 
         if (roll == 0) fragmentToReturn = mathSumsFragment
@@ -195,6 +204,19 @@ class GameActivity : AppCompatActivity() {
             2 -> hangmanFragment = HangmanFragment()
             3 -> matchingFragment = MatchingFragment()
         }
+    }
+
+    private fun getLastLoadedFragment() : Fragment {
+        var fragmentToReturn = Fragment()
+
+        when (lastLoadedFragmentId) {
+            0 -> fragmentToReturn = mathSumsFragment
+            1 -> fragmentToReturn = mathProblemsFragment
+            2 -> fragmentToReturn = hangmanFragment
+            3 -> fragmentToReturn = matchingFragment
+        }
+
+        return fragmentToReturn
     }
 
     private fun switchFragmentForNextGame(fragment: Fragment) {
