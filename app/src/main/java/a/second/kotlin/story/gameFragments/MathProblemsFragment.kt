@@ -27,9 +27,10 @@ import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 
 class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
 
-    override fun gameIsWon() {
+    override fun gameIsWonCallback() {
         endOfGameFunctions(true)
         pauseObjectAnimator()
+        answerAdapter.correctAnswerCount
     }
 
     lateinit var rootView : View
@@ -76,9 +77,26 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
         submitButton.setOnClickListener {
             iterateAdapterAnswerCountAndCallNotifyIfCorrect()
             setStateOfAnswerTextViewToProblemAnswered()
-            Log.i("testCount", "count is ${answerAdapter.correctAnswerCount}")
-            if (answerAdapter.correctAnswerCount < 5) showNextProblemAndSetEditTextToNullIfAnswerIsCorrect()
+            if (answerAdapter.correctAnswerCount < 5) showNextProblemAndSetEditTextToNullIfAnswerIsCorrect() else endOfGameFunctions(true)
         }
+    }
+
+    private fun iterateAdapterAnswerCountAndCallNotifyIfCorrect() {
+        if (doesUserInputMatchAnswer()) {
+            answerAdapter.iterateCorrectAnswerCount()
+            answerAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun endOfGameFunctions(gameIsWon: Boolean) {
+        gamesViewModel.gameBeingPlayed = ("MathProblems")
+        gamesViewModel.setIsAnswerCorrect(gameIsWon)
+        setStateOfAnswerTextViewToEndGame(gameIsWon)
+
+        disableAnswerEditText()
+        disableSubmitButton()
+
+        pauseObjectAnimator()
     }
 
     private fun setTypeOfProblem() {
@@ -101,11 +119,6 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
     }
 
     private fun setInputsToTextView() { problemTextView.text = MathProblemsData.createProblemString() }
-
-    private fun iterateAdapterAnswerCountAndCallNotifyIfCorrect() { if (doesUserInputMatchAnswer())
-        answerAdapter.iterateCorrectAnswerCount()
-        answerAdapter.notifyDataSetChanged()
-    }
 
     private fun setStateOfAnswerTextViewToProblemAnswered() {
         if (doesUserInputMatchAnswer()) mathAnswerStateTextView.text = getString(R.string.math_problems_answer_correct) else mathAnswerStateTextView.text = getString(R.string.math_problems_answer_incorrect)
@@ -145,7 +158,7 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
     private fun instantiateObjectAnimator() {
         objectAnimator = ObjectAnimator.ofInt(timerProgressBar, "progress", progressValue, 0)
         objectAnimator.interpolator = LinearInterpolator()
-        objectAnimator.duration = 15000
+        objectAnimator.duration = 30000
     }
 
     private fun startObjectAnimator() { objectAnimator.start() }
@@ -158,22 +171,11 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
             endOfGameFunctions(false)
         }
     }
-
-    private fun endOfGameFunctions(gameIsWon: Boolean) {
-        gamesViewModel.gameBeingPlayed = ("MathProblems")
-        gamesViewModel.setIsAnswerCorrect(gameIsWon)
-        setStateOfAnswerTextViewToEndGame(gameIsWon)
-
-        disableAnswerEditText()
-        disableSubmitButton()
-
-        Log.i("testBug", "end of game called in math problems")
-    }
 }
 
 class AnswerAdapter(val adapterData: AdapterData) : RecyclerView.Adapter<AnswerAdapter.AnswerCountHolder>() {
     interface AdapterData {
-        fun gameIsWon()
+        fun gameIsWonCallback()
     }
 
     var correctAnswerCount = 0
@@ -189,8 +191,6 @@ class AnswerAdapter(val adapterData: AdapterData) : RecyclerView.Adapter<AnswerA
         } else {
             holder.circleImage.setImageResource(R.drawable.sphere_filled)
         }
-
-        if (correctAnswerCount == 5) adapterData.gameIsWon()
     }
 
     override fun getItemCount(): Int {
