@@ -13,14 +13,12 @@ open class ItemViewModel : ViewModel() {
     val mutableTypeOfEventTriggered = MutableLiveData<Int>()
     val typeOfEventTriggered : LiveData<Int> get() = mutableTypeOfEventTriggered
 
+    val mutableHighScore = MutableLiveData<Long>()
+    val highScore : LiveData<Long> get() = mutableHighScore
+
     var gameBeingPlayed : String = ""
 
-    class StatsViewModel : ItemViewModel() {
-
-    }
-
     class GamesViewModel : ItemViewModel() {
-
         fun setIsAnswerCorrect(isCorrect : Boolean) {
             mutableCorrectAnswerBoolean.value = isCorrect
         }
@@ -35,6 +33,10 @@ open class ItemViewModel : ViewModel() {
 
         fun setTypeOfEventTriggered(event: Int) {
             mutableTypeOfEventTriggered.value = event
+        }
+
+        fun setHighScore(score: Long) {
+            mutableHighScore.value = score
         }
     }
 }

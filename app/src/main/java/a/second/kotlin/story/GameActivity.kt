@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 
 @OptIn(DelicateCoroutinesApi::class)
 class GameActivity : AppCompatActivity() {
-
     var mathSumsFragment : MathSumsFragment = MathSumsFragment()
     var mathProblemsFragment : MathProblemsFragment = MathProblemsFragment()
     var hangmanFragment : HangmanFragment = HangmanFragment()
@@ -160,7 +159,10 @@ class GameActivity : AppCompatActivity() {
         })
 
         gamesViewModel.mutableTypeOfEventTriggered.observe(this) {
-            if (hasAStatReachedNegativeValue()) { gameIsOverFunctions() }
+            if (hasAStatReachedNegativeValue()) {
+                gameIsOverFunctions()
+                Log.i("testView", "end of game functions called")
+            }
         }
     }
 
@@ -170,7 +172,10 @@ class GameActivity : AppCompatActivity() {
         pauseObjectAnimatorOfCurrentFragment()
         disableFragmentClicks()
         gameIsActive = false
+
         saveHighScore()
+        gamesViewModel.setHighScore(eventTimes.totalSpawnTimeInMilliseconds)
+
     }
 
     private fun hasAStatReachedNegativeValue() : Boolean {
