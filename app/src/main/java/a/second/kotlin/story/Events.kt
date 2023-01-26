@@ -61,16 +61,16 @@ class Events(context: Context) {
         if (rolledBadOrGood == BAD_ROLL) eventValue = -randomValueForBadEvents() else eventValue = randomValueForGoodEvents()
     }
 
-    private fun categoryOfEvent() : Int { return (0..0).random() }
+    private fun categoryOfEvent() : Int { return (0..3).random() }
 
     private fun setGoodOrBadModifier() {
         val roll = (0..4).random()
         rolledBadOrGood = if (roll < 4) BAD_ROLL else GOOD_ROLL
     }
 
-    private fun randomValueForBadEvents() : Int { return (20..40).random() }
+    private fun randomValueForBadEvents() : Int { return (5..10).random() }
 
-    private fun randomValueForGoodEvents() : Int { return (3..10).random() }
+    private fun randomValueForGoodEvents() : Int { return (3..8).random() }
 
     private fun randomBadJobEvent() : String {
         //until is X to Y, excluding Y.

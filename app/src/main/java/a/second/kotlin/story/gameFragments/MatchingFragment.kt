@@ -44,7 +44,7 @@ class MatchingFragment : Fragment(), MatchingCustomAdapter.AdapterData {
         pauseObjectAnimator()
     }
 
-    fun disableAdapterClicks() { MatchingCustomAdapter.disableClicksIfGameOver() }
+    fun disableAdapterClicks() { MatchingCustomAdapter.gameIsOver = true }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -74,7 +74,7 @@ class MatchingFragment : Fragment(), MatchingCustomAdapter.AdapterData {
     private fun instantiateObjectAnimator() {
         objectAnimator = ObjectAnimator.ofInt(timerProgressBar, "progress", progressValue, 0)
         objectAnimator.interpolator = LinearInterpolator()
-        objectAnimator.duration = 50000
+        objectAnimator.duration = 15000
 
         objectAnimator.doOnEnd {
             endOfGameFunction(false)
@@ -152,17 +152,20 @@ class MatchingCustomAdapter (context: Context, resource: Int, val fullCardValueL
 
     var rowView = View(context)
 
+    var gameIsOver = false
+
     interface AdapterData {
         fun gameIsWon()
     }
 
     fun disableClicksIfGameOver() {
-        rowView.isClickable = false
-        rowView.isEnabled = false
+        if (gameIsOver) {
+            rowView.isClickable = false
+            rowView.isEnabled = false
+        }
     }
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
-
         val inflater = LayoutInflater.from(context)
         rowView = inflater.inflate(R.layout.matching_adapter_views, null, true)
 

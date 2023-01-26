@@ -19,8 +19,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
 
 //Todo: Remember to SUSPEND and not BLOCK if using UI thread. runBlocking is a default CoroutineScope.
-
-//Todo: Fragment disappeared and kicked out to Main after an event loss
+//Todo: Second math problems answer exited fragment
 
 @OptIn(DelicateCoroutinesApi::class)
 class GameActivity : AppCompatActivity() {
@@ -129,7 +128,6 @@ class GameActivity : AppCompatActivity() {
             clearStatModificationTextViews()
             changeStatTextViewFromGame(gameBeingPlayed, statChangeValue)
 
-            //Todo: Use "end game" conditional inside post-delay handler to avoid switching fragments
             if (hasAStatReachedNegativeValue()) {
                 cancelEventTimerCoroutine()
                 cancelEventTimerRunnable()
@@ -138,7 +136,7 @@ class GameActivity : AppCompatActivity() {
                 gameIsActive = false
             } else {
                 handler.postDelayed( {
-                    switchFragmentForNextGame(getFragmentBasedOnRoll())
+                    if (gameIsActive) switchFragmentForNextGame(getFragmentBasedOnRoll())
                 }, 3000)
             }
         })
@@ -150,7 +148,6 @@ class GameActivity : AppCompatActivity() {
                 pauseObjectAnimatorOfCurrentFragment()
                 disableFragmentClicks()
                 gameIsActive = false
-
             }
         }
     }
@@ -179,6 +176,8 @@ class GameActivity : AppCompatActivity() {
         var roll = (0..3).random()
         while (roll == lastLoadedFragmentId) { roll = (0..3).random() }
         lastLoadedFragmentId = roll
+
+        roll = 1
 
         reInstantiateFragment(roll)
 

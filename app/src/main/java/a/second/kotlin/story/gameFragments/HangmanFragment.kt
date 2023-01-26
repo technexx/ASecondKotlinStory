@@ -20,6 +20,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 class HangmanFragment : Fragment() {
 
+    fun disableAdapterClicks() {
+        keyboardGridView.isEnabled = false }
+
     private lateinit var HangmanData : Hangman
     private lateinit var GallowsData : Hangman.GallowsCanvas
     private val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
@@ -235,8 +238,6 @@ class HangmanFragment : Fragment() {
         puzzleRecyclerView.addItemDecoration(puzzleLetterDivider())
         puzzleRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }
-
-    fun disableAdapterClicks() { keyboardGridView.isEnabled = false }
 
     private fun puzzleLetterDivider() : DividerItemDecoration {
         var decoration = DividerItemDecoration(requireContext(), LinearLayoutManager.HORIZONTAL)

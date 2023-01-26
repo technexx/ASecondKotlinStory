@@ -166,6 +166,8 @@ class MathProblemsFragment : Fragment(), AnswerAdapter.AdapterData {
 
         disableAnswerEditText()
         disableSubmitButton()
+
+        Log.i("testBug", "end of game called in math problems")
     }
 }
 

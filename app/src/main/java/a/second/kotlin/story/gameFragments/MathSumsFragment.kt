@@ -32,7 +32,7 @@ class MathSumsFragment : Fragment(), SumsCustomAdapter.AdapterData {
         endOfGameFunctions(true)
     }
 
-    fun disableAdapterClicks() { sumsCustomAdapter.disableClicksIfGameOver() }
+    fun disableAdapterClicks() { sumsCustomAdapter.gameIsOver = true }
 
     private lateinit var rootView : View
     private val gamesViewModel : ItemViewModel.GamesViewModel by activityViewModels()
@@ -197,9 +197,13 @@ class SumsCustomAdapter (context: Context, resource: Int, val fullCardIntegerLis
 
     var rowView = View(context)
 
+    var gameIsOver = false
+
     fun disableClicksIfGameOver() {
-        rowView.isClickable = false
-        rowView.isEnabled = false
+        if (gameIsOver) {
+            rowView.isClickable = false
+            rowView.isEnabled = false
+        }
     }
 
     interface AdapterData {
