@@ -154,15 +154,12 @@ class GameActivity : AppCompatActivity() {
             } else {
                 handler.postDelayed( {
                     if (gameIsActive) switchFragmentForNextGame(getFragmentBasedOnRoll())
-                }, 3000)
+                }, 2000)
             }
         })
 
         gamesViewModel.mutableTypeOfEventTriggered.observe(this) {
-            if (hasAStatReachedNegativeValue()) {
-                gameIsOverFunctions()
-                Log.i("testView", "end of game functions called")
-            }
+            if (hasAStatReachedNegativeValue()) { gameIsOverFunctions() }
         }
     }
 
@@ -174,8 +171,6 @@ class GameActivity : AppCompatActivity() {
         gameIsActive = false
 
         saveHighScore()
-        gamesViewModel.setHighScore(eventTimes.totalSpawnTimeInMilliseconds)
-
     }
 
     private fun hasAStatReachedNegativeValue() : Boolean {
@@ -265,22 +260,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun statChangeValueForGame() : Int {
-        return (3..6).random()
-    }
-
-    private fun setRandomMillisDelayForEventTrigger() {
-        val randomStop = (3000..5000).random()
-        randomMillisDelayForEvent = randomStop.toLong()
-    }
-
-    private fun startTimeIterationCoRoutine() {
-        job = GlobalScope.launch(Dispatchers.Main) {
-            Log.i("testRoutine", "Job launched w/ runnable and suspend function")
-            if (gameIsActive) {
-                postEventTimerRunnable()
-                spawnTimeIteration()
-            }
-        }
+        return (8..15).random()
     }
 
     private suspend fun spawnTimeIteration() {
@@ -288,7 +268,6 @@ class GameActivity : AppCompatActivity() {
         rollEvent()
         setRandomMillisDelayForEventTrigger()
         startTimeIterationCoRoutine()
-        Log.i("testRoutine", "suspend function w/ event executed")
     }
 
     private fun rollEvent() {
@@ -309,6 +288,21 @@ class GameActivity : AppCompatActivity() {
         changeStatValueTextViewsFromEvent()
         setStatTextViewToRedIfAtZeroAndBlackIfNot()
     }
+
+    private fun setRandomMillisDelayForEventTrigger() {
+        val randomStop = (5000..10000).random()
+        randomMillisDelayForEvent = randomStop.toLong()
+    }
+
+    private fun startTimeIterationCoRoutine() {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            if (gameIsActive) {
+                postEventTimerRunnable()
+                spawnTimeIteration()
+            }
+        }
+    }
+
 
     private fun instantiateEventTimerRunnable() {
         eventTimerRunnable = Runnable {

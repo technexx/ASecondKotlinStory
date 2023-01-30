@@ -34,9 +34,5 @@ open class ItemViewModel : ViewModel() {
         fun setTypeOfEventTriggered(event: Int) {
             mutableTypeOfEventTriggered.value = event
         }
-
-        fun setHighScore(score: Long) {
-            mutableHighScore.value = score
-        }
     }
 }

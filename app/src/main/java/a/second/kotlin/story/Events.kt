@@ -68,54 +68,46 @@ class Events(context: Context) {
         rolledBadOrGood = if (roll < 4) BAD_ROLL else GOOD_ROLL
     }
 
-    private fun randomValueForBadEvents() : Int { return (40..50).random() }
+    private fun randomValueForBadEvents() : Int { return (5..12).random() }
 
-    private fun randomValueForGoodEvents() : Int { return (3..8).random() }
+    private fun randomValueForGoodEvents() : Int { return (3..10).random() }
 
     private fun randomBadJobEvent() : String {
-        //until is X to Y, excluding Y.
         val eventRoll = (jobEventsBadArrayList.indices).random()
         return jobEventsBadArrayList[eventRoll]
     }
 
     private fun randomGoodJobEvent() : String {
-        //until is X to Y, excluding Y.
         val eventRoll = (jobEventsGoodArrayList.indices).random()
         return jobEventsGoodArrayList[eventRoll]
     }
 
     private fun randomBadFinancesEvent() : String {
-        //until is X to Y, excluding Y.
         val eventRoll = (financesEventsBadArrayList.indices).random()
         return financesEventsBadArrayList[eventRoll]
     }
 
     private fun randomGoodFinancesEvent() : String {
-        //until is X to Y, excluding Y.
         val eventRoll = (financesEventsGoodArrayList.indices).random()
         return financesEventsGoodArrayList[eventRoll]
     }
 
     private fun randomBadFamilyEvent() : String {
-        //until is X to Y, excluding Y.
         val eventRoll = (familyEventsBadArrayList.indices).random()
         return familyEventsBadArrayList[eventRoll]
     }
 
     private fun randomGoodFamilyEvent() : String {
-        //until is X to Y, excluding Y.
         val eventRoll = (familyEventsGoodArrayList.indices).random()
         return familyEventsGoodArrayList[eventRoll]
     }
 
     private fun randomBadSocialEvent() : String {
-        //until is X to Y, excluding Y.
         val eventRoll = (socialEventsBadArrayList.indices).random()
         return socialEventsBadArrayList[eventRoll]
     }
 
     private fun randomGoodSocialEvent() : String {
-        //until is X to Y, excluding Y.
         val eventRoll = (socialEventsGoodArrayList.indices).random()
         return socialEventsGoodArrayList[eventRoll]
     }
