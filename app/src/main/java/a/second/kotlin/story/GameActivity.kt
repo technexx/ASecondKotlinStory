@@ -39,6 +39,8 @@ class GameActivity : AppCompatActivity() {
     var handler : Handler = Handler()
     var eventTimerRunnable : Runnable = Runnable { }
 
+    private lateinit var sanityHeaderTextView: TextView
+    private lateinit var sanityTextView: TextView
     private lateinit var statOneHeader : TextView
     private lateinit var statOneTextView : TextView
     private lateinit var statTwoHeader : TextView
@@ -97,6 +99,9 @@ class GameActivity : AppCompatActivity() {
         Stats = Stats(applicationContext)
         DecimalToStringConversions = DecimalToStringConversions()
 
+        sanityHeaderTextView = findViewById(R.id.sanity_header_textView)
+        sanityTextView = findViewById(R.id.sanity_textView)
+
         statOneHeader = findViewById(R.id.stat_one_header_textView)
         statTwoHeader = findViewById(R.id.stat_two_header_textView)
         statThreeHeader = findViewById(R.id.stat_three_header_textView)
@@ -124,6 +129,8 @@ class GameActivity : AppCompatActivity() {
         instantiateEventTimerRunnable()
 
         newGameFunctions()
+
+        setSanityTextView()
     }
 
     private fun newGameFunctions() {
@@ -481,4 +488,10 @@ class GameActivity : AppCompatActivity() {
         statThreeHeader.text = nameThree
         statFourHeader.text = nameFour
     }
+
+//    private fun sanityCalculation() : Int {
+//
+//    }
+
+    private fun setSanityTextView() { sanityTextView.text = "100" }
 }
